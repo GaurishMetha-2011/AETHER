@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101311">
-  <meta name="description" content="AETHER explores how transparent architectural glass could collect selected sunlight and guide optical energy to photovoltaic cells at its edge.">
-  <title>AETHER — Invisible Light. Visible Impact.</title>
+  <meta name="description" content="AETHER is a student project exploring a clear window that could turn sunlight into electricity using small solar cells at its edges.">
+  <title>AETHER — A Window That Could Make Electricity</title>
   <link rel="icon" type="image/png" href="assets/aether-logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,7 +31,7 @@
 
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; scroll-padding-top: 90px; }
-    body { margin: 0; background: var(--ink); color: var(--white); font-family: var(--sans); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    body { margin: 0; background: var(--ink); color: var(--white); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
     body.menu-open { overflow: hidden; }
     a { color: inherit; text-decoration: none; }
     button, input { font: inherit; }
@@ -43,7 +43,9 @@
     .eyebrow::before { width: 25px; height: 1px; background: currentColor; content: ""; }
     .eyebrow.dark { color: #49695d; }
     .section { position: relative; padding: 142px 0; border-top: 1px solid var(--line); }
-    .section.light { color: var(--ink); background: var(--paper); border-color: var(--line-dark); }
+    .section.light { color: var(--ink); background: var(--paper); border-color: transparent; isolation: isolate; }
+    .section.light::before { position: absolute; z-index: 0; inset: 0 0 auto; height: 120px; background: linear-gradient(180deg, var(--ink) 0%, rgba(16,19,17,.62) 30%, rgba(16,19,17,.2) 68%, transparent 100%); content: ""; pointer-events: none; }
+    .section.light > .wrap { position: relative; z-index: 1; }
     .section-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 390px); gap: 52px; align-items: end; margin-bottom: 62px; }
     .section-head h2, .display { margin: 0; font-family: var(--serif); font-size: clamp(48px, 6.5vw, 88px); font-weight: 400; line-height: .95; letter-spacing: 0; }
     .section-head p { max-width: 390px; margin: 0 0 5px; color: var(--muted); }
@@ -67,9 +69,9 @@
     .site-header.scrolled { border-color: var(--line); background: rgba(16,19,17,.9); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
     .nav { display: flex; height: 76px; align-items: center; justify-content: space-between; }
     .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .2em; }
-    .brand-mark { width: 31px; height: 31px; object-fit: contain; mix-blend-mode: screen; }
+    .brand-mark { width: 31px; height: 31px; object-fit: contain; }
     .nav-links { display: flex; align-items: center; gap: clamp(18px, 2.5vw, 35px); }
-    .nav-links a { color: #d5d9d4; font-size: 11px; transition: color .2s ease; }
+    .nav-links a { color: #d5d9d4; font-size: 12px; transition: color .2s ease; }
     .nav-links a:hover { color: var(--aqua); }
     .nav-index { color: var(--aqua) !important; font-size: 10px !important; }
     .menu-toggle { display: none; width: 42px; height: 42px; align-items: center; justify-content: center; border: 1px solid var(--line); background: transparent; }
@@ -77,14 +79,20 @@
 
     /* Hero */
     .hero { position: relative; display: flex; min-height: min(900px, 100svh); align-items: flex-end; overflow: hidden; isolation: isolate; padding: 150px 0 82px; background: #1c2625; }
-    .hero::before { position: absolute; z-index: -2; inset: 0; background: url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2400&q=88") center 42% / cover; content: ""; transform: scale(1.015); animation: hero-drift 26s ease-in-out infinite alternate; }
-    .hero::after { position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, rgba(10,15,14,.38), transparent 28%), linear-gradient(90deg, rgba(10,15,14,.86) 0%, rgba(10,15,14,.52) 45%, rgba(10,15,14,.12) 100%), linear-gradient(0deg, rgba(10,15,14,.8), transparent 62%); content: ""; }
+    .hero::before { position: absolute; z-index: -2; inset: 0; background: url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2400&q=88") center 42% / cover; content: ""; filter: saturate(.84) brightness(.78); transform: scale(1.015); animation: hero-drift 36s ease-in-out infinite alternate; }
+    .hero::after { position: absolute; z-index: -1; inset: 0; background: linear-gradient(112deg, transparent 28%, rgba(224,199,164,.12) 45%, transparent 61%), linear-gradient(180deg, rgba(10,15,14,.25), transparent 28%), linear-gradient(90deg, rgba(10,15,14,.86) 0%, rgba(10,15,14,.52) 45%, rgba(10,15,14,.12) 100%), linear-gradient(0deg, rgba(10,15,14,.8), transparent 62%); content: ""; }
     .hero-reflection { position: absolute; z-index: 0; top: -8%; bottom: -8%; left: 68%; width: 14%; background: linear-gradient(105deg, transparent, rgba(196,244,231,.11) 48%, rgba(255,255,255,.025) 53%, transparent); opacity: .65; pointer-events: none; transform: skewX(-13deg); animation: glass-reflection 13s ease-in-out infinite alternate; }
     .hero-copy { position: relative; z-index: 1; max-width: 780px; }
+    .hero-copy > .eyebrow, .hero-lockup, .hero-tagline, .hero-description, .hero-actions { animation: hero-entry .9s cubic-bezier(.2,.7,.2,1) both; }
+    .hero-copy > .eyebrow { animation-delay: .08s; }
+    .hero-lockup { animation-delay: .2s; }
+    .hero-tagline { animation-delay: .34s; }
+    .hero-description { animation-delay: .46s; }
+    .hero-actions { animation-delay: .58s; }
     .hero .eyebrow { color: #c0ddcf; }
-    .hero-lockup { display: flex; align-items: center; gap: 13px; }
-    .hero-logo { width: 58px; height: 58px; object-fit: contain; mix-blend-mode: screen; }
-    .hero h1 { margin: 0; font-size: clamp(68px, 12vw, 162px); font-weight: 500; line-height: .78; letter-spacing: .035em; }
+    .hero-lockup { display: flex; align-items: center; gap: 19px; }
+    .hero-logo { width: 82px; height: 82px; object-fit: contain; }
+    .hero h1 { margin: 0; font-family: var(--serif); font-size: clamp(76px, 11vw, 148px); font-weight: 400; line-height: .84; letter-spacing: 0; }
     .hero-tagline { margin: 27px 0 0; font-family: var(--serif); font-size: clamp(24px, 3.2vw, 39px); line-height: 1.05; }
     .hero-description { max-width: 420px; margin: 19px 0 29px; color: #d1d6d1; font-size: 14px; }
     .hero-actions { display: flex; flex-wrap: wrap; gap: 11px; }
@@ -93,11 +101,13 @@
     .hero-scroll-cue { position: absolute; z-index: 1; bottom: 28px; left: 50%; display: flex; align-items: center; gap: 11px; color: rgba(245,246,241,.7); font-size: 8px; letter-spacing: .15em; text-transform: uppercase; transform: translateX(-50%); }
     .hero-scroll-cue span { width: 29px; height: 1px; background: var(--aqua); animation: cue-pulse 2.2s ease-in-out infinite; }
     @keyframes glass-reflection { from { opacity: .32; transform: translateX(-10%) skewX(-13deg); } to { opacity: .72; transform: translateX(13%) skewX(-13deg); } }
+    @keyframes hero-entry { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes cue-pulse { 50% { opacity: .35; transform: scaleX(.72); transform-origin: left; } }
     @keyframes hero-drift { from { transform: scale(1.015) translate3d(0,0,0); } to { transform: scale(1.075) translate3d(-.5%,.6%,0); } }
 
     /* Problem and concept bridge */
-    .problem-section { display: grid; min-height: min(760px, 100svh); grid-template-columns: 1.08fr .92fr; color: var(--ink); background: var(--paper); }
+    .problem-section { position: relative; display: grid; min-height: min(760px, 100svh); grid-template-columns: 1.08fr .92fr; color: var(--ink); background: var(--paper); isolation: isolate; }
+    .problem-section::before { position: absolute; z-index: 2; inset: -3px 0 auto; height: 168px; background: linear-gradient(180deg, var(--ink) 0%, rgba(16,19,17,.62) 32%, rgba(16,19,17,.16) 72%, transparent 100%); content: ""; pointer-events: none; }
     .problem-image { position: relative; min-height: 650px; margin: 0; overflow: hidden; background: #778980 url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=86") center / cover; }
     .problem-image::before { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(8,15,13,.63)), linear-gradient(90deg, rgba(8,15,13,.04), transparent 55%); content: ""; }
     .problem-image::after { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 24.7%, rgba(239,247,239,.17) 24.8% 24.95%, transparent 25.05% 49.7%, rgba(239,247,239,.13) 49.8% 49.95%, transparent 50.05% 74.7%, rgba(239,247,239,.14) 74.8% 74.95%, transparent 75.05%); content: ""; mix-blend-mode: screen; }
@@ -111,7 +121,9 @@
     .problem-contrast div { display: grid; grid-template-columns: .75fr 1fr; gap: 15px; padding: 13px 0; border-bottom: 1px solid var(--line-dark); }
     .problem-contrast b { color: #232a25; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
     .problem-contrast span { color: #59615a; font-size: 11px; }
-    .opening { padding: 105px 0 112px; border-bottom: 1px solid var(--line); }
+    .opening { position: relative; padding: 105px 0 112px; background: var(--ink); isolation: isolate; }
+    .opening::before { position: absolute; z-index: 0; inset: 0 0 auto; height: 105px; background: linear-gradient(180deg, var(--paper) 0%, rgba(233,233,225,.48) 34%, rgba(233,233,225,.12) 70%, transparent 100%); content: ""; pointer-events: none; }
+    .opening > .wrap { position: relative; z-index: 1; }
     .opening-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 10%; align-items: center; }
     .opening h2 { max-width: 640px; margin: 0; font-family: var(--serif); font-size: clamp(47px, 6.5vw, 80px); font-weight: 400; line-height: .96; }
     .opening h2 em { color: var(--aqua); }
@@ -426,6 +438,31 @@
     .about-grid p { max-width: 600px; margin: 0 0 18px; color: var(--muted); }
     .discipline-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 25px; }
     .discipline-list span { padding: 7px 10px; border: 1px solid var(--line); color: #d3d8d2; font-size: 10px; }
+    .video-section { padding: 86px 0; border-top: 1px solid var(--line); background: #141916; }
+    .video-layout { display: grid; grid-template-columns: .72fr 1.28fr; gap: 7%; align-items: center; }
+    .video-copy h2 { margin: 0 0 16px; font-family: var(--serif); font-size: clamp(42px, 5vw, 65px); font-weight: 400; line-height: .95; }
+    .video-copy p { max-width: 330px; margin: 0; color: var(--muted); font-size: 13px; }
+    .video-frame { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid var(--line); background: #080a09; }
+    .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .maker-section { padding: 115px 0; border-top: 1px solid var(--line); background: #121714; }
+    .maker-grid { display: grid; grid-template-columns: .78fr 1.22fr; gap: 9%; align-items: center; }
+    .maker-portrait { position: relative; width: 100%; max-width: 390px; aspect-ratio: 4 / 5; margin: 0; overflow: hidden; background: #d8d9d4; }
+    .maker-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center 38%; filter: saturate(.78); }
+    .maker-note h2 { margin: 0 0 23px; font-family: var(--serif); font-size: clamp(45px, 6vw, 74px); font-weight: 400; line-height: .95; }
+    .maker-note blockquote { max-width: 650px; margin: 0; color: #d5dad4; font-family: var(--serif); font-size: clamp(23px, 3vw, 34px); line-height: 1.23; }
+    .maker-signature { margin-top: 28px; color: var(--aqua); font-size: 10px; letter-spacing: .13em; text-transform: uppercase; }
+    .contact-section { padding: 82px 0 92px; border-top: 1px solid var(--line); background: #101311; }
+    .contact-head { display: flex; justify-content: space-between; gap: 30px; align-items: end; margin-bottom: 39px; }
+    .contact-head h2 { margin: 0; font-family: var(--serif); font-size: clamp(48px, 6vw, 76px); font-weight: 400; line-height: .92; }
+    .contact-head p { max-width: 310px; margin: 0 0 4px; color: var(--muted); font-size: 12px; }
+    .contact-list { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .contact-item { min-height: 105px; padding: 17px 18px 16px 0; }
+    .contact-item + .contact-item { padding-left: 18px; border-left: 1px solid var(--line); }
+    .contact-item span { display: block; margin-bottom: 15px; color: var(--muted); font-size: 9px; letter-spacing: .13em; text-transform: uppercase; }
+    .contact-item a, .contact-item b { color: var(--white); font-size: 13px; font-weight: 500; }
+    .contact-item a:hover { color: var(--aqua); }
+    .contact-item .contact-pending { color: #858d86; font-size: 11px; }
+    .contact-item .contact-subaction { display: block; margin-top: 8px; color: var(--muted); font-size: 10px; }
     .closing { position: relative; display: flex; min-height: 550px; align-items: center; overflow: hidden; isolation: isolate; padding: 90px 0; background: #1e2927; }
     .closing::before { position: absolute; z-index: -2; inset: 0; background: url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2200&q=82") center 57% / cover; content: ""; filter: saturate(.65); transform: scale(1.02); }
     .closing::after { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, rgba(10,15,14,.78), rgba(10,15,14,.28)), linear-gradient(0deg, rgba(10,15,14,.56), transparent 75%); content: ""; }
@@ -438,9 +475,14 @@
     .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
+    body :is(.section-head p, .small-note, .hero-description, .problem-copy > p, .problem-contrast span, .opening-copy p, .concept-bridge span, .flow-legend span, .story-beat p:not(.beat-number), .panel-info > p, .material-context, .material-target, .material-beat p:not(.beat-number), .pv-copy > p, .system-node p, .system-detail p, .future-strip p, .application-content p, .image-note, .contrast p, .sustainability-item p, .roadmap-step p, .status-band p, .oman-band p, .city-statement p, .cost-intro p, .cost-item span, .cost-footnote, .model-controls > p, .model-output > p, .model-disclaimer, details p, .about-grid p, .video-copy p, .contact-head p) { font-size: 16px; line-height: 1.55; }
+    body :is(.button, .component-select, .quiet-button, .pv-stat span, .spectrum-marker span, .system-node b, .future-strip b, .roadmap-step h3, .cost-item b, .model-result-label, .model-formula, summary b, .discipline-list span, .contact-item a, .contact-item b, .contact-item .contact-subaction, footer) { font-size: 14px; }
+    body :is(.eyebrow, .nav-index, .problem-image figcaption, .concept-caption, .story-progress span, .story-beat .beat-number, .panel-label, .material-progress span, .material-beat .beat-number, .phase-warning, .spectrum-title, .spectrum-labels, .spectrum-marker b, .concept-disclaimer, .system-node small, .system-detail span, .system-status, .future-strip span, .application-content span, .contrast small, .sustainability-item span, .sdg, .roadmap-step small, .status-band .status-label, .city-visual figcaption, .about-name, .maker-signature, .contact-item span, .hero-meta, .hero-scroll-cue) { font-size: 12px; }
+    .story-progress span::before, .material-progress span::before { font-size: 10px; }
+
     @media (max-width: 900px) {
       .nav-links { gap: 15px; }
-      .nav-links a { font-size: 10px; }
+      .nav-links a { font-size: 12px; }
       .nav-index { display: none; }
       .panel-layout, .pv-layout { grid-template-columns: 1fr; gap: 48px; }
       .panel-stage { min-height: 430px; }
@@ -452,6 +494,8 @@
       .model-shell { grid-template-columns: 1fr; }
       .model-output { min-height: 285px; border-top: 1px solid var(--line); border-left: 0; }
       .city-statement { grid-template-columns: 1fr; gap: 20px; }
+      .maker-grid { grid-template-columns: .8fr 1.2fr; gap: 6%; }
+      .video-layout { grid-template-columns: 1fr; gap: 30px; }
     }
     @media (max-width: 780px) {
       .menu-toggle { display: inline-flex; }
@@ -474,8 +518,9 @@
       .hero { min-height: 760px; min-height: 92svh; padding: 130px 0 76px; }
       .hero::before { background-position: 57% center; }
       .hero::after { background: linear-gradient(90deg, rgba(10,15,14,.73), rgba(10,15,14,.18)), linear-gradient(0deg, rgba(10,15,14,.82), transparent 70%); }
-      .hero h1 { font-size: clamp(64px, 19vw, 110px); }
-      .hero-logo { width: 44px; height: 44px; }
+      .hero h1 { font-size: clamp(68px, 17vw, 96px); }
+      .hero-lockup { gap: 12px; }
+      .hero-logo { width: 56px; height: 56px; }
       .hero-description { max-width: 330px; font-size: 13px; }
       .hero-meta { right: 20px; bottom: 43px; font-size: 7px; }
       .hero-scroll-cue { bottom: 14px; }
@@ -507,6 +552,13 @@
       .material-art { min-height: 34vh; height: 290px; }
       .material-beat { min-height: 43vh; }
       .city-visual { min-height: 300px; }
+      .maker-section { padding: 82px 0; }
+      .maker-grid { grid-template-columns: 1fr; gap: 32px; }
+      .maker-portrait { width: min(100%, 360px); aspect-ratio: 1 / 1; }
+      .contact-head { display: block; }
+      .contact-head p { margin-top: 18px; }
+      .contact-list { grid-template-columns: 1fr; }
+      .contact-item + .contact-item { padding-left: 0; border-top: 1px solid var(--line); border-left: 0; }
       .panel-stage { min-height: 330px; }
       .panel-object { width: 69%; }
       .panel-label { top: 13px; left: 13px; }
@@ -571,31 +623,31 @@
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="wrap hero-copy">
-        <p class="eyebrow">A student-led engineering project</p>
+        <p class="eyebrow">A student project exploring a new kind of window</p>
         <div class="hero-lockup"><img class="hero-logo" src="assets/aether-logo.png" alt=""><h1 id="hero-title">AETHER</h1></div>
-        <p class="hero-tagline">Invisible Light. Visible Impact.</p>
-        <p class="hero-description">A transparent window concept designed to generate electricity from sunlight.</p>
+        <p class="hero-tagline">A window that could make electricity.</p>
+        <p class="hero-description">The idea: guide sunlight to small solar cells around the window’s edges.</p>
         <div class="hero-actions">
           <a class="button" href="#concept">Explore AETHER <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.4"/></svg></a>
           <a class="button" href="#mechanism">How it works</a>
         </div>
       </div>
       <span class="hero-reflection" aria-hidden="true"></span>
-      <p class="hero-meta">Architectural context <span>Concept visualization</span></p>
+      <p class="hero-meta">Building idea <span>Illustration</span></p>
       <div class="hero-scroll-cue" aria-hidden="true"><span></span>Scroll to explore</div>
     </section>
 
     <section class="problem-section" id="problem" aria-labelledby="problem-title">
       <figure class="problem-image reveal" role="img" aria-label="Daylit contemporary office interior with large transparent windows; illustrative architectural context, not an AETHER installation.">
-        <figcaption>Glass brings daylight in. The surface remains passive.</figcaption>
+        <figcaption>Windows let daylight in. Today, they do not make power.</figcaption>
       </figure>
       <div class="problem-copy reveal">
-        <p class="eyebrow">The architectural problem</p>
+        <p class="eyebrow">The problem</p>
         <h2 id="problem-title">What if a window could <em>generate electricity?</em></h2>
-        <p>Buildings use glass for daylight, views and openness. Conventional photovoltaics work on opaque surfaces, leaving transparent façades with a different job.</p>
+        <p>Glass lets daylight in and gives us a view. Regular windows do not make electricity. Roof solar panels do, but they are not see-through.</p>
         <div class="problem-contrast" aria-label="Different architectural surfaces have different roles">
-          <div><b>GLASS</b><span>Daylight · view · openness</span></div>
-          <div><b>ROOFTOP PV</b><span>Electricity · opaque surface</span></div>
+          <div><b>WINDOWS</b><span>Daylight · views</span></div>
+          <div><b>ROOF SOLAR</b><span>Electricity · solid panels</span></div>
         </div>
       </div>
     </section>
@@ -604,9 +656,9 @@
       <div class="wrap opening-grid reveal">
         <h2 id="opening-title">A window designed to <em>make power.</em></h2>
         <div class="opening-copy">
-          <p>AETHER explores a transparent luminescent solar concentrator: selected sunlight is re-emitted and guided through the panel to small photovoltaic cells at its edge.</p>
-          <div class="concept-bridge" aria-label="Transparent glass, luminescent layer, and edge photovoltaic cells">
-            <span>Clear glass</span><span>Optical layer</span><span>Edge PV</span>
+          <p>AETHER is a clear-window idea. A thin layer guides some sunlight to small solar cells around the edge, where it could become electricity.</p>
+          <div class="concept-bridge" aria-label="Clear glass, a light-catching layer, and solar cells around the edge">
+            <span>Clear glass</span><span>Light-catching layer</span><span>Edge solar cells</span>
           </div>
         </div>
       </div>
@@ -615,10 +667,10 @@
     <section class="section concept" id="concept" aria-labelledby="concept-title">
       <div class="wrap">
         <div class="section-head reveal">
-          <div><p class="eyebrow">The concept</p><h2 id="concept-title">A window, with an <em>optical pathway.</em></h2></div>
-          <p>A conceptual transparent luminescent solar concentrator architecture. The centre stays substantially clear; small photovoltaic cells sit around the edge.</p>
+          <div><p class="eyebrow">The idea</p><h2 id="concept-title">A window that could <em>make power.</em></h2></div>
+          <p>Most of the glass stays clear. A thin layer guides light to small solar cells around the edge.</p>
         </div>
-        <div class="concept-visual reveal" role="img" aria-label="Concept diagram: selected sunlight interacts with a thin luminescent layer, emitted light is guided within the panel toward photovoltaic cells at the edge, and electrical output exits at the perimeter.">
+        <div class="concept-visual reveal" role="img" aria-label="Concept drawing: sunlight enters clear glass, a thin layer guides some light to small solar cells around the edge, and wires carry electricity out.">
           <svg viewBox="0 0 1100 470" fill="none" aria-hidden="true">
             <defs>
               <linearGradient id="glassFill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#BCECE1" stop-opacity=".15"/><stop offset=".48" stop-color="#D7F7F0" stop-opacity=".025"/><stop offset="1" stop-color="#83C4B5" stop-opacity=".13"/></linearGradient>
@@ -641,18 +693,18 @@
             <path d="M860 365h49v34" stroke="#8BE4D0" stroke-width="1.5"/>
             <circle cx="910" cy="403" r="3" fill="#8BE4D0" filter="url(#softGlow)"/>
             <g fill="#DCE8E0" font-family="DM Sans, sans-serif" font-size="11" letter-spacing="1.1">
-              <text x="362" y="27">INCOMING SUNLIGHT</text><text x="518" y="145">THIN FUNCTIONAL LAYER</text><text x="404" y="421">EDGE PHOTOVOLTAICS</text><text x="887" y="350">ELECTRICAL</text><text x="887" y="366">CONNECTION</text>
+              <text x="362" y="27">SUNLIGHT</text><text x="518" y="145">LIGHT-CATCHING LAYER</text><text x="404" y="421">SMALL SOLAR CELLS</text><text x="887" y="350">POWER</text><text x="887" y="366">WIRES</text>
             </g>
             <g fill="#8BE4D0"><circle cx="487" cy="287" r="3"/><circle cx="704" cy="286" r="3"/></g>
             <path d="M544 158v37" stroke="#AEB8AE" stroke-opacity=".5" stroke-dasharray="3 5"/>
             <path d="M480 382v28" stroke="#AEB8AE" stroke-opacity=".5" stroke-dasharray="3 5"/>
           </svg>
-          <span class="concept-caption">Conceptual system diagram · not to scale</span>
+          <span class="concept-caption">Simple drawing · not to scale</span>
         </div>
         <div class="flow-legend reveal">
-          <div><b>01 &nbsp; Selective interaction</b><span>Incoming sunlight meets a proposed luminescent material.</span></div>
-          <div><b>02 &nbsp; Optical guidance</b><span>Re-emitted light is intended to travel within the glazing.</span></div>
-          <div><b>03 &nbsp; Edge conversion</b><span>Perimeter photovoltaic cells convert optical energy to electricity.</span></div>
+          <div><b>01 &nbsp; Catch some light</b><span>A thin layer takes in part of the sunlight.</span></div>
+          <div><b>02 &nbsp; Guide the light</b><span>The light travels through the glass to its edges.</span></div>
+          <div><b>03 &nbsp; Make electricity</b><span>Small solar cells at the edge turn light into power.</span></div>
         </div>
       </div>
     </section>
@@ -660,15 +712,15 @@
     <section class="section" id="mechanism" aria-labelledby="mechanism-title">
       <div class="wrap">
         <div class="section-head reveal">
-          <div><p class="eyebrow">The optical sequence</p><h2 id="mechanism-title">Follow the <em>light.</em></h2></div>
-          <p>Follow the proposed optical path from sunlight to edge conversion. As each stage enters view, the glass reveals what happens next.</p>
+          <div><p class="eyebrow">How it could work</p><h2 id="mechanism-title">Sunlight in.<br><em>Power out.</em></h2></div>
+          <p>Follow sunlight through the clear glass to the solar cells at its edges.</p>
         </div>
         <div class="story-progress" aria-label="Optical pathway progress">
-          <span data-number="01" aria-current="step">Sunlight</span><span data-number="02">Select</span><span data-number="03">Interact</span><span data-number="04">Re-emit</span><span data-number="05">Guide</span><span data-number="06">Edge</span><span data-number="07">PV</span><span data-number="08">Generate</span><span data-number="09">Output</span>
+          <span data-number="01" aria-current="step">Sunlight</span><span data-number="02">Some light</span><span data-number="03">Layer</span><span data-number="04">New light</span><span data-number="05">Bounces</span><span data-number="06">Edge</span><span data-number="07">Solar cells</span><span data-number="08">Power</span><span data-number="09">Wires</span>
         </div>
         <div class="scroll-story">
           <div class="story-sticky">
-            <div class="concept-visual optical-scene" data-stage="0" role="img" aria-label="Scroll-driven conceptual cross-section of a transparent luminescent panel. Light is guided inside the glass to photovoltaic cells at its perimeter; electrical output appears only after those cells.">
+            <div class="concept-visual optical-scene" data-stage="0" role="img" aria-label="Concept drawing of sunlight entering clear glass, travelling to small solar cells around the edge, and becoming electricity there.">
               <svg viewBox="0 0 1000 550" fill="none" aria-hidden="true">
             <defs>
               <linearGradient id="mechanismGlass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#C7F2E8" stop-opacity=".13"/><stop offset=".55" stop-color="#D8F3EC" stop-opacity=".018"/><stop offset="1" stop-color="#83C4B5" stop-opacity=".1"/></linearGradient>
@@ -700,24 +752,24 @@
             <path class="scene-element grid-load" d="M875 245h41v-48h28m-28 48v48h28" stroke="#8BE4D0" stroke-opacity=".8" stroke-width="1.4"/>
             <circle class="scene-element grid-load" cx="944" cy="197" r="4" fill="#8BE4D0"/><circle class="scene-element grid-load" cx="944" cy="293" r="4" fill="#8BE4D0"/>
             <g fill="#DCE8E0" font-family="DM Sans, sans-serif" font-size="10" letter-spacing="1">
-              <text x="214" y="461">TRANSPARENT VIEWING AREA</text><text x="621" y="461">EDGE PV</text><text class="scene-element electric-output" x="859" y="226">ELECTRICAL</text><text class="scene-element electric-output" x="859" y="240">OUTPUT</text><text x="278" y="22">SUNLIGHT</text>
+              <text x="214" y="461">CLEAR WINDOW</text><text x="621" y="461">SOLAR CELLS</text><text class="scene-element electric-output" x="859" y="226">POWER</text><text class="scene-element electric-output" x="859" y="240">WIRES</text><text x="278" y="22">SUNLIGHT</text>
             </g>
             <path d="M206 181 249 155" stroke="#FFFFFF" stroke-opacity=".23"/>
             <path d="M207 191 239 171" stroke="#FFFFFF" stroke-opacity=".12"/>
               </svg>
-              <span class="concept-caption">Scroll-driven concept · optical paths simplified · not to scale</span>
+              <span class="concept-caption">Simple drawing · not to scale</span>
             </div>
           </div>
           <div class="story-copy" aria-label="How AETHER works">
-            <article class="story-beat" data-step="0" aria-current="step"><p class="beat-number">01 / Sunlight enters</p><h3>A clear surface meets the sun.</h3><p>Natural sunlight reaches the panel. The central area remains visibly transparent; photovoltaic cells are not spread across the window.</p></article>
-            <article class="story-beat" data-step="1"><p class="beat-number">02 / Selected radiation</p><h3>Only a portion is captured.</h3><p>A proposed luminescent material is intended to absorb selected incoming radiation, including a targeted ultraviolet component. Most visible light continues through the glazing.</p></article>
-            <article class="story-beat" data-step="2"><p class="beat-number">03 / Material interaction</p><h3>The functional layer responds.</h3><p>Incoming radiation interacts within a thin luminescent layer. The material response and its stability remain to be experimentally established.</p></article>
-            <article class="story-beat" data-step="3"><p class="beat-number">04 / Re-emission</p><h3>Light leaves the layer again.</h3><p>The material is intended to re-emit light at wavelengths that can propagate within the optical panel. This is still light, not electricity.</p></article>
-            <article class="story-beat" data-step="4"><p class="beat-number">05 / Optical guidance</p><h3>Reflections carry it onward.</h3><p>Some re-emitted light may travel through the panel by repeated internal reflection. Optical losses determine how much can reach an edge.</p></article>
-            <article class="story-beat" data-step="5"><p class="beat-number">06 / Toward the perimeter</p><h3>The path narrows to the edge.</h3><p>Guided optical energy approaches the panel boundary, where small photovoltaic cells are positioned around the perimeter.</p></article>
-            <article class="story-beat" data-step="6"><p class="beat-number">07 / Edge photovoltaic cells</p><h3>The cells receive the light.</h3><p>Optical energy reaches the edge-mounted photovoltaic devices. The central viewing surface remains largely free of conventional cells.</p></article>
-            <article class="story-beat" data-step="7"><p class="beat-number">08 / Conversion</p><h3>Now, electricity can appear.</h3><p>Only at the photovoltaic cells is optical energy converted into electrical output. The conversion happens at the perimeter, not throughout the glass.</p></article>
-            <article class="story-beat" data-step="8"><p class="beat-number">09 / Useful output</p><h3>Power leaves at the edge.</h3><p>An electrical connection carries output toward a planned measurement circuit and, eventually, a building, grid or optional storage.</p><p class="story-footnote">Proposed architecture · experimental performance not yet validated.</p></article>
+            <article class="story-beat" data-step="0" aria-current="step"><p class="beat-number">01 / Sunlight enters</p><h3>The window stays clear.</h3><p>Sunlight reaches the glass. Most of the window stays clear, with no solar cells across the middle.</p></article>
+            <article class="story-beat" data-step="1"><p class="beat-number">02 / Catch some light</p><h3>A little invisible light is caught.</h3><p>A thin layer may take in some ultraviolet (UV) light, which our eyes cannot see. Most visible sunlight can still pass through.</p></article>
+            <article class="story-beat" data-step="2"><p class="beat-number">03 / The layer responds</p><h3>The thin layer takes in light.</h3><p>The material is meant to respond to the light it catches. It still needs to be made and tested.</p></article>
+            <article class="story-beat" data-step="3"><p class="beat-number">04 / Give off light</p><h3>The layer gives off new light.</h3><p>The material may give off light inside the glass. It is still light here, not electricity.</p></article>
+            <article class="story-beat" data-step="4"><p class="beat-number">05 / Move through the glass</p><h3>Light bounces toward the edges.</h3><p>Some of the light may bounce inside the glass and travel to an edge. Some light will be lost along the way.</p></article>
+            <article class="story-beat" data-step="5"><p class="beat-number">06 / Reach the edge</p><h3>The light moves to the frame.</h3><p>Small solar cells sit around the window’s edge, ready to receive light that reaches them.</p></article>
+            <article class="story-beat" data-step="6"><p class="beat-number">07 / Solar cells receive light</p><h3>The edge cells take in the light.</h3><p>The clear middle remains free of solar cells. The cells are only around the edge.</p></article>
+            <article class="story-beat" data-step="7"><p class="beat-number">08 / Make electricity</p><h3>Now the light becomes power.</h3><p>The solar cells turn the light into electricity. This is the first point where electricity appears.</p></article>
+            <article class="story-beat" data-step="8"><p class="beat-number">09 / Send power out</p><h3>Wires carry power away.</h3><p>Wires could carry the power to a meter, a small device, a building or a battery.</p><p class="story-footnote">This is a design idea. It has not been tested yet.</p></article>
           </div>
         </div>
       </div>
@@ -726,12 +778,12 @@
     <section class="section panel-section" id="engineering" aria-labelledby="panel-title">
       <div class="wrap">
         <div class="section-head reveal">
-          <div><p class="eyebrow">Engineering architecture</p><h2 id="panel-title">One panel. <em>Four components.</em></h2></div>
-          <p>As you scroll, the proposed layers lift and turn to reveal how the glass, functional layer, edge cells and frame relate. Component markers add optional detail.</p>
+          <div><p class="eyebrow">Inside the window</p><h2 id="panel-title">Four parts.<br><em>One clear window.</em></h2></div>
+          <p>As you scroll, the parts move apart so you can see how they fit together. Select a number for more detail.</p>
         </div>
         <div class="panel-layout reveal">
           <div class="panel-stage" aria-label="Interactive conceptual panel assembly">
-            <span class="panel-label">Concept model · not to scale</span>
+            <span class="panel-label">Concept model · sizes are not exact</span>
             <div class="panel-object" id="panel-object">
               <div class="panel-layer glass-front" data-layer="glass"></div>
               <div class="panel-layer functional-layer" data-layer="layer"></div>
@@ -742,23 +794,23 @@
               <div class="pv-edge bottom" data-layer="pv"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
               <div class="pv-edge left" data-layer="pv"><i></i><i></i><i></i><i></i></div>
               <div class="pv-edge right" data-layer="pv"><i></i><i></i><i></i><i></i></div>
-              <button class="panel-hotspot" type="button" data-component="glass" aria-label="Inspect transparent glass" aria-pressed="true">1</button>
-              <button class="panel-hotspot" type="button" data-component="layer" aria-label="Inspect luminescent layer" aria-pressed="false">2</button>
-              <button class="panel-hotspot" type="button" data-component="pv" aria-label="Inspect edge photovoltaics" aria-pressed="false">3</button>
+              <button class="panel-hotspot" type="button" data-component="glass" aria-label="Inspect clear glass" aria-pressed="true">1</button>
+              <button class="panel-hotspot" type="button" data-component="layer" aria-label="Inspect light-catching layer" aria-pressed="false">2</button>
+              <button class="panel-hotspot" type="button" data-component="pv" aria-label="Inspect edge solar cells" aria-pressed="false">3</button>
               <button class="panel-hotspot" type="button" data-component="frame" aria-label="Inspect frame" aria-pressed="false">4</button>
             </div>
           </div>
           <div class="panel-info">
-            <p class="eyebrow">Selected component</p>
-            <h3 id="component-title">Transparent glass</h3>
-            <p id="component-copy">The architectural optical substrate and transparent surface of the window.</p>
+            <p class="eyebrow">Part of the window</p>
+            <h3 id="component-title">Clear glass</h3>
+            <p id="component-copy">The clear part of the window that lets you see through.</p>
             <div class="component-list" role="group" aria-label="Select panel component">
-              <button class="component-select" type="button" data-component="glass" aria-pressed="true"><span>01</span>Transparent glass</button>
-              <button class="component-select" type="button" data-component="layer" aria-pressed="false"><span>02</span>Luminescent layer</button>
-              <button class="component-select" type="button" data-component="pv" aria-pressed="false"><span>03</span>Edge photovoltaics</button>
-              <button class="component-select" type="button" data-component="frame" aria-pressed="false"><span>04</span>Perimeter frame</button>
+              <button class="component-select" type="button" data-component="glass" aria-pressed="true"><span>01</span>Clear glass</button>
+              <button class="component-select" type="button" data-component="layer" aria-pressed="false"><span>02</span>Light-catching layer</button>
+              <button class="component-select" type="button" data-component="pv" aria-pressed="false"><span>03</span>Edge solar cells</button>
+              <button class="component-select" type="button" data-component="frame" aria-pressed="false"><span>04</span>Window frame</button>
             </div>
-            <div class="panel-actions"><button class="quiet-button" id="explode-toggle" type="button" aria-pressed="false">Explode assembly</button><span class="small-note">Select a component to inspect</span></div>
+            <div class="panel-actions"><button class="quiet-button" id="explode-toggle" type="button" aria-pressed="false">Separate the parts</button><span class="small-note">Choose a number for details</span></div>
           </div>
         </div>
       </div>
@@ -768,20 +820,20 @@
       <div class="wrap material-grid">
         <div class="material-intro-grid reveal">
           <div class="material-aside">
-            <p class="eyebrow dark">Material development</p>
-            <h2 id="materials-title">From biomass<br>to a <em>glass layer.</em></h2>
+            <p class="eyebrow dark">How the material might be made</p>
+            <h2 id="materials-title">From farm waste<br>to a <em>window layer.</em></h2>
           </div>
           <div class="material-context">
-            <p>Scroll through the proposed material journey. Each stage is a research direction, not a completed process or validated material. The exact feedstock, treatment, purification and formulation remain to be established.</p>
-            <p class="material-target"><strong>Long-term target:</strong> investigate an optically useful, durable luminescent layer. A 20–25 year architectural service-life objective requires validation; it is not an achieved lifetime.</p>
+            <p>We are exploring whether farm waste could help make tiny carbon-based materials called Carbon Quantum Dots (CQDs). Each step is an idea to test, not a finished process.</p>
+            <p class="material-target"><strong>Long-term goal:</strong> make a layer that could last 20–25 years in a building. This is a target, not a result.</p>
           </div>
         </div>
         <div class="material-progress" aria-label="Material development progress">
-          <span data-number="01" aria-current="step">Biomass</span><span data-number="02">Processing</span><span data-number="03">Carbon</span><span data-number="04">CQDs</span><span data-number="05">Purify</span><span data-number="06">Host</span><span data-number="07">Layer</span><span data-number="08">Glazing</span>
+          <span data-number="01" aria-current="step">Farm waste</span><span data-number="02">Prepare</span><span data-number="03">Carbon</span><span data-number="04">Tiny dots</span><span data-number="05">Clean</span><span data-number="06">Clear base</span><span data-number="07">Light layer</span><span data-number="08">Window</span>
         </div>
         <div class="material-scroll-story">
           <div class="material-art-sticky">
-            <div class="material-art" data-stage="0" role="img" aria-label="Scroll-driven conceptual scientific illustrations of an agricultural feedstock research pathway toward a transparent luminescent glazing layer.">
+            <div class="material-art" data-stage="0" role="img" aria-label="Concept drawings show how farm waste might be studied to make a light-catching layer for a clear window. The process has not been tested.">
               <svg viewBox="0 0 800 600" fill="none" aria-hidden="true">
                 <defs>
                   <linearGradient id="glassSample" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFFFFF" stop-opacity=".7"/><stop offset="1" stop-color="#BDD5CC" stop-opacity=".13"/></linearGradient>
@@ -793,8 +845,8 @@
                   <path d="M222 379q-10-82 45-112 39 43 9 105-27 19-54 7Z" fill="#D89E66" stroke="#AA7044" stroke-width="2"/>
                   <path d="M231 368q4-49 32-78m-28 56 25-1m-22-14 18-3" stroke="#F3D1A1" stroke-width="4"/>
                   <path d="M163 396q37 6 77-9l35 24q-40 23-95 9Z" fill="#849064" stroke="#596746" stroke-width="2"/>
-                  <path d="M112 421h244" stroke="#758176" stroke-opacity=".5"/><text x="118" y="456" fill="#59665D" font-size="12" letter-spacing="1.5">CARBON-RICH AGRICULTURAL FEEDSTOCK</text>
-                  <text x="118" y="480" fill="#828B81" font-size="10">Conceptual examples · feedstock to be selected</text>
+                  <path d="M112 421h244" stroke="#758176" stroke-opacity=".5"/><text x="118" y="456" fill="#59665D" font-size="12" letter-spacing="1.5">FARM LEFTOVERS</text>
+                  <text x="118" y="480" fill="#828B81" font-size="10">One possible start · not chosen yet</text>
                 </g>
                 <g class="material-illustration" data-illustration="1" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M147 231h133l-21 40v129H168V271Z" fill="url(#vessel)" stroke="#59675E" stroke-width="2"/>
@@ -805,8 +857,8 @@
                   <path d="M171 344h82" stroke="#DDA969" stroke-width="3" stroke-opacity=".75"/>
                   <path d="M408 268h92v100h-92z" fill="#A5B2A7" fill-opacity=".35" stroke="#68766B" stroke-width="2"/>
                   <path d="M398 268h112m-96 23h80m-80 22h80m-80 22h80" stroke="#7B897E" stroke-width="2"/>
-                  <text x="148" y="430" fill="#59665D" font-size="12" letter-spacing="1.5">CONTROLLED PROCESSING</text>
-                  <text x="148" y="454" fill="#828B81" font-size="10">Illustrative equipment · route not specified</text>
+                  <text x="148" y="430" fill="#59665D" font-size="12" letter-spacing="1.5">PREPARE THE MATERIAL</text>
+                  <text x="148" y="454" fill="#828B81" font-size="10">Possible equipment · method not chosen</text>
                 </g>
                 <g class="material-illustration" data-illustration="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M176 245h206l-18 178H194Z" fill="url(#vessel)" stroke="#59675E" stroke-width="2"/>
@@ -814,16 +866,16 @@
                   <path d="M195 361q43-20 86 0t83 0v31H195Z" fill="#5D6558"/>
                   <g fill="#424941"><circle cx="219" cy="350" r="6"/><circle cx="245" cy="367" r="8"/><circle cx="275" cy="346" r="5"/><circle cx="303" cy="367" r="7"/><circle cx="333" cy="349" r="6"/><circle cx="351" cy="372" r="4"/></g>
                   <path d="M226 228v-30m104 30v-30m-109 8h114" stroke="#68766B" stroke-width="5"/>
-                  <text x="168" y="461" fill="#59665D" font-size="12" letter-spacing="1.5">CARBON-RICH INTERMEDIATE</text>
-                  <text x="168" y="485" fill="#828B81" font-size="10">Hypothetical processing stage · composition unknown</text>
+                  <text x="168" y="461" fill="#59665D" font-size="12" letter-spacing="1.5">CARBON MATERIAL</text>
+                  <text x="168" y="485" fill="#828B81" font-size="10">Possible step · still needs study</text>
                 </g>
                 <g class="material-illustration" data-illustration="3" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="400" cy="292" r="151" stroke="#718278" stroke-opacity=".5"/><circle cx="400" cy="292" r="134" stroke="#718278" stroke-opacity=".28"/>
                   <path d="M191 451h418" stroke="#758176" stroke-opacity=".5"/>
                   <g fill="#557E6B" filter="url(#dotGlow)"><circle cx="318" cy="234" r="11"/><circle cx="388" cy="208" r="8"/><circle cx="449" cy="245" r="13"/><circle cx="348" cy="298" r="9"/><circle cx="422" cy="321" r="11"/><circle cx="483" cy="302" r="7"/><circle cx="297" cy="346" r="6"/><circle cx="378" cy="380" r="8"/><circle cx="477" cy="372" r="10"/></g>
                   <g fill="#A6D1B6" opacity=".75"><circle cx="318" cy="234" r="3"/><circle cx="449" cy="245" r="4"/><circle cx="422" cy="321" r="3"/><circle cx="477" cy="372" r="3"/></g>
-                  <text x="225" y="473" fill="#59665D" font-size="12" letter-spacing="1.5">CARBON QUANTUM DOTS · CQDs</text>
-                  <text x="225" y="497" fill="#828B81" font-size="10">Conceptual nanoscale visualization · not a molecular structure</text>
+                  <text x="225" y="473" fill="#59665D" font-size="12" letter-spacing="1.5">TINY CARBON DOTS</text>
+                  <text x="225" y="497" fill="#828B81" font-size="10">Concept drawing · not real particles</text>
                 </g>
                 <g class="material-illustration" data-illustration="4" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M207 193h386v219H207z" fill="#CBD5CC" fill-opacity=".44" stroke="#79887D" stroke-width="2"/>
@@ -831,8 +883,8 @@
                   <path d="M234 245h328m-328 43h328m-328 43h328m-328 43h328" stroke="#FFFFFF" stroke-opacity=".8" stroke-width="4"/>
                   <g fill="#557E6B"><circle cx="271" cy="237" r="5"/><circle cx="344" cy="284" r="5"/><circle cx="441" cy="332" r="5"/><circle cx="526" cy="373" r="5"/><circle cx="502" cy="241" r="4"/></g>
                   <path d="M400 176v-41m-10 10 10-10 10 10" stroke="#698478" stroke-width="2"/><path d="M400 413v42m-10-10 10 10 10-10" stroke="#698478" stroke-width="2"/>
-                  <text x="210" y="490" fill="#59665D" font-size="12" letter-spacing="1.5">PURIFICATION / FUNCTIONALISATION</text>
-                  <text x="210" y="514" fill="#828B81" font-size="10">Conceptual separation step · chemistry to be established</text>
+                  <text x="210" y="490" fill="#59665D" font-size="12" letter-spacing="1.5">CLEAN AND PREPARE</text>
+                  <text x="210" y="514" fill="#828B81" font-size="10">Possible step · method not chosen</text>
                 </g>
                 <g class="material-illustration" data-illustration="5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M235 187 525 187l57 36-290 0Z" fill="#FFFFFF" fill-opacity=".56" stroke="#819288" stroke-width="2"/>
@@ -840,8 +892,8 @@
                   <path d="M235 187v201l57 36V223" fill="#D8E1D9" fill-opacity=".55" stroke="#819288" stroke-width="2"/>
                   <g fill="#557E6B" opacity=".65"><circle cx="350" cy="279" r="4"/><circle cx="411" cy="327" r="4"/><circle cx="480" cy="266" r="4"/><circle cx="527" cy="365" r="4"/><circle cx="373" cy="383" r="4"/></g>
                   <path d="M300 223h282" stroke="#FFFFFF" stroke-width="3" stroke-opacity=".65"/>
-                  <text x="235" y="466" fill="#59665D" font-size="12" letter-spacing="1.5">TRANSPARENT HOST · PROPOSED</text>
-                  <text x="235" y="490" fill="#828B81" font-size="10">Dispersion and optical quality require testing</text>
+                  <text x="235" y="466" fill="#59665D" font-size="12" letter-spacing="1.5">MIX WITH CLEAR MATERIAL</text>
+                  <text x="235" y="490" fill="#828B81" font-size="10">We need to test if it stays clear</text>
                 </g>
                 <g class="material-illustration" data-illustration="6" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M220 218 478 218l74 45H294Z" fill="#FFFFFF" fill-opacity=".47" stroke="#819288" stroke-width="2"/>
@@ -850,8 +902,8 @@
                   <path d="M297 258h253" stroke="#D4A76F" stroke-width="4" stroke-opacity=".78"/>
                   <path d="M300 267h248" stroke="#FFFFFF" stroke-width="1" stroke-opacity=".8"/>
                   <g fill="#557E6B" opacity=".55"><circle cx="336" cy="258" r="2"/><circle cx="382" cy="258" r="2"/><circle cx="429" cy="258" r="2"/><circle cx="476" cy="258" r="2"/></g>
-                  <text x="220" y="480" fill="#59665D" font-size="12" letter-spacing="1.5">THIN LUMINESCENT FUNCTIONAL LAYER</text>
-                  <text x="220" y="504" fill="#828B81" font-size="10">Proposed layer · thickness and formulation unspecified</text>
+                  <text x="220" y="480" fill="#59665D" font-size="12" letter-spacing="1.5">THIN LIGHT-CATCHING LAYER</text>
+                  <text x="220" y="504" fill="#828B81" font-size="10">An idea to develop · not made yet</text>
                 </g>
                 <g class="material-illustration" data-illustration="7" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M181 155h409v308H181z" fill="#BECFC4" fill-opacity=".14" stroke="#64766B" stroke-width="2"/>
@@ -860,22 +912,22 @@
                   <path d="M205 187 317 187M330 187h124M466 187h108" stroke="#FFFFFF" stroke-width="3" stroke-opacity=".56"/>
                   <path d="M183 454h405m-396 8h387" stroke="#D4A76F" stroke-width="4" stroke-opacity=".7"/>
                   <path d="M300 455v-10m45 10v-10m45 10v-10m45 10v-10m45 10v-10m45 10v-10" stroke="#947A59" stroke-width="3"/>
-                  <text x="181" y="502" fill="#59665D" font-size="12" letter-spacing="1.5">AETHER ARCHITECTURAL GLAZING</text>
-                  <text x="181" y="526" fill="#828B81" font-size="10">Conceptual integration · not an installed product</text>
+                  <text x="181" y="502" fill="#59665D" font-size="12" letter-spacing="1.5">AETHER WINDOW IDEA</text>
+                  <text x="181" y="526" fill="#828B81" font-size="10">A drawing · not a real window yet</text>
                 </g>
               </svg>
               <div class="material-art-caption"><span id="material-scene-title">Agricultural feedstock</span><span>Concept visualization · not a validated process</span></div>
             </div>
           </div>
           <div class="material-story-copy" aria-label="Proposed material development journey">
-            <article class="material-beat" data-step="0" aria-current="step"><p class="beat-number">01 / Starting point</p><h3>Carbon-rich agricultural material.</h3><p>Waste biomass is an investigated feedstock direction. Citrus peel and other agricultural residues are examples only; no specific feedstock is confirmed.</p></article>
-            <article class="material-beat" data-step="1"><p class="beat-number">02 / Processing concept</p><h3>Preparation before material research.</h3><p>Feedstock preparation and controlled processing may be needed. The exact method, equipment conditions and chemistry are not specified or claimed here.</p></article>
-            <article class="material-beat" data-step="2"><p class="beat-number">03 / Carbon-rich intermediate</p><h3>A precursor, not a finished emitter.</h3><p>A carbon-rich material may be a stage in a research route toward carbon-based luminescent materials. Its composition and properties would need analysis.</p></article>
-            <article class="material-beat" data-step="3"><p class="beat-number">04 / CQDs</p><h3>Investigate carbon quantum dots.</h3><p>CQDs are the current material direction under investigation. The visualization is conceptual; it does not represent a measured particle structure, size or synthesis result.</p></article>
-            <article class="material-beat" data-step="4"><p class="beat-number">05 / Purification and functionalisation</p><h3>Separate, characterize, refine.</h3><p>Purification and functionalisation are research considerations. No particular chemistry, yield or processing recipe is asserted.</p><span class="phase-warning">A previous agricultural-waste luminescent concept raised a major concern: durability under prolonged UV exposure.</span></article>
-            <article class="material-beat" data-step="5"><p class="beat-number">06 / Transparent host</p><h3>Test whether the material can be integrated.</h3><p>A transparent host is a proposed route to make an optical layer. Dispersion, haze, scattering, re-absorption and moisture protection would all need investigation.</p></article>
-            <article class="material-beat" data-step="6"><p class="beat-number">07 / Luminescent layer</p><h3>A thin functional layer inside the glazing.</h3><p>The target is a layer that interacts with selected radiation and re-emits light within the optical material. This is a development objective, not an achieved result.</p></article>
-            <article class="material-beat" data-step="7"><p class="beat-number">08 / AETHER glass</p><h3>Material becomes one part of the window.</h3><p>The proposed layer belongs inside an engineered glazing assembly. Electricity generation would still require the separate optical-guidance and edge-PV steps shown above.</p></article>
+            <article class="material-beat" data-step="0" aria-current="step"><p class="beat-number">01 / Start with farm waste</p><h3>Some farm leftovers contain carbon.</h3><p>Things like citrus peel could be explored. We have not chosen or tested a source yet.</p></article>
+            <article class="material-beat" data-step="1"><p class="beat-number">02 / Prepare it</p><h3>Clean and prepare the material.</h3><p>The waste may need to be cleaned and prepared first. The exact method has not been chosen.</p></article>
+            <article class="material-beat" data-step="2"><p class="beat-number">03 / Make carbon material</p><h3>A step toward tiny carbon particles.</h3><p>Preparation may make a carbon-rich material. What it contains would need to be tested.</p></article>
+            <article class="material-beat" data-step="3"><p class="beat-number">04 / Make tiny dots</p><h3>Study Carbon Quantum Dots.</h3><p>These tiny carbon-based materials are called Carbon Quantum Dots, or CQDs. We still need to find out how to make them and how they handle light.</p></article>
+            <article class="material-beat" data-step="4"><p class="beat-number">05 / Clean and test</p><h3>Separate the material and study it.</h3><p>The particles would need to be cleaned and tested. No method or result is claimed.</p><span class="phase-warning">An earlier idea raised a key question: can the material last in strong sunlight?</span></article>
+            <article class="material-beat" data-step="5"><p class="beat-number">06 / Mix with clear material</p><h3>Can it stay clear?</h3><p>The tiny particles might be mixed into a clear material. We would need to test whether it stays see-through and does not scatter too much light.</p></article>
+            <article class="material-beat" data-step="6"><p class="beat-number">07 / Make a thin layer</p><h3>A layer that catches and gives off light.</h3><p>The goal is a thin layer that catches some sunlight and gives off light inside the glass. It has not been made yet.</p></article>
+            <article class="material-beat" data-step="7"><p class="beat-number">08 / Fit it into the window</p><h3>Place the layer inside clear glass.</h3><p>The layer would be one part of the window. Small solar cells at the edge could turn its guided light into electricity.</p></article>
           </div>
         </div>
       </div>
@@ -884,82 +936,83 @@
     <section class="section pv-section" aria-labelledby="pv-title">
       <div class="wrap pv-layout">
         <div class="pv-copy reveal">
-          <p class="eyebrow">Edge photovoltaic direction</p>
-          <h2 id="pv-title">Match the emitter.<br>Then measure.</h2>
-          <p>The proposed PV research explores matching a cell’s spectral response to the luminescent material’s emission. The values shown are design directions only, not measured spectra or device performance.</p>
+          <p class="eyebrow">Choosing the edge solar cells</p>
+          <h2 id="pv-title">Find a good match<br>for the <em>light.</em></h2>
+          <p>Different solar cells work best with different colours of light. We are exploring which kind might work with the light from the proposed window layer. Nothing has been measured yet.</p>
           <div class="pv-stat">
-            <div><b>~690 nm</b><span>Emission wavelength identified for investigation</span></div>
-            <div><b>~1.80 eV</b><span>Candidate bandgap direction</span></div>
+            <div><b>Deep red</b><span>A colour to study</span></div>
+            <div><b>Possible match</b><span>A cell that may use this light</span></div>
           </div>
-          <p class="small-note" style="margin-top:20px">Candidate directions include AlGaAs or tunable halide perovskites. Suitability remains to be experimentally validated.</p>
+          <p class="small-note" style="margin-top:20px">We are still exploring which kind of solar cell might work. None have been chosen or tested.</p>
         </div>
         <div class="spectrum reveal">
-          <div class="spectrum-title"><span>Wavelength concept</span><span>Illustrative, not measured</span></div>
-          <div class="spectrum-bar" role="img" aria-label="Conceptual visible wavelength band with an indicative emission marker near 690 nanometres"></div>
-          <div class="spectrum-labels"><span>Shorter wavelength</span><span>Visible band</span><span>Longer wavelength</span></div>
+          <div class="spectrum-title"><span>Colours of light to compare</span><span>Illustration, not test data</span></div>
+          <div class="spectrum-bar" role="img" aria-label="Simple colour illustration comparing sunlight, possible deep red light from the window layer, and a solar cell that may use it"></div>
+          <div class="spectrum-labels"><span>Blue light</span><span>Colours we can see</span><span>Red light</span></div>
           <div class="spectrum-markers">
-            <div class="spectrum-marker"><b>Selected input</b><span>Incoming radiation to investigate</span></div>
-            <div class="spectrum-marker"><b>~690 nm emission</b><span>Proposed CQD emission direction</span></div>
-            <div class="spectrum-marker"><b>PV response</b><span>Candidate cell matching to test</span></div>
+            <div class="spectrum-marker"><b>Sunlight</b><span>Light entering the window</span></div>
+            <div class="spectrum-marker"><b>Deep red light</b><span>The layer might give off this colour</span></div>
+            <div class="spectrum-marker"><b>Solar cell</b><span>A cell that may use that light</span></div>
           </div>
-          <p class="concept-disclaimer">Conceptual wavelength visualization only. No measured emission curve, PV response curve or efficiency is represented.</p>
+          <p class="concept-disclaimer">This is a colour guide, not test data.</p>
         </div>
+        <details class="pv-detail"><summary><b>Want the research numbers?</b><span>+</span></summary><p>The project is exploring light near 690 nanometres (deep red) and possible solar cells around 1.8 electron volts (a way to describe how a cell uses light). AlGaAs and adjustable perovskites are possible materials to study. None are chosen or tested yet.</p></details>
       </div>
     </section>
 
     <section class="section system-section" aria-labelledby="system-title">
       <div class="wrap">
         <div class="section-head reveal">
-          <div><p class="eyebrow">Planned prototype architecture</p><h2 id="system-title">From optical input<br>to a <em>measurable circuit.</em></h2></div>
-          <p>An engineering pathway for a future proof-of-principle demonstrator. Select a block to see its proposed role.</p>
+          <div><p class="eyebrow">How the parts connect</p><h2 id="system-title">From window<br>to <em>useful power.</em></h2></div>
+          <p>This is the plan for a future small test model. Each part will help us learn if the window can make usable power.</p>
         </div>
         <div class="system-shell reveal">
           <div class="system-flow" role="list" aria-label="Planned electrical architecture sequence">
-            <article class="system-node" role="listitem"><small>01 · INPUT</small><b>AETHER optical layer</b><p>The proposed panel receives sunlight and guides a portion of re-emitted optical energy toward its perimeter.</p></article>
-            <article class="system-node" role="listitem"><small>02 · CONVERSION</small><b>Edge PV cells</b><p>Photovoltaic devices at the panel edge are intended to convert guided optical energy into electrical output.</p></article>
-            <article class="system-node" role="listitem"><small>03 · CONNECTION</small><b>Electrical bus</b><p>A planned interconnect routes photovoltaic output to measurement and conditioning stages.</p></article>
-            <article class="system-node" role="listitem"><small>04 · CHARACTERIZE</small><b>Current / voltage measurement</b><p>Instrumentation would characterize output under controlled conditions; results do not yet exist.</p></article>
-            <article class="system-node" role="listitem"><small>05 · CONDITION</small><b>Charging stage</b><p>A suitable stage could condition measured output before storage, subject to prototype design.</p></article>
-            <article class="system-node" role="listitem"><small>06 · STORE</small><b>Rechargeable storage</b><p>Optional storage is planned for the demonstrator architecture, not an existing AETHER feature.</p></article>
-            <article class="system-node" role="listitem"><small>07 · REGULATE</small><b>Voltage regulation</b><p>A regulator could provide a defined low-voltage output for a controlled test load.</p></article>
-            <article class="system-node" role="listitem"><small>08 · OUTPUT</small><b>Low-voltage load</b><p>A small load would provide a practical endpoint for investigating the proposed energy chain.</p></article>
+            <article class="system-node" role="listitem"><small>01 · SUNLIGHT</small><b>AETHER window</b><p>The clear panel guides some light toward its edges.</p></article>
+            <article class="system-node" role="listitem"><small>02 · MAKE POWER</small><b>Small solar cells</b><p>Cells at the edge turn the light into electricity.</p></article>
+            <article class="system-node" role="listitem"><small>03 · CARRY IT</small><b>Wires</b><p>Wires take electricity away from the window.</p></article>
+            <article class="system-node" role="listitem"><small>04 · CHECK IT</small><b>Power meter</b><p>A meter checks how much power the test window makes.</p></article>
+            <article class="system-node" role="listitem"><small>05 · CONTROL IT</small><b>Charging circuit</b><p>A circuit prepares the power before it goes to a battery.</p></article>
+            <article class="system-node" role="listitem"><small>06 · SAVE IT</small><b>Battery</b><p>A battery could store power for later use.</p></article>
+            <article class="system-node" role="listitem"><small>07 · SET THE LEVEL</small><b>Voltage control</b><p>This part sets the power level for a small device.</p></article>
+            <article class="system-node" role="listitem"><small>08 · USE IT</small><b>Small device</b><p>A small device could show that the system is working.</p></article>
           </div>
-          <aside class="system-detail"><div><span>Planned prototype</span><h3>A measurable chain.</h3><p>Each stage is intended to help investigate whether guided optical energy can become useful electrical output.</p></div><div class="system-status">Not yet experimentally validated</div></aside>
+          <aside class="system-detail"><div><span>Planned small-scale test</span><h3>Follow the power.</h3><p>We plan to check each step, from sunlight reaching the glass to power leaving the solar cells.</p></div><div class="system-status">Not built or tested yet</div></aside>
         </div>
-        <div class="future-strip reveal"><div><b>Beyond the prototype: future architectural integration</b><p>Local generation could one day support storage, sensors, wireless communication or smart-building controls. This is a long-term possibility, not a current capability.</p></div><span>Future concept</span></div>
+        <div class="future-strip reveal"><div><b>One day: smart windows</b><p>In the future, stored power might run small sensors or help control a building. This is only a future idea.</p></div><span>Future idea</span></div>
       </div>
     </section>
 
     <section class="section applications" id="applications" aria-labelledby="applications-title">
       <div class="wrap">
         <div class="section-head reveal">
-          <div><p class="eyebrow">Architectural context</p><h2 id="applications-title">Where glass already <em>belongs.</em></h2></div>
-          <p>Potential settings where transparent surfaces are part of the building brief. These are application contexts, not deployments.</p>
+          <div><p class="eyebrow">Where might it be used?</p><h2 id="applications-title">Windows are <em>everywhere.</em></h2></div>
+          <p>Homes, offices and shared spaces all use clear glass. These are ideas to explore, not places with AETHER windows today.</p>
         </div>
         <div class="application-grid reveal">
           <article class="application reveal"><div class="application-content"><span>01 / Residential</span><h3>Home & villa</h3><p>Explore glazing where daylight and views matter.</p></div></article>
           <article class="application reveal"><div class="application-content"><span>02 / Workplace</span><h3>Offices</h3><p>Consider façades alongside conventional rooftop PV.</p></div></article>
           <article class="application reveal"><div class="application-content"><span>03 / Public space</span><h3>Atriums & skylights</h3><p>Study overhead and shared transparent surfaces.</p></div></article>
         </div>
-        <p class="image-note">Architectural photographs are illustrative context imagery, not AETHER installations.</p>
+        <p class="image-note">These photos show buildings, not AETHER windows.</p>
       </div>
     </section>
 
     <section class="section" id="sustainability" aria-labelledby="difference-title">
       <div class="wrap">
         <div class="section-head reveal">
-          <div><p class="eyebrow">A different surface</p><h2 id="difference-title">Solar has more than <em>one place.</em></h2></div>
-          <p>AETHER is not designed to replace conventional photovoltaic systems. It asks whether a surface that needs to remain transparent could also contribute.</p>
+          <div><p class="eyebrow">Where could solar go?</p><h2 id="difference-title">There is more than <em>one place.</em></h2></div>
+          <p>AETHER is not a replacement for roof solar. It explores whether a clear window could also make electricity.</p>
         </div>
         <div class="contrast reveal">
-          <article><small>Established approach</small><h3>Rooftop photovoltaics</h3><p>Optimized for electricity generation on appropriately oriented, opaque surfaces.</p></article>
-          <article><small>Research concept</small><h3>AETHER glazing</h3><p>Explores optical energy collection on architectural surfaces intended to remain substantially transparent.</p></article>
+          <article><small>Roof solar</small><h3>Solid panels</h3><p>Make electricity from sunlight on rooftops and other suitable surfaces.</p></article>
+          <article><small>AETHER idea</small><h3>Clear windows</h3><p>Explore whether glass that lets in daylight could also make electricity.</p></article>
         </div>
-        <p class="contrast-note reveal">An additional energy-generating surface, if the engineering can be validated.</p>
+        <p class="contrast-note reveal">Another surface to explore, if the idea works.</p>
         <div class="sustainability-grid reveal">
-          <article class="sustainability-item"><span>01</span><h3>Renewable energy</h3><p>Investigating transparent surfaces as potential distributed energy infrastructure.</p></article>
-          <article class="sustainability-item"><span>02</span><h3>Waste utilization</h3><p>Exploring agricultural biomass as a possible feedstock for carbon-based materials.</p></article>
-          <article class="sustainability-item"><span>03</span><h3>Smarter buildings</h3><p>Considering future support for low-power building systems, subject to development.</p></article>
+          <article class="sustainability-item"><span>01</span><h3>Clean energy</h3><p>Windows might become another place to collect sunlight.</p></article>
+          <article class="sustainability-item"><span>02</span><h3>Reuse farm waste</h3><p>Farm leftovers could be studied as a starting material.</p></article>
+          <article class="sustainability-item"><span>03</span><h3>Helpful buildings</h3><p>In the future, window power might run small devices.</p></article>
         </div>
         <div class="sdg-row reveal" aria-label="Sustainable Development Goals to which AETHER may contribute">
           <span class="sdg"><b>SDG 7</b> Clean energy</span><span class="sdg"><b>SDG 9</b> Innovation</span><span class="sdg"><b>SDG 11</b> Sustainable cities</span><span class="sdg"><b>SDG 12</b> Responsible production</span><span class="sdg"><b>SDG 13</b> Climate action</span>
@@ -971,34 +1024,34 @@
     <section class="section" id="development" aria-labelledby="development-title">
       <div class="wrap">
         <div class="section-head reveal">
-          <div><p class="eyebrow">Development pathway</p><h2 id="development-title">Ambition, with the <em>work in between.</em></h2></div>
-          <p>The project is developing toward physical experimentation. Each later stage depends on what the evidence shows.</p>
+          <div><p class="eyebrow">What happens next</p><h2 id="development-title">Big idea.<br><em>One step at a time.</em></h2></div>
+          <p>AETHER is still being developed. The next step is to build a small test window and see what happens.</p>
         </div>
         <div class="roadmap reveal">
-          <article class="roadmap-step current reveal"><small>Current focus</small><h3>Research & engineering</h3><p>Architecture, material direction and demonstrator planning.</p></article>
-          <article class="roadmap-step reveal"><small>Planned</small><h3>Material development</h3><p>Investigate candidate material and transparent host.</p></article>
-          <article class="roadmap-step reveal"><small>Planned</small><h3>Physical prototype</h3><p>Build a proof-of-principle panel and edge assembly.</p></article>
-          <article class="roadmap-step reveal"><small>To validate</small><h3>Optical & electrical testing</h3><p>Measure the chain under controlled conditions.</p></article>
-          <article class="roadmap-step reveal"><small>Future work</small><h3>Material optimisation</h3><p>Study emission, transparency and optical losses.</p></article>
-          <article class="roadmap-step reveal"><small>Future work</small><h3>Durability validation</h3><p>Assess stability before any service-life claim.</p></article>
-          <article class="roadmap-step reveal"><small>Long term</small><h3>Architectural scale</h3><p>Investigate manufacturing and integration constraints.</p></article>
-          <article class="roadmap-step reveal"><small>Future</small><h3>Real-world application</h3><p>Deployment is not established or claimed.</p></article>
+          <article class="roadmap-step current reveal"><small>Now</small><h3>Plan the test</h3><p>Work out how the window might fit together.</p></article>
+          <article class="roadmap-step reveal"><small>Next</small><h3>Explore the material</h3><p>Try ways to make a clear, light-catching layer.</p></article>
+          <article class="roadmap-step reveal"><small>Planned</small><h3>Build a small window</h3><p>Make a first physical model.</p></article>
+          <article class="roadmap-step reveal"><small>Then</small><h3>Test the power</h3><p>Check whether light reaches the solar cells.</p></article>
+          <article class="roadmap-step reveal"><small>Improve</small><h3>Make it work better</h3><p>Learn from tests and improve the design.</p></article>
+          <article class="roadmap-step reveal"><small>Later</small><h3>Test how long it lasts</h3><p>Study how the material holds up over time.</p></article>
+          <article class="roadmap-step reveal"><small>Long term</small><h3>Make a larger version</h3><p>Explore how it might fit into a building.</p></article>
+          <article class="roadmap-step reveal"><small>Future</small><h3>Explore real uses</h3><p>Real-world use is a future goal, not a current result.</p></article>
         </div>
         <div class="status-band reveal">
-          <div><span class="status-label">Where AETHER stands today</span><h3>A concept moving<br>toward a test.</h3></div>
-          <div><p>The project has developed its technical architecture, research and sustainability directions, presentations and visualizations. It is moving toward a physical proof-of-principle engineering demonstrator.</p><p>The next goal is to investigate the optical-to-electrical chain and learn what works, what fails and what needs further engineering. Physical experimental results are not yet being presented.</p></div>
+          <div><span class="status-label">Where we are now</span><h3>Ready to start<br>building a test.</h3></div>
+          <div><p>We have a design idea and a plan for testing it. We are working toward a small physical window model.</p><p>We have not tested it yet. Our goal is to find out what works, what does not, and what needs to change.</p></div>
         </div>
-        <div class="oman-band reveal"><h3>Designed in Muscat.<br>Relevant to Oman’s future.</h3><p>AETHER connects conceptually with renewable energy, sustainable construction, advanced materials, optics, photovoltaics, smart buildings and circular-economy research. These are areas of relevance to Oman Vision 2040, not claims of endorsement or partnership.</p></div>
+        <div class="oman-band reveal"><h3>Made as a student project<br>in Muscat.</h3><p>AETHER brings together ideas about clean energy, building materials and future cities. These ideas connect to Oman Vision 2040, but AETHER is not endorsed by or partnered with the government.</p></div>
       </div>
     </section>
 
     <section class="section city-section" aria-labelledby="city-title">
       <div class="wrap">
         <div class="section-head reveal">
-          <div><p class="eyebrow">Future architectural integration</p><h2 id="city-title">A city built around <em>daylight.</em></h2></div>
-          <p>A long-term vision in which transparent surfaces could contribute locally to building energy systems. This is an architectural possibility, not a deployment claim.</p>
+          <div><p class="eyebrow">A future idea</p><h2 id="city-title">A city where windows<br>could <em>make power.</em></h2></div>
+          <p>This is a future idea, not something built today: clear windows might one day help make power for the buildings around them.</p>
         </div>
-        <figure class="city-visual reveal" role="img" aria-label="Conceptual city skyline with transparent facades, subtle edge photovoltaic detailing and no implied installed AETHER systems.">
+        <figure class="city-visual reveal" role="img" aria-label="Drawing of a future city with buildings that might use AETHER windows. These windows are not built or installed.">
           <svg viewBox="0 0 1200 400" fill="none" aria-hidden="true">
             <defs><linearGradient id="towerGlass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#B9D2C3" stop-opacity=".13"/><stop offset=".5" stop-color="#6E8A7B" stop-opacity=".045"/><stop offset="1" stop-color="#D5E3D8" stop-opacity=".11"/></linearGradient><linearGradient id="cityHaze" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#A5C7B3" stop-opacity=".02"/><stop offset="1" stop-color="#A5C7B3" stop-opacity=".13"/></linearGradient></defs>
             <path d="M0 328h1200v72H0z" fill="url(#cityHaze)"/>
@@ -1009,46 +1062,46 @@
             <g fill="#D9B987" fill-opacity=".62"><circle cx="115" cy="315" r="2"/><circle cx="247" cy="315" r="2"/><circle cx="457" cy="313" r="2"/><circle cx="591" cy="314" r="2"/><circle cx="782" cy="313" r="2"/><circle cx="930" cy="315" r="2"/><circle cx="1117" cy="315" r="2"/></g>
             <path d="M40 345h1120" stroke="#D8E4DA" stroke-opacity=".26"/>
           </svg>
-          <figcaption><span>Concept cityscape · future integration</span><span>No installed systems represented</span></figcaption>
+          <figcaption><span>Future city idea</span><span>No AETHER windows shown as installed</span></figcaption>
         </figure>
-        <div class="city-statement reveal"><h3>Buildings should not only consume energy.</h3><p>The idea is modest but meaningful: if materials research and engineering validation succeed, some surfaces designed to remain transparent could become another place to explore energy generation.</p></div>
+        <div class="city-statement reveal"><h3>Could a building make some of its own power?</h3><p>If the idea works, windows could add another place to collect sunlight. There is still a lot to test.</p></div>
       </div>
     </section>
 
     <section class="section cost-section" aria-labelledby="cost-title">
       <div class="wrap">
         <div class="section-head reveal">
-          <div><p class="eyebrow">Prototype cost framework</p><h2 id="cost-title">Estimate only when<br>the inputs <em>are real.</em></h2></div>
-          <p>No supplier quotations or validated bill of materials were provided for this project brief, so there is no defensible OMR estimate to publish yet.</p>
+          <div><p class="eyebrow">What might it cost?</p><h2 id="cost-title">First, find the<br><em>real prices.</em></h2></div>
+          <p>We do not have real prices for the parts yet, so we will not guess at a total.</p>
         </div>
-        <div class="cost-intro reveal"><span class="pill">Preliminary conceptual estimate · pending</span><p>These are the planned cost categories for an engineering prototype. They are not a commercial price, market estimate or return-on-investment calculation.</p></div>
+        <div class="cost-intro reveal"><span class="pill">Cost list · prices needed</span><p>These are the parts and work we need to price for a small test model. This is not a shop price.</p></div>
         <div class="cost-grid reveal">
-          <div class="cost-item"><b>Glass substrate</b><span>Quote required</span></div><div class="cost-item"><b>Luminescent material</b><span>Material route under research</span></div>
-          <div class="cost-item"><b>Edge photovoltaics</b><span>Candidate selection required</span></div><div class="cost-item"><b>Lamination / integration</b><span>Process to be specified</span></div>
-          <div class="cost-item"><b>Frame and connections</b><span>Design to be specified</span></div><div class="cost-item"><b>Assembly</b><span>Prototype plan required</span></div>
-          <div class="cost-item"><b>Testing and instrumentation</b><span>Scope to be defined</span></div><div class="cost-item"><b>Contingency</b><span>Set after initial quotations</span></div>
+          <div class="cost-item"><b>Window glass</b><span>Price needed</span></div><div class="cost-item"><b>Light-catching layer</b><span>Still being explored</span></div>
+          <div class="cost-item"><b>Small solar cells</b><span>Need to choose a type</span></div><div class="cost-item"><b>Sealing the layers</b><span>Plan needed</span></div>
+          <div class="cost-item"><b>Frame and wires</b><span>Design needed</span></div><div class="cost-item"><b>Putting it together</b><span>Plan needed</span></div>
+          <div class="cost-item"><b>Test equipment</b><span>Need to choose tools</span></div><div class="cost-item"><b>Extra costs</b><span>Estimate later</span></div>
         </div>
-        <p class="cost-footnote reveal">Any future estimate should be itemized in OMR and identified as a prototype estimate, with its date, scope and quotation assumptions stated.</p>
+        <p class="cost-footnote reveal">When real prices are available, we will list them in Omani rials (OMR) and explain what the estimate includes.</p>
       </div>
     </section>
 
     <section class="section model-section" aria-labelledby="model-title">
       <div class="wrap">
         <div class="section-head reveal">
-          <div><p class="eyebrow">Explore the assumptions</p><h2 id="model-title">A small <em>illustrative model.</em></h2></div>
-          <p>See how angle, irradiance and an assumed conversion fraction affect a simplified estimate. This is not a measurement or a prediction of AETHER performance.</p>
+          <div><p class="eyebrow">Try a simple example</p><h2 id="model-title">What changes<br>the <em>power?</em></h2></div>
+          <p>Move the sliders to see how sunlight, window size, angle and a guessed share of power change an example. This is not a test result.</p>
         </div>
         <div class="model-shell reveal">
           <div class="model-controls">
-            <h3>Adjust the inputs</h3><p>All controls are assumptions for demonstration.</p>
-            <label class="range-control"><span class="range-top"><span>Incident irradiance</span><output id="irradiance-out" for="irradiance">700 W/m²</output></span><input id="irradiance" type="range" min="200" max="1000" step="10" value="700"></label>
-            <label class="range-control"><span class="range-top"><span>Angle from surface normal</span><output id="angle-out" for="angle">20°</output></span><input id="angle" type="range" min="0" max="80" step="1" value="20"></label>
-            <label class="range-control"><span class="range-top"><span>Assumed system efficiency</span><output id="efficiency-out" for="efficiency">5%</output></span><input id="efficiency" type="range" min="1" max="15" step="0.5" value="5"></label>
+            <h3>Change the example</h3><p>These are guesses for learning, not measurements.</p>
+            <label class="range-control"><span class="range-top"><span>Strength of sunlight</span><output id="irradiance-out" for="irradiance">700 W/m²</output></span><input id="irradiance" type="range" min="200" max="1000" step="10" value="700"></label>
+            <label class="range-control"><span class="range-top"><span>Sun angle</span><output id="angle-out" for="angle">20°</output></span><input id="angle" type="range" min="0" max="80" step="1" value="20"></label>
+            <label class="range-control"><span class="range-top"><span>Guessed share turned into power</span><output id="efficiency-out" for="efficiency">5%</output></span><input id="efficiency" type="range" min="1" max="15" step="0.5" value="5"></label>
           </div>
           <div class="model-output" aria-live="polite">
-            <div><span class="eyebrow">Illustrative model</span><h3>Estimated output</h3><p>For a notional 0.72 m² aperture area.</p></div>
-            <div><div class="model-result" id="model-result">23.7 W</div><span class="model-result-label">Idealized instantaneous power · not measured</span></div>
-            <div><div class="model-formula"><code>P = G × A × cos(θ) × η</code><br>irradiance × area × angle factor × assumed efficiency</div><p class="model-disclaimer">The equation is intentionally simplified. Real optical, spectral, electrical and thermal losses are not modelled. The result must not be interpreted as expected prototype output.</p></div>
+            <div><span class="eyebrow">Example only</span><h3>Possible power</h3><p>For a made-up window size of 0.72 square metres.</p></div>
+            <div><div class="model-result" id="model-result">23.7 W</div><span class="model-result-label">A simple example · not a test result</span></div>
+            <div><div class="model-formula">The example combines sunlight strength, window size, sun angle and the guessed share turned into power.</div><p class="model-disclaimer">Real windows lose light and power in many ways. This example leaves those out, so do not expect a real window to make this much power.</p></div>
           </div>
         </div>
       </div>
@@ -1057,32 +1110,65 @@
     <section class="section" aria-labelledby="reference-title">
       <div class="wrap">
         <div class="section-head reveal">
-          <div><p class="eyebrow">Technical reference</p><h2 id="reference-title">Go a little <em>deeper.</em></h2></div>
-          <p>Core ideas behind the concept, in brief. All performance questions remain open for experimental validation.</p>
+          <div><p class="eyebrow">More about the idea</p><h2 id="reference-title">Curious how it <em>works?</em></h2></div>
+          <p>Open a topic for a little more detail. The main idea stays simple: catch light, guide it to the edge, and let solar cells make power.</p>
         </div>
         <div class="reference-list reveal">
-          <details><summary><b>Luminescent solar concentrator principle</b><span>+</span></summary><p>A luminescent material absorbs selected incoming wavelengths and re-emits light at other wavelengths. A transparent optical host can guide some of that emitted light toward its edges, where photovoltaic cells may be coupled.</p></details>
-          <details><summary><b>Total internal reflection and edge coupling</b><span>+</span></summary><p>Light can be confined within an optical slab when its incidence at an interface meets the conditions for total internal reflection. Surface quality, refractive indices, geometry and edge coupling all affect how much light reaches an edge.</p></details>
-          <details><summary><b>Carbon Quantum Dots and host integration</b><span>+</span></summary><p>CQDs are a proposed material direction involving carbon-based nanoscale luminescent materials. Composition, synthesis route, emission, photostability and compatibility with a transparent host would need to be established through research.</p></details>
-          <details><summary><b>Optical losses and durability</b><span>+</span></summary><p>Potential loss mechanisms include incomplete absorption, non-radiative relaxation, re-absorption, scattering, escape-cone losses and imperfect edge coupling. UV exposure, oxygen, moisture and temperature can also affect material stability.</p></details>
-          <details><summary><b>Prototype validation</b><span>+</span></summary><p>A proof-of-principle study should separately characterize optical input, emission, guided light, edge-cell response and electrical output. Results should be measured, reported with conditions and compared against suitable controls.</p></details>
+          <details><summary><b>How does the window catch light?</b><span>+</span></summary><p>A thin layer may catch some sunlight and give off light inside the glass. This is the main idea being explored.</p></details>
+          <details><summary><b>How does light reach the edge?</b><span>+</span></summary><p>Some light may bounce inside the glass until it reaches the edge. Scientists call this “total internal reflection.” The glass and its surfaces affect how well it works.</p></details>
+          <details><summary><b>What are Carbon Quantum Dots?</b><span>+</span></summary><p>They are tiny materials made mostly from carbon. Researchers study them because some kinds can give off light. The type and properties for AETHER have not been chosen or tested.</p></details>
+          <details><summary><b>Why might some light be lost?</b><span>+</span></summary><p>Some light may escape, get scattered or be caught again by the material. Sunlight, water and heat may also change the layer over time.</p></details>
+          <details><summary><b>What would the first test check?</b><span>+</span></summary><p>A small test would check each step: light entering the window, light reaching its edge, and electricity coming from the solar cells.</p></details>
         </div>
       </div>
     </section>
 
     <section class="section about-section" id="about" aria-labelledby="about-title">
       <div class="wrap about-grid reveal">
-        <div><span class="about-name">The project</span><h2 id="about-title">AETHER</h2><p class="small-note">Student-led engineering and innovation project</p></div>
-        <div><p><strong>Gaurish Metha</strong><br>Indian School Muscat</p><p>AETHER began as a concept and has grown into a multidisciplinary engineering direction spanning materials science, nanotechnology, optics, photovoltaics, architecture, electrical engineering and renewable energy.</p><p>It remains a student-led development effort, moving toward physical experimentation.</p><div class="discipline-list"><span>Materials science</span><span>Nanotechnology</span><span>Optics</span><span>Photovoltaics</span><span>Architecture</span><span>Electrical engineering</span><span>Renewable energy</span></div></div>
+        <div><span class="about-name">The project</span><h2 id="about-title">AETHER</h2><p class="small-note">A student project about windows and clean energy</p></div>
+        <div><p><strong>Gaurish Metha</strong><br>Indian School Muscat</p><p>AETHER asks a simple question: could a clear window also make electricity? The project brings together ideas about materials, light, solar cells, buildings and clean energy.</p><p>It is still an idea being developed. The next step is a small test model.</p><div class="discipline-list"><span>New materials</span><span>Tiny carbon materials</span><span>Light</span><span>Solar cells</span><span>Buildings</span><span>Electric circuits</span><span>Clean energy</span></div></div>
       </div>
     </section>
 
     <section class="closing" aria-labelledby="closing-title">
-      <div class="wrap reveal"><p class="eyebrow">A different way to see the surface</p><h2 id="closing-title">Reimagine<br>the window.</h2><p class="closing-brand">AETHER</p><p class="closing-tagline">Invisible Light. Visible Impact.</p></div>
+      <div class="wrap reveal"><p class="eyebrow">A new idea for a familiar thing</p><h2 id="closing-title">What if your window<br>could make power?</h2><p class="closing-brand">AETHER</p><p class="closing-tagline">A window that could make electricity.</p></div>
+    </section>
+
+    <section class="video-section" id="video" aria-labelledby="video-title">
+      <div class="wrap video-layout reveal">
+        <div class="video-copy"><p class="eyebrow">Watch the explanation</p><h2 id="video-title">AETHER, in my words.</h2><p>A short video where I explain the project and how the window could work.</p></div>
+        <div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/m-a7LgJ10QM" title="Gaurish explains the AETHER window project" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+      </div>
+    </section>
+
+    <section class="maker-section" id="maker" aria-labelledby="maker-title">
+      <div class="wrap maker-grid reveal">
+        <figure class="maker-portrait"><img src="assets/gaurish-metha.jpg" alt="Gaurish Metha, creator of the AETHER project" loading="lazy"></figure>
+        <div class="maker-note">
+          <p class="eyebrow">A note from the maker</p>
+          <h2 id="maker-title">One question<br>started it all.</h2>
+          <blockquote>I began AETHER with a simple question: could a window let in daylight and help make electricity? The idea is still being tested. I want to build a small model, see what works and learn from what does not.</blockquote>
+          <p class="maker-signature">Gaurish Metha · Indian School Muscat</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <div class="contact-head">
+          <div><p class="eyebrow">Get in touch</p><h2 id="contact-title">Contact me.</h2></div>
+          <p>Have a question or idea about AETHER? I’d be glad to hear from you.</p>
+        </div>
+        <div class="contact-list">
+          <div class="contact-item"><span>LinkedIn</span><a href="https://www.linkedin.com/in/gaurish-metha" target="_blank" rel="noopener noreferrer">Connect with Gaurish ↗</a></div>
+          <div class="contact-item"><span>Phone / WhatsApp</span><a href="tel:+96877501982">+968 77501982</a><a class="contact-subaction" href="https://wa.me/96877501982" target="_blank" rel="noopener noreferrer">Message on WhatsApp ↗</a></div>
+          <div class="contact-item"><span>Gmail</span><a href="mailto:gaurishmetha39@gmail.com">gaurishmetha39@gmail.com</a></div>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer><div class="wrap footer-inner"><span>© AETHER · Student-led engineering project · Muscat, Oman</span><a href="#top">Back to top ↑</a><span>Concept-stage research · performance not yet validated</span></div></footer>
+  <footer><div class="wrap footer-inner"><span>© AETHER · Student project · Muscat, Oman</span><a href="#contact">Contact</a><a href="#top">Back to top ↑</a><span>Idea in development · power not tested yet</span></div></footer>
 
   <script>
     const header = document.querySelector('.site-header');
@@ -1134,7 +1220,7 @@
     }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
     document.querySelectorAll('.story-beat').forEach(beat => opticalStoryObserver.observe(beat));
 
-    const materialSceneTitles = ['Agricultural feedstock', 'Controlled processing', 'Carbon-rich intermediate', 'Carbon Quantum Dots', 'Purification concept', 'Transparent host', 'Luminescent layer', 'AETHER architectural glazing'];
+    const materialSceneTitles = ['Farm leftovers', 'Prepare the material', 'Carbon material', 'Tiny carbon dots', 'Clean and prepare', 'Clear material', 'Light-catching layer', 'AETHER window idea'];
     const materialProgress = document.querySelectorAll('.material-progress span');
     const materialSceneObserver = new IntersectionObserver(entries => {
       const active = entries.filter(entry => entry.isIntersecting).sort((a, b) => {
@@ -1157,10 +1243,10 @@
     document.querySelectorAll('.material-beat').forEach(beat => materialSceneObserver.observe(beat));
 
     const componentContent = {
-      glass: ['Transparent glass', 'The architectural optical substrate and transparent surface of the window.'],
-      layer: ['Luminescent layer', 'A functional optical layer designed to interact with selected incoming radiation and re-emit light within the panel.'],
-      pv: ['Edge photovoltaics', 'Photovoltaic cells positioned around the perimeter to convert guided optical energy into electricity.'],
-      frame: ['Perimeter frame', 'Provides structural integration and accommodates the edge electrical architecture.']
+      glass: ['Clear glass', 'The clear part of the window that lets you see through.'],
+      layer: ['Light-catching layer', 'A thin layer that may catch some sunlight and give off light inside the glass.'],
+      pv: ['Edge solar cells', 'Small solar cells around the edge could turn the guided light into electricity.'],
+      frame: ['Window frame', 'Holds the glass and gives the wires a way out.']
     };
     const componentButtons = document.querySelectorAll('[data-component]');
     componentButtons.forEach(button => button.addEventListener('click', () => {
@@ -1173,7 +1259,7 @@
     explodeToggle.addEventListener('click', () => {
       const exploded = explodeToggle.getAttribute('aria-pressed') !== 'true';
       explodeToggle.setAttribute('aria-pressed', String(exploded));
-      explodeToggle.textContent = exploded ? 'Assemble layers' : 'Explode assembly';
+      explodeToggle.textContent = exploded ? 'Put the parts together' : 'Separate the parts';
       document.getElementById('panel-object').classList.toggle('exploded', exploded);
     });
 
