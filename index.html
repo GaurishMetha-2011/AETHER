@@ -383,9 +383,19 @@
 
     /* Illustrative model */
     .model-section { background: #151a17; }
-    .model-shell { display: grid; grid-template-columns: 1.05fr .95fr; border: 1px solid var(--line); }
-    .model-controls { padding: 30px; }
-    .model-output { display: flex; flex-direction: column; justify-content: space-between; padding: 30px; border-left: 1px solid var(--line); background: #101411; }
+    .model-shell { display: grid; grid-template-columns: 1fr; border: 1px solid var(--line); }
+    .model-visual { position: relative; width: 100%; aspect-ratio: 900 / 460; min-height: 0; margin: 0; overflow: hidden; border-bottom: 1px solid var(--line); background: radial-gradient(ellipse at 40% 60%, rgba(139,228,208,.1), transparent 58%), #111713; }
+    .model-visual svg { display: block; width: 100%; height: 100%; }
+    .model-visual figcaption { position: absolute; right: 15px; bottom: 13px; left: 15px; color: var(--muted); font-size: 12px; }
+    .model-sun-aura { transition: opacity .2s ease, r .2s ease; }
+    .model-sun-core { transition: r .2s ease; }
+    .model-rays { transition: opacity .2s ease; }
+    .model-light-path { stroke-dasharray: 10 10; animation: model-flow var(--flow-duration, 3s) linear infinite; transition: opacity .25s ease; }
+    .model-electricity { opacity: .12; transition: opacity .3s ease; }
+    @keyframes model-flow { to { stroke-dashoffset: -80; } }
+    .model-panels { display: grid; grid-template-columns: 1fr 1fr; }
+    .model-controls { padding: 27px 30px 18px; }
+    .model-output { display: flex; flex-direction: column; justify-content: space-between; padding: 24px 30px; border-left: 1px solid var(--line); background: #101411; }
     .model-controls h3, .model-output h3 { margin: 0 0 7px; font-family: var(--serif); font-size: 29px; font-weight: 400; }
     .model-controls > p, .model-output > p { margin: 0 0 26px; color: var(--muted); font-size: 11px; }
     .range-control { margin: 24px 0; }
@@ -438,6 +448,14 @@
     .about-grid p { max-width: 600px; margin: 0 0 18px; color: var(--muted); }
     .discipline-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 25px; }
     .discipline-list span { padding: 7px 10px; border: 1px solid var(--line); color: #d3d8d2; font-size: 10px; }
+    .press-section { padding: 110px 0; border-top: 1px solid var(--line); background: #141916; }
+    .press-feature { display: grid; grid-template-columns: .82fr 1.18fr; gap: 8%; align-items: center; }
+    .press-image { margin: 0; padding: 9px; border: 1px solid var(--line); background: #F4F2EA; }
+    .press-image img { width: 100%; height: auto; }
+    .press-image figcaption { margin-top: 8px; color: #586157; font-size: 12px; }
+    .press-copy h2 { margin: 0 0 18px; font-family: var(--serif); font-size: clamp(42px, 5.5vw, 68px); font-weight: 400; line-height: .95; }
+    .press-copy > p { max-width: 510px; margin: 0 0 15px; color: var(--muted); font-size: 16px; line-height: 1.55; }
+    .press-copy .press-caveat { color: #8f9990; font-size: 13px; }
     .video-section { padding: 86px 0; border-top: 1px solid var(--line); background: #141916; }
     .video-layout { display: grid; grid-template-columns: .72fr 1.28fr; gap: 7%; align-items: center; }
     .video-copy h2 { margin: 0 0 16px; font-family: var(--serif); font-size: clamp(42px, 5vw, 65px); font-weight: 400; line-height: .95; }
@@ -472,6 +490,7 @@
     footer { padding: 23px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
     .footer-inner { display: flex; justify-content: space-between; gap: 20px; }
     .footer-inner a { color: var(--white); }
+    .ai-note { margin: 12px 0 0; color: #879187; font-size: 11px; line-height: 1.4; text-align: right; }
     .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
@@ -492,10 +511,13 @@
       .application { min-height: 330px; }
       .roadmap { grid-template-columns: repeat(2, 1fr); }
       .model-shell { grid-template-columns: 1fr; }
-      .model-output { min-height: 285px; border-top: 1px solid var(--line); border-left: 0; }
+      .model-visual { aspect-ratio: 1.8; }
+      .model-panels { grid-template-columns: 1fr 1fr; }
+      .model-output { min-height: 285px; border-left: 1px solid var(--line); }
       .city-statement { grid-template-columns: 1fr; gap: 20px; }
       .maker-grid { grid-template-columns: .8fr 1.2fr; gap: 6%; }
       .video-layout { grid-template-columns: 1fr; gap: 30px; }
+      .press-feature { grid-template-columns: 1fr; gap: 35px; }
     }
     @media (max-width: 780px) {
       .menu-toggle { display: inline-flex; }
@@ -553,12 +575,16 @@
       .material-beat { min-height: 43vh; }
       .city-visual { min-height: 300px; }
       .maker-section { padding: 82px 0; }
+      .press-section { padding: 82px 0; }
       .maker-grid { grid-template-columns: 1fr; gap: 32px; }
       .maker-portrait { width: min(100%, 360px); aspect-ratio: 1 / 1; }
       .contact-head { display: block; }
       .contact-head p { margin-top: 18px; }
       .contact-list { grid-template-columns: 1fr; }
       .contact-item + .contact-item { padding-left: 0; border-top: 1px solid var(--line); border-left: 0; }
+      .model-visual { aspect-ratio: 1.35; }
+      .model-panels { grid-template-columns: 1fr; }
+      .model-output { border-top: 1px solid var(--line); border-left: 0; }
       .panel-stage { min-height: 330px; }
       .panel-object { width: 69%; }
       .panel-label { top: 13px; left: 13px; }
@@ -1092,16 +1118,46 @@
           <p>Move the sliders to see how sunlight, window size, angle and a guessed share of power change an example. This is not a test result.</p>
         </div>
         <div class="model-shell reveal">
-          <div class="model-controls">
-            <h3>Change the example</h3><p>These are guesses for learning, not measurements.</p>
-            <label class="range-control"><span class="range-top"><span>Strength of sunlight</span><output id="irradiance-out" for="irradiance">700 W/m²</output></span><input id="irradiance" type="range" min="200" max="1000" step="10" value="700"></label>
-            <label class="range-control"><span class="range-top"><span>Sun angle</span><output id="angle-out" for="angle">20°</output></span><input id="angle" type="range" min="0" max="80" step="1" value="20"></label>
-            <label class="range-control"><span class="range-top"><span>Guessed share turned into power</span><output id="efficiency-out" for="efficiency">5%</output></span><input id="efficiency" type="range" min="1" max="15" step="0.5" value="5"></label>
-          </div>
-          <div class="model-output" aria-live="polite">
-            <div><span class="eyebrow">Example only</span><h3>Possible power</h3><p>For a made-up window size of 0.72 square metres.</p></div>
-            <div><div class="model-result" id="model-result">23.7 W</div><span class="model-result-label">A simple example · not a test result</span></div>
-            <div><div class="model-formula">The example combines sunlight strength, window size, sun angle and the guessed share turned into power.</div><p class="model-disclaimer">Real windows lose light and power in many ways. This example leaves those out, so do not expect a real window to make this much power.</p></div>
+          <figure class="model-visual" role="img" aria-label="Illustration updates with the sliders: sunlight reaches a clear window, light travels to solar cells at the edge, then electricity flows out by wire.">
+            <svg viewBox="0 0 900 460" fill="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="modelSky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#25332D"/><stop offset="1" stop-color="#111713"/></linearGradient>
+                <linearGradient id="modelPane" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#C5E7DC" stop-opacity=".18"/><stop offset=".55" stop-color="#90C4B1" stop-opacity=".06"/><stop offset="1" stop-color="#E8F4EB" stop-opacity=".13"/></linearGradient>
+                <filter id="modelSunGlow" x="-.8" y="-.8" width="2.6" height="2.6"><feGaussianBlur stdDeviation="12" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <marker id="modelArrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M1 1l6 3-6 3" stroke="#8BE4D0" stroke-width="1.3"/></marker>
+              </defs>
+              <rect width="900" height="460" fill="url(#modelSky)"/>
+              <path d="M0 322 160 286l124 38 131-68 145 70 138-47 202 47v134H0Z" fill="#1A241F"/>
+              <path d="M0 355h900" stroke="#88978A" stroke-opacity=".28"/>
+              <g fill="#25322B" stroke="#65756A" stroke-opacity=".45"><path d="M55 275h87v80H55zM153 244h67v111h-67zM682 270h78v85h-78zM774 231h82v124h-82z"/><path d="M68 290h15v20H68zm27 0h15v20H95zm27 0h8v20h-8zM166 260h13v18h-13zm26 0h13v18h-13zm-26 30h13v18h-13zm26 0h13v18h-13zM697 286h12v17h-12zm23 0h12v17h-12zm69-38h14v19h-14zm27 0h14v19h-14z" fill="#B3B895" fill-opacity=".3"/></g>
+              <circle id="model-sun-aura" class="model-sun-aura" cx="180" cy="118" r="48" fill="#E6B974" opacity=".14" filter="url(#modelSunGlow)"/>
+              <circle id="model-sun-core" class="model-sun-core" cx="180" cy="118" r="23" fill="#F0C987"/>
+              <g id="model-sun-rays" class="model-rays" stroke="#EAC58D" stroke-width="2" opacity=".66"><path d="M180 74V48M180 162v25M136 118h-27m115 0h27M149 87l-19-19m100 100 19 19M211 87l19-19m-100 100-19 19"/></g>
+              <g id="model-incoming-rays" class="model-rays" stroke="#EAC58D" stroke-width="2" opacity=".62"><path d="M203 129 344 220M214 112 350 203M219 142 347 236"/></g>
+              <path d="M330 154h310v212H330z" fill="#141B17" stroke="#C6D5C9" stroke-opacity=".65" stroke-width="8"/>
+              <path d="M341 164h288v192H341z" fill="url(#modelPane)" stroke="#ECF4EA" stroke-opacity=".32"/>
+              <path d="M355 177h246" stroke="#FFFFFF" stroke-opacity=".24" stroke-width="2"/>
+              <path d="M355 233h260" stroke="#E4BA7B" stroke-opacity=".82" stroke-width="3"/>
+              <path d="M355 236 404 274l48-58 50 58 50-58 60 46" id="model-light-path" class="model-light-path" stroke="#8BE4D0" stroke-width="3" filter="url(#modelSunGlow)"/>
+              <g id="model-edge-cells" fill="#C29B62"><rect x="617" y="176" width="8" height="20"/><rect x="617" y="203" width="8" height="20"/><rect x="617" y="230" width="8" height="20"/><rect x="617" y="257" width="8" height="20"/><rect x="617" y="284" width="8" height="20"/><rect x="617" y="311" width="8" height="20"/></g>
+              <path id="model-electric-line" class="model-electricity" d="M625 244h98l45-42h70" stroke="#8BE4D0" stroke-width="3" marker-end="url(#modelArrow)"/>
+              <circle id="model-power-node" class="model-electricity" cx="743" cy="202" r="7" fill="#8BE4D0" filter="url(#modelSunGlow)"/>
+              <g fill="#D6DFD4" font-family="DM Sans, sans-serif" font-size="12" letter-spacing="1.1"><text x="91" y="212">SUNLIGHT</text><text x="342" y="397">CLEAR WINDOW</text><text x="536" y="397">SMALL CELLS</text><text x="750" y="184">POWER OUT</text></g>
+            </svg>
+            <figcaption>Illustration only · the real window has not been tested</figcaption>
+          </figure>
+          <div class="model-panels">
+            <div class="model-controls">
+              <h3>Change the example</h3><p>These are guesses for learning, not measurements.</p>
+              <label class="range-control"><span class="range-top"><span>Strength of sunlight</span><output id="irradiance-out" for="irradiance">700 W/m²</output></span><input id="irradiance" type="range" min="200" max="1000" step="10" value="700"></label>
+              <label class="range-control"><span class="range-top"><span>Sun angle</span><output id="angle-out" for="angle">20°</output></span><input id="angle" type="range" min="0" max="80" step="1" value="20"></label>
+              <label class="range-control"><span class="range-top"><span>Guessed share turned into power</span><output id="efficiency-out" for="efficiency">5%</output></span><input id="efficiency" type="range" min="1" max="15" step="0.5" value="5"></label>
+            </div>
+            <div class="model-output" aria-live="polite">
+              <div><span class="eyebrow">Example only</span><h3>Possible power</h3><p>For a made-up window size of 0.72 square metres.</p></div>
+              <div><div class="model-result" id="model-result">23.7 W</div><span class="model-result-label">A simple example · not a test result</span></div>
+              <div><div class="model-formula">The example combines sunlight strength, window size, sun angle and the guessed share turned into power.</div><p class="model-disclaimer">Real windows lose light and power in many ways. This example leaves those out, so do not expect a real window to make this much power.</p></div>
+            </div>
           </div>
         </div>
       </div>
@@ -1127,6 +1183,13 @@
       <div class="wrap about-grid reveal">
         <div><span class="about-name">The project</span><h2 id="about-title">AETHER</h2><p class="small-note">A student project about windows and clean energy</p></div>
         <div><p><strong>Gaurish Metha</strong><br>Indian School Muscat</p><p>AETHER asks a simple question: could a clear window also make electricity? The project brings together ideas about materials, light, solar cells, buildings and clean energy.</p><p>It is still an idea being developed. The next step is a small test model.</p><div class="discipline-list"><span>New materials</span><span>Tiny carbon materials</span><span>Light</span><span>Solar cells</span><span>Buildings</span><span>Electric circuits</span><span>Clean energy</span></div></div>
+      </div>
+    </section>
+
+    <section class="press-section" id="press" aria-labelledby="press-title">
+      <div class="wrap press-feature reveal">
+        <figure class="press-image"><img src="assets/muscat-daily.png" alt="Muscat Daily newspaper feature about Gaurish Metha and the AETHER window project" loading="lazy"><figcaption>Muscat Daily · 27 September 2026</figcaption></figure>
+        <div class="press-copy"><p class="eyebrow">In the news</p><h2 id="press-title">AETHER in<br><em>Muscat Daily.</em></h2><p>The project was featured in Muscat Daily online and in the newspaper, sharing the idea of windows that could help make renewable electricity.</p><p class="press-caveat">The article discusses project goals. The window is still being developed, and its performance has not been tested.</p></div>
       </div>
     </section>
 
@@ -1168,7 +1231,7 @@
     </section>
   </main>
 
-  <footer><div class="wrap footer-inner"><span>© AETHER · Student project · Muscat, Oman</span><a href="#contact">Contact</a><a href="#top">Back to top ↑</a><span>Idea in development · power not tested yet</span></div></footer>
+  <footer><div class="wrap footer-inner"><span>© AETHER · Student project · Muscat, Oman</span><a href="#contact">Contact</a><a href="#top">Back to top ↑</a><span>Idea in development · power not tested yet</span></div><div class="wrap"><p class="ai-note">This website was built with the help of AI.</p></div></footer>
 
   <script>
     const header = document.querySelector('.site-header');
@@ -1291,12 +1354,42 @@
     const irradiance = document.getElementById('irradiance');
     const angle = document.getElementById('angle');
     const efficiency = document.getElementById('efficiency');
+    const modelSunAura = document.getElementById('model-sun-aura');
+    const modelSunCore = document.getElementById('model-sun-core');
+    const modelSunRays = document.getElementById('model-sun-rays');
+    const modelIncomingRays = document.getElementById('model-incoming-rays');
+    const modelLightPath = document.getElementById('model-light-path');
+    const modelElectricity = document.querySelectorAll('.model-electricity');
     const updateModel = () => {
       const irradianceValue = Number(irradiance.value);
       const angleValue = Number(angle.value);
       const efficiencyValue = Number(efficiency.value) / 100;
       const area = 0.72;
       const output = irradianceValue * area * Math.cos(angleValue * Math.PI / 180) * efficiencyValue;
+      const sunlight = (irradianceValue - Number(irradiance.min)) / (Number(irradiance.max) - Number(irradiance.min));
+      const outputShare = Math.max(0, Math.min(1, output / (Number(irradiance.max) * area * Number(efficiency.max) / 100)));
+      const sunX = 115 + angleValue * 1.2;
+      const sunY = 205 - angleValue * 1.7;
+      modelSunAura.setAttribute('cx', sunX);
+      modelSunAura.setAttribute('cy', sunY);
+      modelSunAura.setAttribute('r', 42 + sunlight * 28);
+      modelSunAura.setAttribute('opacity', (0.06 + sunlight * 0.23).toFixed(2));
+      modelSunCore.setAttribute('cx', sunX);
+      modelSunCore.setAttribute('cy', sunY);
+      modelSunCore.setAttribute('r', 19 + sunlight * 10);
+      modelSunRays.setAttribute('transform', `translate(${sunX - 180} ${sunY - 118})`);
+      modelSunRays.setAttribute('opacity', (0.2 + sunlight * 0.7).toFixed(2));
+      modelIncomingRays.setAttribute('opacity', (0.16 + sunlight * 0.8).toFixed(2));
+      const beamOffsets = [-20, 0, 20];
+      modelIncomingRays.querySelectorAll('path').forEach((ray, index) => {
+        const offset = beamOffsets[index];
+        ray.setAttribute('d', `M${sunX + offset} ${sunY + offset * 0.35} L330 ${205 + offset}`);
+      });
+      modelLightPath.style.opacity = (0.18 + outputShare * 0.72).toFixed(2);
+      modelLightPath.style.setProperty('--flow-duration', `${Math.max(1.2, 4 - outputShare * 2.2)}s`);
+      modelElectricity.forEach(element => {
+        element.style.opacity = (0.08 + outputShare * 0.92).toFixed(2);
+      });
       document.getElementById('irradiance-out').textContent = `${irradianceValue} W/m²`;
       document.getElementById('angle-out').textContent = `${angleValue}°`;
       document.getElementById('efficiency-out').textContent = `${Number(efficiency.value)}%`;

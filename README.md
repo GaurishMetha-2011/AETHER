@@ -25,6 +25,10 @@ AETHER is a design and research project moving toward a small physical test wind
 
 The next goal is to test each step: does the layer catch light, does light reach the edge, and can the solar cells make electricity from it?
 
+## In the news
+
+AETHER was featured online and in the newspaper by **Muscat Daily** on 27 September 2026. The article discusses project goals; the window has not yet been built or tested, so its figures are not measured results.
+
 ## About
 
 AETHER brings together ideas about clear windows, light, new materials, solar cells and buildings. The long-term goal is to learn whether these ideas can work together in a real window.
@@ -38,10 +42,10 @@ AETHER brings together ideas about clear windows, light, new materials, solar ce
 
 ## Watch
 
-[Watch me explain the AETHER project](https://youtu.be/m-a7LgJ10QM)
+[Watch Gaurish explain the AETHER project](https://youtu.be/m-a7LgJ10QM)
 
 ## Contact
 
 - **Phone:** [+968 77501982](tel:+96877501982)
-- **WhatsApp:** [Message Me](https://wa.me/96877501982)
+- **WhatsApp:** [Message Gaurish](https://wa.me/96877501982)
 - **Gmail:** [gaurishmetha39@gmail.com](mailto:gaurishmetha39@gmail.com)
