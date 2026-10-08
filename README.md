@@ -38,10 +38,10 @@ AETHER brings together ideas about clear windows, light, new materials, solar ce
 
 ## Watch
 
-[Watch Gaurish explain the AETHER project](https://youtu.be/m-a7LgJ10QM)
+[Watch me explain the AETHER project](https://youtu.be/m-a7LgJ10QM)
 
 ## Contact
 
 - **Phone:** [+968 77501982](tel:+96877501982)
-- **WhatsApp:** [Message Gaurish](https://wa.me/96877501982)
+- **WhatsApp:** [Message Me](https://wa.me/96877501982)
 - **Gmail:** [gaurishmetha39@gmail.com](mailto:gaurishmetha39@gmail.com)
