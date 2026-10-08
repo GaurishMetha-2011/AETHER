@@ -461,7 +461,13 @@
     .video-copy h2 { margin: 0 0 16px; font-family: var(--serif); font-size: clamp(42px, 5vw, 65px); font-weight: 400; line-height: .95; }
     .video-copy p { max-width: 330px; margin: 0; color: var(--muted); font-size: 13px; }
     .video-frame { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid var(--line); background: #080a09; }
-    .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .video-thumb { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; color: var(--ink); }
+    .video-thumb::after { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,15,14,.24), rgba(10,15,14,.08) 55%, rgba(10,15,14,.28)), linear-gradient(0deg, rgba(10,15,14,.42), transparent 55%); content: ""; }
+    .video-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.78); transition: transform .5s ease, filter .5s ease; }
+    .video-thumb:hover img { transform: scale(1.025); filter: brightness(.9); }
+    .video-play { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 11px; padding: 13px 18px; background: rgba(245,246,241,.96); color: #101311; font-size: 14px; font-weight: 600; }
+    .video-play svg { width: 18px; height: 18px; color: #d8312f; }
+    .video-thumb:focus-visible { outline: 3px solid var(--aqua); outline-offset: -5px; }
     .maker-section { padding: 115px 0; border-top: 1px solid var(--line); background: #121714; }
     .maker-grid { display: grid; grid-template-columns: .78fr 1.22fr; gap: 9%; align-items: center; }
     .maker-portrait { position: relative; width: 100%; max-width: 390px; aspect-ratio: 4 / 5; margin: 0; overflow: hidden; background: #d8d9d4; }
@@ -1200,7 +1206,10 @@
     <section class="video-section" id="video" aria-labelledby="video-title">
       <div class="wrap video-layout reveal">
         <div class="video-copy"><p class="eyebrow">Watch the explanation</p><h2 id="video-title">AETHER, in my words.</h2><p>A short video where I explain the project and how the window could work.</p></div>
-        <div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/m-a7LgJ10QM" title="Gaurish explains the AETHER window project" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+        <div class="video-frame"><a class="video-thumb" href="https://youtu.be/m-a7LgJ10QM" target="_blank" rel="noopener noreferrer" aria-label="Watch Gaurish explain the AETHER project on YouTube">
+          <img src="https://img.youtube.com/vi/m-a7LgJ10QM/hqdefault.jpg" alt="Thumbnail for Gaurish's AETHER project explanation video" loading="lazy">
+          <span class="video-play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13L19 12 8 5.5Z"/></svg>Watch on YouTube</span>
+        </a></div>
       </div>
     </section>
 
