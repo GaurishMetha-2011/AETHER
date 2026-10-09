@@ -382,33 +382,43 @@
     .status-band .status-label { display: inline-block; margin-bottom: 15px; color: var(--aqua); font-size: 9px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
 
     /* Illustrative model */
-    .model-section { background: #151a17; }
-    .model-shell { display: grid; grid-template-columns: 1fr; border: 1px solid var(--line); }
-    .model-visual { position: relative; width: 100%; aspect-ratio: 900 / 460; min-height: 0; margin: 0; overflow: hidden; border-bottom: 1px solid var(--line); background: radial-gradient(ellipse at 40% 60%, rgba(139,228,208,.1), transparent 58%), #111713; }
-    .model-visual svg { display: block; width: 100%; height: 100%; }
-    .model-visual figcaption { position: absolute; right: 15px; bottom: 13px; left: 15px; color: var(--muted); font-size: 12px; }
+    .model-section { padding: 19px 0 21px; background: #151a17; }
+    .model-section .section-head { gap: 20px; margin-bottom: 12px; }
+    .model-section .section-head h2 { font-size: clamp(36px, 3.6vw, 48px); }
+    .model-section .section-head .eyebrow { margin-bottom: 9px; }
+    .model-section .section-head > p { max-width: 350px; font-size: 14px; line-height: 1.4; }
+    .model-shell { display: grid; grid-template-columns: 1.12fr .88fr; align-items: stretch; border: 1px solid var(--line); }
+    .model-visual { position: relative; grid-column: 1; grid-row: 1; width: 100%; aspect-ratio: 1.9; min-height: 0; align-self: center; margin: 0; overflow: hidden; border-right: 1px solid var(--line); background: #18231e url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=82") center 48% / cover; }
+    .model-visual::before { position: absolute; z-index: 0; inset: 0; background: linear-gradient(90deg, rgba(11,17,14,.48), rgba(11,17,14,.2) 56%, rgba(11,17,14,.4)), linear-gradient(0deg, rgba(11,17,14,.56), transparent 56%); content: ""; pointer-events: none; }
+    .model-visual svg { position: relative; z-index: 1; display: block; width: 100%; height: 100%; }
+    .model-visual figcaption { position: absolute; z-index: 2; right: 15px; bottom: 13px; left: 15px; color: #eef3ea; font-size: 12px; text-shadow: 0 1px 4px #101311; }
     .model-sun-aura { transition: opacity .2s ease, r .2s ease; }
     .model-sun-core { transition: r .2s ease; }
     .model-rays { transition: opacity .2s ease; }
     .model-light-path { stroke-dasharray: 10 10; animation: model-flow var(--flow-duration, 3s) linear infinite; transition: opacity .25s ease; }
     .model-electricity { opacity: .12; transition: opacity .3s ease; }
     @keyframes model-flow { to { stroke-dashoffset: -80; } }
-    .model-panels { display: grid; grid-template-columns: 1fr 1fr; }
-    .model-controls { padding: 27px 30px 18px; }
-    .model-output { display: flex; flex-direction: column; justify-content: space-between; padding: 24px 30px; border-left: 1px solid var(--line); background: #101411; }
-    .model-controls h3, .model-output h3 { margin: 0 0 7px; font-family: var(--serif); font-size: 29px; font-weight: 400; }
-    .model-controls > p, .model-output > p { margin: 0 0 26px; color: var(--muted); font-size: 11px; }
-    .range-control { margin: 24px 0; }
-    .range-top { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 12px; font-size: 11px; }
+    .model-panels { display: flex; grid-column: 2; grid-row: 1; flex-direction: column; justify-content: center; }
+    .model-controls { padding: 9px 18px 6px; }
+    .model-output { display: flex; flex: 1; flex-direction: column; justify-content: center; gap: 4px; padding: 7px 18px 9px; border-top: 1px solid var(--line); background: #101411; }
+    .model-controls h3 { margin: 0 0 2px; font-family: var(--serif); font-size: 20px; font-weight: 400; }
+    .model-section .model-controls > p { margin: 0 0 4px; font-size: 12px; line-height: 1.3; }
+    .model-live-readout { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 6px 0 3px; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+    .model-live-readout span { color: var(--muted); font-size: 13px; }
+    .model-live-readout strong { color: var(--aqua); font-family: var(--serif); font-size: 29px; font-weight: 400; line-height: 1; font-variant-numeric: tabular-nums; }
+    .range-control { margin: 6px 0; }
+    .range-top { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 3px; font-size: 12px; }
+    .model-section .model-output p { margin: 0; color: #d8ded8; font-size: 12px; line-height: 1.35; }
+    .model-section .model-output .model-disclaimer { color: var(--muted); }
     .range-top output { color: var(--aqua); font-variant-numeric: tabular-nums; }
     input[type="range"] { width: 100%; height: 3px; appearance: none; background: #3d4941; accent-color: var(--aqua); }
     input[type="range"]::-webkit-slider-thumb { width: 14px; height: 14px; appearance: none; border: 2px solid var(--ink); border-radius: 50%; background: var(--aqua); box-shadow: 0 0 0 1px var(--aqua); cursor: pointer; }
     input[type="range"]::-moz-range-thumb { width: 11px; height: 11px; border: 2px solid var(--ink); border-radius: 50%; background: var(--aqua); box-shadow: 0 0 0 1px var(--aqua); cursor: pointer; }
-    .model-result { margin: 28px 0 9px; color: var(--aqua); font-family: var(--serif); font-size: clamp(48px, 6vw, 76px); line-height: .9; font-variant-numeric: tabular-nums; }
+    .model-result { margin: 10px 0 6px; color: var(--aqua); font-family: var(--serif); font-size: clamp(42px, 4vw, 56px); line-height: .9; font-variant-numeric: tabular-nums; }
     .model-result-label { color: var(--muted); font-size: 10px; }
-    .model-formula { margin-top: 33px; padding-top: 17px; border-top: 1px solid var(--line); color: #d8ded8; font-size: 10px; }
+    .model-formula { margin-top: 8px; padding-top: 9px; border-top: 1px solid var(--line); color: #d8ded8; font-size: 13px; }
     .model-formula code { color: var(--aqua); font-family: var(--sans); }
-    .model-disclaimer { margin-top: 18px; color: var(--muted); font-size: 10px; }
+    .model-disclaimer { margin-top: 5px; color: var(--muted); font-size: 12px; }
 
     /* Reference, about, close */
     .reference-list { border-top: 1px solid var(--line); }
@@ -1132,15 +1142,15 @@
                 <filter id="modelSunGlow" x="-.8" y="-.8" width="2.6" height="2.6"><feGaussianBlur stdDeviation="12" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
                 <marker id="modelArrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M1 1l6 3-6 3" stroke="#8BE4D0" stroke-width="1.3"/></marker>
               </defs>
-              <rect width="900" height="460" fill="url(#modelSky)"/>
-              <path d="M0 322 160 286l124 38 131-68 145 70 138-47 202 47v134H0Z" fill="#1A241F"/>
+              <rect width="900" height="460" fill="url(#modelSky)" fill-opacity=".28"/>
+              <path d="M0 322 160 286l124 38 131-68 145 70 138-47 202 47v134H0Z" fill="#1A241F" fill-opacity=".34"/>
               <path d="M0 355h900" stroke="#88978A" stroke-opacity=".28"/>
-              <g fill="#25322B" stroke="#65756A" stroke-opacity=".45"><path d="M55 275h87v80H55zM153 244h67v111h-67zM682 270h78v85h-78zM774 231h82v124h-82z"/><path d="M68 290h15v20H68zm27 0h15v20H95zm27 0h8v20h-8zM166 260h13v18h-13zm26 0h13v18h-13zm-26 30h13v18h-13zm26 0h13v18h-13zM697 286h12v17h-12zm23 0h12v17h-12zm69-38h14v19h-14zm27 0h14v19h-14z" fill="#B3B895" fill-opacity=".3"/></g>
+              <g fill="#25322B" fill-opacity=".34" stroke="#E1E9DF" stroke-opacity=".28"><path d="M55 275h87v80H55zM153 244h67v111h-67zM682 270h78v85h-78zM774 231h82v124h-82z"/><path d="M68 290h15v20H68zm27 0h15v20H95zm27 0h8v20h-8zM166 260h13v18h-13zm26 0h13v18h-13zm-26 30h13v18h-13zm26 0h13v18h-13zM697 286h12v17h-12zm23 0h12v17h-12zm69-38h14v19h-14zm27 0h14v19h-14z" fill="#B3B895" fill-opacity=".36"/></g>
               <circle id="model-sun-aura" class="model-sun-aura" cx="180" cy="118" r="48" fill="#E6B974" opacity=".14" filter="url(#modelSunGlow)"/>
               <circle id="model-sun-core" class="model-sun-core" cx="180" cy="118" r="23" fill="#F0C987"/>
               <g id="model-sun-rays" class="model-rays" stroke="#EAC58D" stroke-width="2" opacity=".66"><path d="M180 74V48M180 162v25M136 118h-27m115 0h27M149 87l-19-19m100 100 19 19M211 87l19-19m-100 100-19 19"/></g>
               <g id="model-incoming-rays" class="model-rays" stroke="#EAC58D" stroke-width="2" opacity=".62"><path d="M203 129 344 220M214 112 350 203M219 142 347 236"/></g>
-              <path d="M330 154h310v212H330z" fill="#141B17" stroke="#C6D5C9" stroke-opacity=".65" stroke-width="8"/>
+              <path d="M330 154h310v212H330z" fill="#141B17" fill-opacity=".24" stroke="#E4EEE4" stroke-opacity=".8" stroke-width="8"/>
               <path d="M341 164h288v192H341z" fill="url(#modelPane)" stroke="#ECF4EA" stroke-opacity=".32"/>
               <path d="M355 177h246" stroke="#FFFFFF" stroke-opacity=".24" stroke-width="2"/>
               <path d="M355 233h260" stroke="#E4BA7B" stroke-opacity=".82" stroke-width="3"/>
@@ -1154,15 +1164,15 @@
           </figure>
           <div class="model-panels">
             <div class="model-controls">
-              <h3>Change the example</h3><p>These are guesses for learning, not measurements.</p>
+              <h3>Adjust the example</h3>
+              <div class="model-live-readout" aria-live="polite"><span>Example power</span><strong id="model-result">23.7 W</strong></div>
               <label class="range-control"><span class="range-top"><span>Strength of sunlight</span><output id="irradiance-out" for="irradiance">700 W/m²</output></span><input id="irradiance" type="range" min="200" max="1000" step="10" value="700"></label>
               <label class="range-control"><span class="range-top"><span>Sun angle</span><output id="angle-out" for="angle">20°</output></span><input id="angle" type="range" min="0" max="80" step="1" value="20"></label>
               <label class="range-control"><span class="range-top"><span>Guessed share turned into power</span><output id="efficiency-out" for="efficiency">5%</output></span><input id="efficiency" type="range" min="1" max="15" step="0.5" value="5"></label>
             </div>
             <div class="model-output" aria-live="polite">
-              <div><span class="eyebrow">Example only</span><h3>Possible power</h3><p>For a made-up window size of 0.72 square metres.</p></div>
-              <div><div class="model-result" id="model-result">23.7 W</div><span class="model-result-label">A simple example · not a test result</span></div>
-              <div><div class="model-formula">The example combines sunlight strength, window size, sun angle and the guessed share turned into power.</div><p class="model-disclaimer">Real windows lose light and power in many ways. This example leaves those out, so do not expect a real window to make this much power.</p></div>
+              <div><span class="eyebrow">Example only</span><p>Window area: 0.72 m².</p></div>
+              <div><div class="model-formula">Simple estimate: sunlight × area × angle × guessed conversion.</div><p class="model-disclaimer">Real losses are not included. AETHER has not been tested.</p></div>
             </div>
           </div>
         </div>
