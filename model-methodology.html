@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101311">
+  <meta name="description" content="See the illustrative assumptions, equations and worked example behind the AETHER solar-window calculator.">
+  <title>Model & assumptions — AETHER</title>
+  <link rel="icon" type="image/png" href="assets/aether-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #101311;
+      --raised: #151a17;
+      --white: #f5f6f1;
+      --muted: #a9b0a9;
+      --line: rgba(238,244,235,.14);
+      --aqua: #8be4d0;
+      --green: #b0d28b;
+      --serif: "Instrument Serif", Georgia, serif;
+      --sans: "Manrope", "DM Sans", "Segoe UI", sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { min-width: 320px; margin: 0; background: var(--ink); color: var(--white); font: 15px/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    .wrap { width: min(940px, calc(100% - 48px)); margin-inline: auto; }
+    .header { border-bottom: 1px solid var(--line); }
+    .nav { display: flex; min-height: 72px; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--white); font-size: 12px; font-weight: 700; letter-spacing: .2em; text-decoration: none; }
+    .brand img { width: 30px; height: 30px; object-fit: contain; }
+    .back-link { color: var(--aqua); font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
+    .back-link:focus-visible, .brand:focus-visible { outline: 2px solid var(--aqua); outline-offset: 5px; }
+    main { padding: 90px 0 110px; }
+    .eyebrow { margin: 0 0 17px; color: var(--aqua); font-size: 10px; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
+    h1, h2 { font-family: var(--serif); font-weight: 400; }
+    h1 { max-width: 720px; margin: 0; font-size: clamp(54px, 9vw, 92px); line-height: .95; }
+    h1 em { color: var(--aqua); font-weight: 400; }
+    .intro { max-width: 630px; margin: 24px 0 0; color: #c4cbc4; }
+    .section { margin-top: 64px; }
+    h2 { margin: 0 0 20px; font-size: clamp(34px, 5vw, 48px); line-height: 1; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th, td { padding: 13px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    thead th { color: var(--aqua); font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+    tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+    tbody th { width: 42%; font-weight: 500; }
+    tbody td { color: #c4cbc4; }
+    .parameter-value { color: var(--white); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .note { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
+    .input-strip { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); }
+    .input-strip > div { padding: 18px; }
+    .input-strip > div + div { border-left: 1px solid var(--line); }
+    .input-strip span { display: block; margin-bottom: 6px; color: var(--muted); font-size: 11px; }
+    .input-strip strong { color: var(--aqua); font-size: 17px; font-variant-numeric: tabular-nums; }
+    .equation { overflow-wrap: anywhere; margin: 12px 0; padding: 18px 20px; border-left: 2px solid var(--aqua); background: var(--raised); color: var(--white); font: 13px/1.8 var(--sans); }
+    .equation + p { color: #c4cbc4; }
+    .steps { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; counter-reset: calculation-step; }
+    .steps li { counter-increment: calculation-step; padding: 17px 19px; border: 1px solid var(--line); background: linear-gradient(110deg, rgba(139,228,208,.035), transparent 70%); }
+    .steps li::before { display: block; margin-bottom: 5px; color: var(--green); content: "STEP 0" counter(calculation-step); font-size: 10px; font-weight: 700; letter-spacing: .1em; }
+    .steps code { color: var(--aqua); font: 12px/1.7 var(--sans); overflow-wrap: anywhere; }
+    .result-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 18px; border: 1px solid var(--line); background: var(--line); }
+    .result-strip > div { padding: 20px; background: var(--raised); }
+    .result-strip span { display: block; color: var(--muted); font-size: 11px; }
+    .result-strip strong { display: block; margin-top: 5px; color: var(--aqua); font: clamp(25px, 4vw, 36px)/1.1 var(--serif); font-variant-numeric: tabular-nums; }
+    .caveat { margin: 18px 0 0; color: var(--muted); font-size: 12px; }
+    .footer { padding: 20px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
+    @media (max-width: 600px) {
+      .wrap { width: min(100% - 36px, 940px); }
+      main { padding: 70px 0 82px; }
+      .section { margin-top: 48px; }
+      .input-strip { grid-template-columns: 1fr; }
+      .input-strip > div + div { border-top: 1px solid var(--line); border-left: 0; }
+      .result-strip { grid-template-columns: 1fr; }
+      tbody th { width: 52%; }
+      th, td { padding: 11px 12px; }
+      .equation { padding: 15px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <nav class="nav wrap" aria-label="Page navigation">
+      <a class="brand" href="index.html" aria-label="AETHER home">
+        <img src="assets/aether-logo.png" alt="">
+        AETHER
+      </a>
+      <a class="back-link" href="index.html#model-title">Back to the calculator</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <p class="eyebrow">The illustrative model</p>
+    <h1>How we got<br><em>this estimate.</em></h1>
+    <p class="intro">The calculator multiplies a fixed set of illustrative optical and electrical assumptions by the selected sunlight intensity and daily full-power sun hours. These values are editable in the site code, not experimental AETHER material properties.</p>
+
+    <section class="section" aria-labelledby="assumptions-title">
+      <h2 id="assumptions-title">Fixed assumptions</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th scope="col">Model parameter</th><th scope="col">Value</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Window area</th><td class="parameter-value">1.8 m²</td></tr>
+            <tr><th scope="row">CQD emission wavelength</th><td class="parameter-value">690 nm<span class="note">Proposed design target</span></td></tr>
+            <tr><th scope="row">Average absorbed UV wavelength</th><td class="parameter-value">350 nm<span class="note">Simplified assumption</span></td></tr>
+            <tr><th scope="row">UV fraction of incident solar power</th><td class="parameter-value">0.04 (4%)</td></tr>
+            <tr><th scope="row">Absorbed fraction of relevant UV power</th><td class="parameter-value">0.50 (50%)</td></tr>
+            <tr><th scope="row">CQD photoluminescence quantum yield</th><td class="parameter-value">0.70 (70%)</td></tr>
+            <tr><th scope="row">Optical trapping fraction</th><td class="parameter-value">0.75 (75%)</td></tr>
+            <tr><th scope="row">Waveguide transmission fraction</th><td class="parameter-value">0.70 (70%)</td></tr>
+            <tr><th scope="row">Edge-coupling efficiency</th><td class="parameter-value">0.80 (80%)</td></tr>
+            <tr><th scope="row">Edge photovoltaic conversion efficiency</th><td class="parameter-value">0.25 (25%)<span class="note">Illustrative assumption at the emitted wavelength</span></td></tr>
+            <tr><th scope="row">Provisional PV technology</th><td class="parameter-value">AlGaAs<span class="note">Alloy composition to be selected for compatibility with 690 nm photons</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="formula-title">
+      <h2 id="formula-title">The formula</h2>
+      <p class="equation">
+        η<sub>total</sub> = f<sub>UV</sub> × f<sub>abs</sub> × η<sub>PL</sub> ×
+        (λ<sub>UV</sub> / λ<sub>em</sub>) × η<sub>trap</sub> × η<sub>guide</sub> ×
+        η<sub>edge</sub> × η<sub>PV</sub>
+      </p>
+      <p>Both wavelengths are converted from nanometres to metres before calculating their ratio: (350 × 10<sup>−9</sup> m) / (690 × 10<sup>−9</sup> m). The wavelength ratio accounts for the energy of a photon changing when UV light is re-emitted as lower-energy visible light.</p>
+      <p class="equation">
+        η<sub>total</sub> = 0.04 × 0.50 × 0.70 × (350 / 690) × 0.75 × 0.70 × 0.80 × 0.25<br>
+        η<sub>total</sub> ≈ 0.0007456522 = 0.07456522%
+      </p>
+    </section>
+
+    <section class="section" aria-labelledby="example-title">
+      <h2 id="example-title">Worked example</h2>
+      <div class="input-strip" aria-label="Default calculator inputs">
+        <div><span>Solar irradiance</span><strong>800 W/m²</strong></div>
+        <div><span>Equivalent full-power sun hours</span><strong>5 hours/day</strong></div>
+        <div><span>Fixed window area</span><strong>1.8 m²</strong></div>
+      </div>
+      <ol class="steps">
+        <li><code>Incident solar power = 1.8 m² × 800 W/m² = 1,440 W</code></li>
+        <li><code>Estimated electrical power = 1,440 W × 0.0007456522 ≈ 1.07374 W</code></li>
+        <li><code>Estimated daily energy = 1.07374 W × 5 hours/day ≈ 5.36870 Wh/day</code></li>
+      </ol>
+      <div class="result-strip" aria-label="Rounded default model results">
+        <div><span>Overall efficiency</span><strong>0.0746%</strong></div>
+        <div><span>Estimated electrical power</span><strong>1.07 W</strong></div>
+        <div><span>Estimated daily energy</span><strong>5.37 Wh/day</strong></div>
+      </div>
+      <p class="caveat">This is a simplified energy-budget illustration, not a measured AETHER efficiency or experimental result. Actual AETHER performance requires experimental validation.</p>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="wrap">AETHER · Student project · Muscat, Oman · Idea in development</div></footer>
+</body>
+</html>
