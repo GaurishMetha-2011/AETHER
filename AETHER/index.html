@@ -1,0 +1,1650 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101311">
+  <meta name="description" content="AETHER is a student project exploring a clear window that could turn sunlight into electricity using small solar cells at its edges.">
+  <title>AETHER - A Window That Generates Electricity</title>
+  <link rel="icon" type="image/png" href="assets/aether-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #101311;
+      --ink-raised: #171b18;
+      --paper: #e9e9e1;
+      --paper-muted: #bfc4bd;
+      --white: #f5f6f1;
+      --muted: #a9b0a9;
+      --line: rgba(238, 244, 235, .14);
+      --line-dark: rgba(16, 19, 17, .16);
+      --aqua: #8be4d0;
+      --green: #b0d28b;
+      --amber: #e5be80;
+      --serif: "Instrument Serif", Georgia, serif;
+      --sans: "Manrope", "DM Sans", "Segoe UI", sans-serif;
+      --content: 1220px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body { margin: 0; background: var(--ink); color: var(--white); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    body.menu-open { overflow: hidden; }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    img { display: block; max-width: 100%; }
+    ::selection { color: var(--ink); background: var(--aqua); }
+    .wrap { width: min(var(--content), calc(100% - 64px)); margin-inline: auto; }
+    .eyebrow { display: flex; gap: 12px; align-items: center; margin: 0 0 22px; color: var(--aqua); font-size: 10px; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
+    .eyebrow::before { width: 25px; height: 1px; background: currentColor; content: ""; }
+    .eyebrow.dark { color: #49695d; }
+    .section { position: relative; padding: 142px 0; border-top: 1px solid var(--line); }
+    .section.light { color: var(--ink); background: var(--paper); border-color: transparent; isolation: isolate; }
+    .section.light::before { position: absolute; z-index: 0; inset: 0 0 auto; height: 120px; background: linear-gradient(180deg, var(--ink) 0%, rgba(16,19,17,.62) 30%, rgba(16,19,17,.2) 68%, transparent 100%); content: ""; pointer-events: none; }
+    .section.light > .wrap { position: relative; z-index: 1; }
+    .section-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 390px); gap: 52px; align-items: end; margin-bottom: 62px; }
+    .section-head h2, .display { margin: 0; font-family: var(--serif); font-size: clamp(48px, 6.5vw, 88px); font-weight: 400; line-height: .95; letter-spacing: 0; }
+    .section-head p { max-width: 390px; margin: 0 0 5px; color: var(--muted); }
+    .light .section-head p { color: #59605a; }
+    .section-head h2 em, .display em { color: var(--aqua); font-weight: 400; }
+    .light .section-head h2 em { color: #457668; }
+    .small-note { color: var(--muted); font-size: 12px; }
+    .light .small-note { color: #656b65; }
+    .rule { height: 1px; background: var(--line); }
+    .light .rule { background: var(--line-dark); }
+    .pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 11px; border: 1px solid var(--line); border-radius: 2px; color: var(--muted); font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+    .pill::before { width: 6px; height: 6px; border-radius: 50%; background: var(--green); content: ""; }
+    .button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 13px; padding: 0 18px; border: 1px solid rgba(255,255,255,.52); background: transparent; color: var(--white); font-size: 12px; font-weight: 600; transition: background .25s ease, color .25s ease, border-color .25s ease; }
+    .button:hover { border-color: var(--aqua); background: var(--aqua); color: var(--ink); }
+    .button svg { width: 15px; height: 15px; }
+    .button.dark-button { border-color: var(--ink); background: var(--ink); color: var(--white); }
+    .button.dark-button:hover { border-color: #477468; background: #477468; }
+
+    /* Navigation */
+    .site-header { position: fixed; z-index: 20; inset: 0 0 auto; border-bottom: 1px solid transparent; transition: background .3s ease, border-color .3s ease; }
+    .site-header.scrolled { border-color: var(--line); background: rgba(16,19,17,.9); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+    .nav { display: flex; height: 76px; align-items: center; justify-content: space-between; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .2em; }
+    .brand-mark { width: 31px; height: 31px; object-fit: contain; }
+    .nav-links { display: flex; align-items: center; gap: clamp(18px, 2.5vw, 35px); }
+    .nav-links a { color: #d5d9d4; font-size: 12px; transition: color .2s ease; }
+    .nav-links a:hover { color: var(--aqua); }
+    .nav-index { color: var(--aqua) !important; font-size: 10px !important; }
+    .menu-toggle { display: none; width: 42px; height: 42px; align-items: center; justify-content: center; border: 1px solid var(--line); background: transparent; }
+    .menu-toggle svg { width: 19px; height: 19px; }
+
+    /* Hero */
+    .hero { position: relative; display: flex; min-height: min(900px, 100svh); align-items: flex-end; overflow: hidden; isolation: isolate; padding: 150px 0 82px; background: #1c2625; }
+    .hero::before { position: absolute; z-index: -2; inset: 0; background: url("assets/aether-hero.png") center 53% / cover; content: ""; filter: saturate(.98) brightness(.82); transform: scale(1.015); animation: hero-drift 36s ease-in-out infinite alternate; }
+    .hero::after { position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, rgba(8,13,11,.55) 0%, rgba(8,13,11,.08) 29%, rgba(8,13,11,.02) 54%, rgba(8,13,11,.82) 100%), linear-gradient(90deg, rgba(8,13,11,.86) 0%, rgba(8,13,11,.58) 39%, rgba(8,13,11,.08) 100%); content: ""; }
+    .hero-copy { position: relative; z-index: 1; max-width: 780px; }
+    .hero-copy > .eyebrow, .hero-lockup, .hero-tagline, .hero-description, .hero-actions { animation: hero-entry .9s cubic-bezier(.2,.7,.2,1) both; }
+    .hero-copy > .eyebrow { animation-delay: .08s; }
+    .hero-lockup { animation-delay: .2s; }
+    .hero-tagline { animation-delay: .34s; }
+    .hero-description { animation-delay: .46s; }
+    .hero-actions { animation-delay: .58s; }
+    .hero .eyebrow { color: #c0ddcf; }
+    .hero-lockup { display: flex; align-items: center; gap: 19px; }
+    .hero-logo { width: 82px; height: 82px; object-fit: contain; }
+    .hero h1 { margin: 0; font-family: var(--serif); font-size: clamp(76px, 11vw, 148px); font-weight: 400; line-height: .84; letter-spacing: 0; }
+    .hero-tagline { margin: 27px 0 0; font-family: var(--serif); font-size: clamp(24px, 3.2vw, 39px); line-height: 1.05; }
+    .hero-description { max-width: 420px; margin: 19px 0 29px; color: #d1d6d1; font-size: 14px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 11px; }
+    .hero-meta { position: absolute; z-index: 1; right: max(32px, calc((100vw - var(--content)) / 2)); bottom: 36px; color: rgba(245,246,241,.68); font-size: 9px; letter-spacing: .13em; text-transform: uppercase; }
+    .hero-meta span { margin-left: 10px; color: var(--aqua); }
+    .hero-scroll-cue { position: absolute; z-index: 1; bottom: 28px; left: 50%; display: flex; align-items: center; gap: 11px; color: rgba(245,246,241,.7); font-size: 8px; letter-spacing: .15em; text-transform: uppercase; transform: translateX(-50%); }
+    .hero-scroll-cue span { width: 29px; height: 1px; background: var(--aqua); animation: cue-pulse 2.2s ease-in-out infinite; }
+    @keyframes hero-entry { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes cue-pulse { 50% { opacity: .35; transform: scaleX(.72); transform-origin: left; } }
+    @keyframes hero-drift { from { transform: scale(1.015) translate3d(0,0,0); } to { transform: scale(1.075) translate3d(-.5%,.6%,0); } }
+
+    /* Problem and concept bridge */
+    .problem-section { position: relative; display: grid; min-height: min(760px, 100svh); grid-template-columns: 1.08fr .92fr; color: var(--ink); background: var(--paper); isolation: isolate; }
+    .problem-section::before { position: absolute; z-index: 2; inset: -3px 0 auto; height: 168px; background: linear-gradient(180deg, var(--ink) 0%, rgba(16,19,17,.62) 32%, rgba(16,19,17,.16) 72%, transparent 100%); content: ""; pointer-events: none; }
+    .problem-image { position: relative; min-height: 650px; margin: 0; overflow: hidden; background: #778980 url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=86") center / cover; }
+    .problem-image::before { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(8,15,13,.63)), linear-gradient(90deg, rgba(8,15,13,.04), transparent 55%); content: ""; }
+    .problem-image::after { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 24.7%, rgba(239,247,239,.17) 24.8% 24.95%, transparent 25.05% 49.7%, rgba(239,247,239,.13) 49.8% 49.95%, transparent 50.05% 74.7%, rgba(239,247,239,.14) 74.8% 74.95%, transparent 75.05%); content: ""; mix-blend-mode: screen; }
+    .problem-image figcaption { position: absolute; z-index: 1; right: 24px; bottom: 22px; left: 24px; color: rgba(255,255,255,.8); font-size: 9px; letter-spacing: .11em; text-transform: uppercase; }
+    .problem-copy { display: flex; flex-direction: column; justify-content: center; padding: clamp(38px, 7vw, 100px); }
+    .problem-copy .eyebrow { color: #49695d; }
+    .problem-copy h2 { max-width: 550px; margin: 0; font-family: var(--serif); font-size: clamp(45px, 5.5vw, 74px); font-weight: 400; line-height: .94; }
+    .problem-copy h2 em { color: #457668; font-weight: 400; }
+    .problem-copy > p { max-width: 430px; margin: 22px 0 28px; color: #59615a; font-size: 13px; }
+    .problem-contrast { border-top: 1px solid var(--line-dark); }
+    .problem-contrast div { display: grid; grid-template-columns: .75fr 1fr; gap: 15px; padding: 13px 0; border-bottom: 1px solid var(--line-dark); }
+    .problem-contrast b { color: #232a25; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .problem-contrast span { color: #59615a; font-size: 11px; }
+    .opening { position: relative; padding: 105px 0 112px; background: var(--ink); isolation: isolate; }
+    .opening::before { position: absolute; z-index: 0; inset: 0 0 auto; height: 105px; background: linear-gradient(180deg, var(--paper) 0%, rgba(233,233,225,.48) 34%, rgba(233,233,225,.12) 70%, transparent 100%); content: ""; pointer-events: none; }
+    .opening > .wrap { position: relative; z-index: 1; }
+    .opening-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 10%; align-items: center; }
+    .opening h2 { max-width: 640px; margin: 0; font-family: var(--serif); font-size: clamp(47px, 6.5vw, 80px); font-weight: 400; line-height: .96; }
+    .opening h2 em { color: var(--aqua); }
+    .opening-copy { padding-top: 0; }
+    .opening-copy p { max-width: 460px; margin: 0 0 25px; color: var(--muted); font-size: 14px; }
+    .concept-bridge { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .concept-bridge span { position: relative; padding: 16px 10px 16px 0; color: #dce3dc; font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+    .concept-bridge span + span { padding-left: 13px; border-left: 1px solid var(--line); }
+    .concept-bridge span::after { display: block; width: 17px; height: 1px; margin-top: 12px; background: var(--aqua); content: ""; }
+
+    /* Concept and optical pathway */
+    .concept { padding-top: 120px; }
+    .concept-visual { position: relative; min-height: 430px; overflow: hidden; border: 1px solid var(--line); background: radial-gradient(ellipse at 48% 52%, rgba(137,228,208,.08), transparent 51%), #131815; }
+    .concept-visual svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .concept-caption { position: absolute; right: 23px; bottom: 20px; color: var(--muted); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+    .flow-legend { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 35px; }
+    .flow-legend div { padding: 0 20px; border-left: 1px solid var(--line); }
+    .flow-legend div:first-child { padding-left: 0; border: 0; }
+    .flow-legend b { display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; }
+    .flow-legend span { display: block; color: var(--muted); font-size: 11px; }
+    .story-progress { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); margin-bottom: 27px; border-bottom: 1px solid var(--line); }
+    .story-progress span { position: relative; min-height: 43px; padding: 0 7px 12px; color: #747d76; font-size: 9px; letter-spacing: .06em; text-transform: uppercase; transition: color .25s ease; }
+    .story-progress span::before { display: block; margin-bottom: 5px; color: #5e6860; content: attr(data-number); font-size: 8px; }
+    .story-progress span[aria-current="step"] { color: var(--white); }
+    .story-progress span[aria-current="step"]::before { color: var(--aqua); }
+    .story-progress span[aria-current="step"]::after { position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: var(--aqua); content: ""; }
+    .scroll-story { display: grid; grid-template-columns: 1.12fr .88fr; gap: 5%; align-items: start; }
+    .story-sticky { position: sticky; top: 100px; z-index: 2; }
+    .optical-scene { min-height: min(62vh, 560px); }
+    .optical-scene .scene-element { opacity: .035; transition: opacity .7s ease, filter .7s ease; }
+    .optical-scene[data-stage="0"] .sun-ray,
+    .optical-scene[data-stage="1"] .sun-ray,
+    .optical-scene[data-stage="2"] .sun-ray,
+    .optical-scene[data-stage="3"] .sun-ray,
+    .optical-scene[data-stage="4"] .sun-ray,
+    .optical-scene[data-stage="5"] .sun-ray,
+    .optical-scene[data-stage="6"] .sun-ray,
+    .optical-scene[data-stage="7"] .sun-ray,
+    .optical-scene[data-stage="8"] .sun-ray { opacity: .78; }
+    .optical-scene[data-stage="1"] .selected-ray,
+    .optical-scene[data-stage="2"] .selected-ray,
+    .optical-scene[data-stage="3"] .selected-ray,
+    .optical-scene[data-stage="4"] .selected-ray,
+    .optical-scene[data-stage="5"] .selected-ray,
+    .optical-scene[data-stage="6"] .selected-ray,
+    .optical-scene[data-stage="7"] .selected-ray,
+    .optical-scene[data-stage="8"] .selected-ray { opacity: 1; }
+    .optical-scene[data-stage="2"] .interaction-mark,
+    .optical-scene[data-stage="3"] .interaction-mark,
+    .optical-scene[data-stage="4"] .interaction-mark,
+    .optical-scene[data-stage="5"] .interaction-mark,
+    .optical-scene[data-stage="6"] .interaction-mark,
+    .optical-scene[data-stage="7"] .interaction-mark,
+    .optical-scene[data-stage="8"] .interaction-mark { opacity: 1; filter: url(#mechanismGlow); }
+    .optical-scene[data-stage="3"] .reemitted-ray,
+    .optical-scene[data-stage="4"] .reemitted-ray,
+    .optical-scene[data-stage="5"] .reemitted-ray,
+    .optical-scene[data-stage="6"] .reemitted-ray,
+    .optical-scene[data-stage="7"] .reemitted-ray,
+    .optical-scene[data-stage="8"] .reemitted-ray,
+    .optical-scene[data-stage="4"] .guided-ray,
+    .optical-scene[data-stage="5"] .guided-ray,
+    .optical-scene[data-stage="6"] .guided-ray,
+    .optical-scene[data-stage="7"] .guided-ray,
+    .optical-scene[data-stage="8"] .guided-ray,
+    .optical-scene[data-stage="5"] .edge-ray,
+    .optical-scene[data-stage="6"] .edge-ray,
+    .optical-scene[data-stage="7"] .edge-ray,
+    .optical-scene[data-stage="8"] .edge-ray,
+    .optical-scene[data-stage="6"] .pv-cell,
+    .optical-scene[data-stage="7"] .pv-cell,
+    .optical-scene[data-stage="8"] .pv-cell,
+    .optical-scene[data-stage="7"] .pv-response,
+    .optical-scene[data-stage="8"] .pv-response,
+    .optical-scene[data-stage="8"] .electric-output,
+    .optical-scene[data-stage="8"] .grid-load { opacity: 1; }
+    .guided-ray { stroke-dasharray: 8 8; animation: dash 4s linear infinite; }
+    .pv-cell, .pv-response, .electric-output, .grid-load { transition-delay: .15s; }
+    .story-beat { display: flex; min-height: 58vh; flex-direction: column; justify-content: center; padding: 35px 0; border-bottom: 1px solid var(--line); opacity: .32; transition: opacity .5s ease; }
+    .story-beat[aria-current="step"] { opacity: 1; }
+    .story-beat .beat-number { margin: 0 0 15px; color: var(--aqua); font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    .story-beat h3 { max-width: 490px; margin: 0 0 13px; font-family: var(--serif); font-size: clamp(34px, 4vw, 51px); font-weight: 400; line-height: .98; }
+    .story-beat p { max-width: 440px; margin: 0; color: var(--muted); font-size: 13px; }
+    .story-footnote { margin-top: 17px !important; color: #879187 !important; font-size: 10px !important; }
+    .path-line { stroke-dasharray: 8 9; animation: dash 4s linear infinite; }
+    .ray { opacity: .16; transition: opacity .3s ease; }
+    .ray.active { opacity: 1; }
+    @keyframes dash { to { stroke-dashoffset: -68; } }
+
+    /* Interactive panel */
+    .panel-section { background: #151a17; }
+    .panel-layout { display: grid; grid-template-columns: 1.25fr .75fr; gap: 9%; align-items: center; }
+    .panel-stage { position: relative; display: grid; min-height: 470px; place-items: center; overflow: hidden; border: 1px solid var(--line); background: radial-gradient(ellipse at 52% 51%, rgba(139,228,208,.1), transparent 48%), #101411; perspective: 1200px; }
+    .panel-object { position: relative; width: min(72%, 490px); aspect-ratio: 1.55; transform: rotateX(var(--panel-tilt-x, 56deg)) rotateZ(var(--panel-tilt-z, -26deg)) scale(var(--panel-scale, 1)); transform-style: preserve-3d; transition: transform .75s cubic-bezier(.2,.8,.2,1); }
+    .panel-object.exploded { transform: rotateX(56deg) rotateZ(-26deg) translateY(-12px); }
+    .panel-layer { position: absolute; inset: 0; border: 1px solid rgba(197,241,231,.53); background: linear-gradient(135deg, rgba(227,248,244,.12), rgba(96,169,154,.025) 48%, rgba(227,248,244,.09)); box-shadow: 0 0 0 1px rgba(255,255,255,.025), 0 14px 28px rgba(0,0,0,.24); transition: transform .75s cubic-bezier(.2,.8,.2,1), border-color .25s ease, background .25s ease; }
+    .panel-layer.glass-front { transform: translateZ(var(--front-depth, 23px)); }
+    .panel-layer.functional-layer { inset: 8px; transform: translateZ(var(--functional-depth, 12px)); border-color: rgba(229,190,128,.65); background: linear-gradient(110deg, transparent, rgba(229,190,128,.11), transparent); }
+    .panel-layer.substrate { transform: translateZ(0); }
+    .panel-layer.frame-layer { inset: -10px; transform: translateZ(var(--frame-depth, -13px)); border-color: rgba(187,195,186,.55); background: transparent; }
+    .panel-lightpath { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; overflow: visible; transform: translateZ(var(--functional-depth, 12px)); opacity: 0; pointer-events: none; transition: opacity .6s ease; }
+    .panel-lightpath path { stroke: #8BE4D0; stroke-width: 2; stroke-dasharray: 12 10; filter: drop-shadow(0 0 4px rgba(139,228,208,.55)); animation: dash 4s linear infinite; }
+    .panel-object.optics-visible .panel-lightpath { opacity: .78; }
+    .panel-object.optics-visible .functional-layer { border-color: rgba(139,228,208,.65); box-shadow: 0 0 19px rgba(139,228,208,.12); }
+    .panel-object.exploded .glass-front { transform: translateZ(71px); }
+    .panel-object.exploded .functional-layer { transform: translateZ(36px); }
+    .panel-object.exploded .frame-layer { transform: translateZ(-37px); }
+    .pv-edge { position: absolute; z-index: 2; display: flex; gap: 5px; padding: 5px; border: 1px solid rgba(229,190,128,.45); background: rgba(10,14,12,.8); transform: translateZ(var(--pv-depth, 25px)); transition: transform .75s cubic-bezier(.2,.8,.2,1); }
+    .pv-edge i { display: block; width: 12px; height: 4px; background: #b99b6c; }
+    .pv-edge.top { top: -7px; left: 24%; right: 24%; }
+    .pv-edge.bottom { bottom: -7px; left: 24%; right: 24%; }
+    .pv-edge.left, .pv-edge.right { top: 24%; bottom: 24%; flex-direction: column; }
+    .pv-edge.left { left: -7px; }
+    .pv-edge.right { right: -7px; }
+    .pv-edge.left i, .pv-edge.right i { width: 4px; height: 12px; }
+    .panel-object.exploded .pv-edge { transform: translateZ(57px); }
+    .panel-hotspot { position: absolute; z-index: 4; display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid rgba(139,228,208,.8); border-radius: 50%; background: rgba(16,19,17,.88); color: var(--aqua); font-size: 12px; cursor: pointer; transform: translateZ(55px); transition: background .2s ease, color .2s ease; }
+    .panel-hotspot:hover, .panel-hotspot[aria-pressed="true"] { background: var(--aqua); color: var(--ink); }
+    .panel-hotspot[data-component="glass"] { top: 10%; left: 17%; }
+    .panel-hotspot[data-component="layer"] { top: 43%; left: 47%; }
+    .panel-hotspot[data-component="pv"] { right: 11%; bottom: 10%; }
+    .panel-hotspot[data-component="frame"] { top: 8%; right: 11%; }
+    .panel-label { position: absolute; left: 23px; top: 20px; color: var(--muted); font-size: 9px; letter-spacing: .13em; text-transform: uppercase; }
+    .panel-info h3 { margin: 0 0 12px; font-family: var(--serif); font-size: 43px; font-weight: 400; line-height: 1; }
+    .panel-info > p { min-height: 70px; margin: 0 0 26px; color: var(--muted); }
+    .component-list { display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 28px; border-top: 1px solid var(--line); }
+    .component-select { padding: 13px 8px 13px 0; border: 0; border-bottom: 1px solid var(--line); background: none; color: #aeb6af; cursor: pointer; text-align: left; font-size: 11px; }
+    .component-select[aria-pressed="true"] { color: var(--aqua); }
+    .component-select span { margin-right: 8px; color: #747d76; font-size: 9px; }
+    .panel-actions { display: flex; align-items: center; gap: 16px; }
+    .quiet-button { padding: 10px 0; border: 0; border-bottom: 1px solid rgba(255,255,255,.45); background: none; color: var(--white); font-size: 11px; cursor: pointer; }
+    .quiet-button:hover { color: var(--aqua); border-color: var(--aqua); }
+
+    /* Materials */
+    .material-grid { display: block; }
+    .material-intro-grid { display: grid; grid-template-columns: .78fr 1.22fr; gap: 10%; align-items: end; margin-bottom: 55px; }
+    .material-aside { position: static; }
+    .material-aside h2 { margin: 0 0 23px; font-family: var(--serif); font-size: clamp(48px, 6vw, 76px); font-weight: 400; line-height: .92; }
+    .material-aside > p { max-width: 350px; color: #5d655e; }
+    .material-context { max-width: 590px; padding: 0 0 5px; color: #5d655e; font-size: 13px; }
+    .material-context p { margin: 0 0 14px; }
+    .material-target { padding-left: 12px; border-left: 2px solid #628d7a; color: #47564d; font-size: 11px; }
+    .material-progress { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); margin-bottom: 25px; border-bottom: 1px solid var(--line-dark); }
+    .material-progress span { position: relative; min-height: 45px; padding: 0 6px 12px; color: #778078; font-size: 9px; letter-spacing: .055em; text-transform: uppercase; transition: color .25s ease; }
+    .material-progress span::before { display: block; margin-bottom: 5px; color: #939a92; content: attr(data-number); font-size: 8px; }
+    .material-progress span[aria-current="step"] { color: #17211b; }
+    .material-progress span[aria-current="step"]::before { color: #457668; }
+    .material-progress span[aria-current="step"]::after { position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: #457668; content: ""; }
+    .material-scroll-story { display: grid; grid-template-columns: 1.12fr .88fr; gap: 5%; align-items: start; }
+    .material-art-sticky { position: sticky; top: 100px; z-index: 2; }
+    .material-art { position: relative; min-height: min(62vh, 560px); overflow: hidden; border: 1px solid rgba(16,19,17,.15); background: radial-gradient(ellipse at 52% 52%, #f7f6ec, #dce2d9 74%); }
+    .material-art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .material-illustration { opacity: 0; transition: opacity .65s ease; }
+    .material-illustration.active { opacity: 1; }
+    .material-art-caption { position: absolute; right: 17px; bottom: 15px; left: 17px; display: flex; justify-content: space-between; gap: 15px; color: #59665d; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+    .material-beat { display: flex; min-height: 52vh; flex-direction: column; justify-content: center; padding: 35px 0; border-bottom: 1px solid var(--line-dark); opacity: .34; transition: opacity .5s ease; }
+    .material-beat[aria-current="step"] { opacity: 1; }
+    .material-beat .beat-number { margin: 0 0 13px; color: #547366; font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+    .material-beat h3 { max-width: 510px; margin: 0 0 12px; font-family: var(--serif); font-size: clamp(32px, 3.8vw, 48px); font-weight: 400; line-height: .98; }
+    .material-beat p { max-width: 460px; margin: 0; color: #5e665f; font-size: 13px; }
+    .material-beat .phase-warning { display: inline-block; margin-top: 13px; padding: 7px 10px; border: 1px solid rgba(153,107,64,.28); color: #785736; font-size: 10px; }
+
+    /* Photovoltaic concept */
+    .pv-section { overflow: hidden; }
+    .pv-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 8%; align-items: center; }
+    .pv-copy h2 { margin: 0 0 24px; font-family: var(--serif); font-size: clamp(44px, 5.7vw, 72px); font-weight: 400; line-height: .96; }
+    .pv-copy > p { max-width: 410px; color: var(--muted); }
+    .pv-stat { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 36px; }
+    .pv-stat div { padding-top: 13px; border-top: 1px solid var(--line); }
+    .pv-stat b { display: block; margin-bottom: 5px; font-family: var(--serif); font-size: 27px; font-weight: 400; }
+    .pv-stat span { color: var(--muted); font-size: 10px; }
+    .spectrum { padding: 32px; border: 1px solid var(--line); background: #141916; }
+    .spectrum-title { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 27px; color: var(--muted); font-size: 10px; }
+    .spectrum-bar { position: relative; height: 48px; margin: 0 0 25px; border: 1px solid rgba(255,255,255,.15); background: linear-gradient(90deg, #9aafad 0 12%, #626f9f 22%, #9166a0 32%, #bf6077 42%, #d59261 54%, #cfbf6c 65%, #83af78 78%, #576d84 100%); opacity: .82; }
+    .spectrum-bar::after { position: absolute; top: -5px; bottom: -5px; left: 69%; width: 1px; background: white; box-shadow: 0 0 14px rgba(255,255,255,.9); content: ""; }
+    .spectrum-labels { display: flex; justify-content: space-between; margin-bottom: 30px; color: #8e9990; font-size: 9px; }
+    .spectrum-markers { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .spectrum-marker { padding: 12px 0 0; border-top: 1px solid var(--line); }
+    .spectrum-marker b { display: block; margin-bottom: 5px; color: var(--white); font-size: 11px; }
+    .spectrum-marker span { color: var(--muted); font-size: 9px; }
+    .concept-disclaimer { margin: 24px 0 0; color: var(--muted); font-size: 10px; }
+
+    /* Planned system */
+    .system-section { background: #141916; }
+    .system-shell { display: grid; grid-template-columns: 1fr 290px; border: 1px solid var(--line); }
+    .system-flow { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .system-node { position: relative; min-height: 158px; padding: 21px 19px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: transparent; color: var(--white); }
+    .system-node:nth-child(4n) { border-right: 0; }
+    .system-node:nth-child(n+5) { border-bottom: 0; }
+    .system-node small { display: block; margin-bottom: 14px; color: var(--aqua); font-size: 9px; letter-spacing: .13em; }
+    .system-node b { display: block; font-size: 12px; font-weight: 600; }
+    .system-node p { margin: 9px 0 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
+    .system-detail { display: flex; flex-direction: column; justify-content: space-between; min-height: 268px; padding: 25px; border-left: 1px solid var(--line); background: #101411; }
+    .system-detail span { color: var(--aqua); font-size: 9px; letter-spacing: .13em; text-transform: uppercase; }
+    .system-detail h3 { margin: 14px 0 10px; font-family: var(--serif); font-size: 31px; font-weight: 400; line-height: 1; }
+    .system-detail p { margin: 0; color: var(--muted); font-size: 12px; }
+    .system-status { display: flex; align-items: center; gap: 9px; margin-top: 22px; color: #d5ddd5; font-size: 10px; }
+    .system-status::before { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); content: ""; }
+    .future-strip { display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; margin-top: 22px; padding: 20px 22px; border: 1px solid var(--line); }
+    .future-strip b { font-size: 12px; font-weight: 600; }
+    .future-strip p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
+    .future-strip span { color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+
+    /* Application settings */
+    .applications { padding-bottom: 138px; }
+    .application-grid { display: grid; grid-template-columns: 1.35fr 1fr 1fr; gap: 12px; }
+    .application { position: relative; min-height: 390px; overflow: hidden; background: #25322f; }
+    .application:nth-child(2) { transition-delay: .12s; }
+    .application:nth-child(3) { transition-delay: .24s; }
+    .application::before { position: absolute; inset: 0; background-position: center; background-size: cover; content: ""; transition: transform .7s ease; }
+    .application:hover::before { transform: scale(1.035); }
+    .application::after { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10,15,13,.88), transparent 68%); content: ""; }
+    .application:nth-child(1)::before { background-image: url("https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1100&q=82"); }
+    .application:nth-child(2)::before { background-image: url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1000&q=82"); }
+    .application:nth-child(3)::before { background-image: url("https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1000&q=82"); }
+    .application-content { position: absolute; z-index: 1; right: 23px; bottom: 21px; left: 23px; }
+    .application-content span { color: var(--aqua); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; }
+    .application-content h3 { margin: 7px 0 5px; font-family: var(--serif); font-size: 32px; font-weight: 400; line-height: 1; }
+    .application-content p { max-width: 270px; margin: 0; color: #d2d8d2; font-size: 11px; }
+    .image-note { margin: 15px 0 0; color: var(--muted); font-size: 10px; }
+
+    /* Why / sustainability */
+    .contrast { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); }
+    .contrast article { min-height: 255px; padding: 30px; }
+    .contrast article + article { border-left: 1px solid var(--line); background: rgba(139,228,208,.045); }
+    .contrast small { color: var(--muted); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; }
+    .contrast h3 { margin: 35px 0 10px; font-family: var(--serif); font-size: 38px; font-weight: 400; }
+    .contrast p { max-width: 370px; margin: 0; color: var(--muted); font-size: 12px; }
+    .contrast-note { margin: 22px 0 0; color: var(--white); font-family: var(--serif); font-size: 26px; }
+    .sustainability-grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 78px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .sustainability-item { min-height: 175px; padding: 23px 22px 24px 0; }
+    .sustainability-item + .sustainability-item { padding-left: 22px; border-left: 1px solid var(--line); }
+    .sustainability-item span { color: var(--green); font-size: 10px; }
+    .sustainability-item h3 { margin: 20px 0 8px; font-family: var(--serif); font-size: 27px; font-weight: 400; }
+    .sustainability-item p { margin: 0; color: var(--muted); font-size: 11px; }
+    .sdg-row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 26px; }
+    .sdg { display: flex; min-width: 0; min-height: 82px; align-items: center; gap: 11px; padding: 10px; border: 1px solid var(--line); color: #d9dfd8; transition: border-color .25s ease, background .25s ease, transform .25s ease; }
+    .sdg:hover, .sdg:focus-visible { transform: translateY(-2px); border-color: rgba(139,228,208,.48); background: rgba(139,228,208,.045); }
+    .sdg:focus-visible { outline: 2px solid var(--aqua); outline-offset: 3px; }
+    .sdg img { width: 58px; height: 58px; flex: 0 0 auto; object-fit: cover; }
+    .sdg span { display: grid; gap: 3px; font-size: 10px; line-height: 1.35; }
+    .sdg b { color: var(--green); font-size: 11px; }
+
+    /* Roadmap and status */
+    .roadmap { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .roadmap-step { position: relative; min-height: 155px; padding: 23px 20px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .roadmap-step:nth-child(2), .roadmap-step:nth-child(6) { transition-delay: .08s; }
+    .roadmap-step:nth-child(3), .roadmap-step:nth-child(7) { transition-delay: .16s; }
+    .roadmap-step:nth-child(4), .roadmap-step:nth-child(8) { transition-delay: .24s; }
+    .roadmap-step.current { background: rgba(139,228,208,.055); }
+    .roadmap-step small { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; }
+    .roadmap-step.current small { color: var(--aqua); }
+    .roadmap-step small::before { width: 6px; height: 6px; border: 1px solid currentColor; border-radius: 50%; content: ""; }
+    .roadmap-step.current small::before { border: 0; background: var(--aqua); }
+    .roadmap-step h3 { margin: 24px 0 4px; font-size: 13px; font-weight: 600; }
+    .roadmap-step p { margin: 0; color: var(--muted); font-size: 10px; }
+    .status-band { display: grid; grid-template-columns: .8fr 1.2fr; gap: 8%; align-items: start; margin-top: 88px; padding: 35px 0 0; border-top: 1px solid var(--line); }
+    .status-band h3 { margin: 0; font-family: var(--serif); font-size: 43px; font-weight: 400; line-height: .98; }
+    .status-band p { max-width: 580px; margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+    .status-band .status-label { display: inline-block; margin-bottom: 15px; color: var(--aqua); font-size: 9px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+
+    /* Illustrative model */
+    .model-section { padding: 92px 0; background: #151a17; }
+    .model-section .section-head { gap: 40px; margin-bottom: 38px; }
+    .model-section .section-head h2 { font-size: clamp(36px, 3.6vw, 48px); }
+    .model-section .section-head .eyebrow { margin-bottom: 14px; }
+    .model-section .section-head > p { max-width: 410px; font-size: 14px; line-height: 1.55; }
+    .model-shell { display: grid; grid-template-columns: 1.12fr .88fr; align-items: stretch; border: 1px solid var(--line); }
+    .model-visual { position: relative; grid-column: 1; grid-row: 1; width: 100%; aspect-ratio: 1.42; min-height: 0; align-self: center; margin: 0; overflow: hidden; border-right: 1px solid var(--line); background: radial-gradient(ellipse at 23% 25%, rgba(229,190,128,.16), transparent 32%), linear-gradient(180deg, #25332d, #111713 80%); }
+    .model-visual::before { position: absolute; z-index: 0; inset: 0; background: linear-gradient(90deg, rgba(11,17,14,.14), rgba(11,17,14,.03) 56%, rgba(11,17,14,.22)), linear-gradient(0deg, rgba(11,17,14,.48), transparent 56%); content: ""; pointer-events: none; }
+    .model-visual svg { position: relative; z-index: 1; display: block; width: 100%; height: 100%; }
+    .model-visual figcaption { position: absolute; z-index: 2; right: 15px; bottom: 13px; left: 15px; color: #eef3ea; font-size: 12px; text-shadow: 0 1px 4px #101311; }
+    .model-sun-aura { transition: opacity .45s ease, r .45s ease; }
+    .model-sun-core { transition: r .45s ease; }
+    .model-rays { transition: opacity .45s ease; }
+    .model-light-path { stroke-dasharray: 10 10; animation: model-flow var(--flow-duration, 3s) linear infinite; transition: opacity .25s ease; }
+    .model-electricity { opacity: .12; transition: opacity .3s ease; }
+    @keyframes model-flow { to { stroke-dashoffset: -80; } }
+    .model-panels { display: flex; grid-column: 2; grid-row: 1; flex-direction: column; justify-content: center; }
+    .model-controls { padding: 28px 30px 22px; }
+    .model-output { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 15px; padding: 22px 30px; border-top: 1px solid var(--line); background: #101411; }
+    .model-controls h3 { margin: 0 0 20px; font-family: var(--serif); font-size: 24px; font-weight: 400; }
+    .range-control { display: block; margin: 18px 0 22px; }
+    .range-top { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 4px; font-size: 12px; }
+    .range-top output { color: var(--aqua); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .range-scale { display: flex; justify-content: space-between; margin-top: -4px; color: #828c84; font-size: 10px; font-variant-numeric: tabular-nums; }
+    input[type="range"] { display: block; width: 100%; height: 44px; margin: 0; padding: 0; appearance: none; background: transparent; cursor: pointer; touch-action: pan-y; }
+    input[type="range"]::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(to right, var(--aqua) 0 var(--range-progress, 50%), #3d4941 var(--range-progress, 50%) 100%); }
+    input[type="range"]::-moz-range-track { height: 6px; border-radius: 999px; background: #3d4941; }
+    input[type="range"]::-moz-range-progress { height: 6px; border-radius: 999px; background: var(--aqua); }
+    input[type="range"]::-webkit-slider-thumb { width: 22px; height: 22px; margin-top: -8px; appearance: none; border: 3px solid var(--ink); border-radius: 50%; background: var(--aqua); box-shadow: 0 0 0 1px var(--aqua), 0 0 16px rgba(139,228,208,.32); cursor: grab; }
+    input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border: 3px solid var(--ink); border-radius: 50%; background: var(--aqua); box-shadow: 0 0 0 1px var(--aqua), 0 0 16px rgba(139,228,208,.32); cursor: grab; }
+    input[type="range"]:active::-webkit-slider-thumb { cursor: grabbing; }
+    input[type="range"]:active::-moz-range-thumb { cursor: grabbing; }
+    input[type="range"]:focus-visible { outline: 2px solid var(--aqua); outline-offset: 2px; }
+    .model-live-readout { display: grid; gap: 8px; align-content: center; }
+    .model-live-readout span { color: var(--muted); font-size: 12px; }
+    .model-live-readout strong { color: var(--aqua); font-family: var(--serif); font-size: clamp(38px, 4vw, 53px); font-weight: 400; line-height: .92; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .model-daily { padding-left: 18px; border-left: 1px solid var(--line); }
+    .model-daily span { display: block; margin-bottom: 6px; color: var(--muted); font-size: 10px; }
+    .model-daily strong { color: var(--white); font-size: 17px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .model-area { grid-column: 1 / -1; margin: 0; color: #9da79e; font-size: 10px; }
+    .model-disclaimer { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
+    .model-method-link { grid-column: 1 / -1; justify-self: start; margin-top: -6px; color: var(--aqua); font-size: 11px; text-decoration: underline; text-decoration-color: rgba(139,228,208,.45); text-underline-offset: 4px; transition: color .2s ease, text-decoration-color .2s ease; }
+    .model-method-link:hover, .model-method-link:focus-visible { color: var(--white); text-decoration-color: currentColor; }
+    .model-method-link:focus-visible { outline: 2px solid var(--aqua); outline-offset: 4px; }
+    .model-error { margin: 12px 0 0; color: #ffb4a9; font-size: 12px; }
+    .model-error:empty { display: none; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    /* Reference, about, close */
+    .reference-list { border-top: 1px solid var(--line); }
+    details { border-bottom: 1px solid var(--line); }
+    summary { display: flex; min-height: 65px; align-items: center; justify-content: space-between; gap: 25px; list-style: none; cursor: pointer; }
+    summary::-webkit-details-marker { display: none; }
+    summary b { font-size: 13px; font-weight: 500; }
+    summary span { color: var(--aqua); font-size: 20px; transition: transform .2s ease; }
+    details[open] summary span { transform: rotate(45deg); }
+    details p { max-width: 750px; margin: -2px 0 24px; color: var(--muted); font-size: 12px; }
+    .oman-band { display: grid; grid-template-columns: .7fr 1.3fr; gap: 9%; align-items: center; margin-top: 80px; padding: 31px; border: 1px solid var(--line); background: linear-gradient(105deg, rgba(139,228,208,.08), transparent 75%); }
+    .oman-band h3 { margin: 0; font-family: var(--serif); font-size: 37px; font-weight: 400; }
+    .oman-band p { margin: 0; color: var(--muted); font-size: 12px; }
+    .city-section { overflow: hidden; background: #121714; }
+    .city-visual { position: relative; min-height: 400px; overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #17201c, #101512 82%); }
+    .city-visual svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .city-light { opacity: .08; transition: opacity .8s ease; }
+    .city-visual.visible .city-light { opacity: .8; }
+    .city-light:nth-of-type(2n) { transition-delay: .16s; }
+    .city-light:nth-of-type(3n) { transition-delay: .28s; }
+    .city-visual figcaption { position: absolute; right: 17px; bottom: 15px; left: 17px; display: flex; justify-content: space-between; gap: 15px; color: #a7b2a8; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+    .city-statement { display: grid; grid-template-columns: 1fr .72fr; gap: 8%; align-items: end; margin-top: 39px; }
+    .city-statement h3 { max-width: 650px; margin: 0; font-family: var(--serif); font-size: clamp(37px, 5vw, 62px); font-weight: 400; line-height: .97; }
+    .city-statement p { margin: 0 0 4px; color: var(--muted); font-size: 12px; }
+    .about-section { padding: 105px 0 115px; }
+    .about-grid { display: grid; grid-template-columns: .7fr 1.3fr; gap: 10%; }
+    .about-name { color: var(--aqua); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+    .about-grid h2 { margin: 17px 0 13px; font-family: var(--serif); font-size: 45px; font-weight: 400; line-height: 1; }
+    .about-grid p { max-width: 600px; margin: 0 0 18px; color: var(--muted); }
+    .discipline-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 25px; }
+    .discipline-list span { padding: 7px 10px; border: 1px solid var(--line); color: #d3d8d2; font-size: 10px; }
+    .press-section { padding: 110px 0; border-top: 1px solid var(--line); background: #141916; }
+    .press-feature { display: grid; grid-template-columns: .82fr 1.18fr; gap: 8%; align-items: center; }
+    .press-image { margin: 0; padding: 9px; border: 1px solid var(--line); background: #F4F2EA; }
+    .press-image img { width: 100%; height: auto; }
+    .press-image figcaption { margin-top: 8px; color: #586157; font-size: 12px; }
+    .press-copy h2 { margin: 0 0 18px; font-family: var(--serif); font-size: clamp(42px, 5.5vw, 68px); font-weight: 400; line-height: .95; }
+    .press-copy > p { max-width: 510px; margin: 0 0 15px; color: var(--muted); font-size: 16px; line-height: 1.55; }
+    .press-copy .press-caveat { color: #8f9990; font-size: 13px; }
+    .video-section { padding: 86px 0; border-top: 1px solid var(--line); background: #141916; }
+    .video-layout { display: grid; grid-template-columns: .72fr 1.28fr; gap: 7%; align-items: center; }
+    .video-copy h2 { margin: 0 0 16px; font-family: var(--serif); font-size: clamp(42px, 5vw, 65px); font-weight: 400; line-height: .95; }
+    .video-copy p { max-width: 330px; margin: 0; color: var(--muted); font-size: 13px; }
+    .video-frame { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid var(--line); background: #080a09; }
+    .video-thumb { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; color: var(--ink); }
+    .video-thumb::after { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,15,14,.24), rgba(10,15,14,.08) 55%, rgba(10,15,14,.28)), linear-gradient(0deg, rgba(10,15,14,.42), transparent 55%); content: ""; }
+    .video-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.78); transition: transform .5s ease, filter .5s ease; }
+    .video-thumb:hover img { transform: scale(1.025); filter: brightness(.9); }
+    .video-play { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 11px; padding: 13px 18px; background: rgba(245,246,241,.96); color: #101311; font-size: 14px; font-weight: 600; }
+    .video-play svg { width: 18px; height: 18px; color: #d8312f; }
+    .video-thumb:focus-visible { outline: 3px solid var(--aqua); outline-offset: -5px; }
+    .maker-section { padding: 115px 0; border-top: 1px solid var(--line); background: #121714; }
+    .maker-grid { display: grid; grid-template-columns: .78fr 1.22fr; gap: 9%; align-items: center; }
+    .maker-portrait { position: relative; width: 100%; max-width: 390px; aspect-ratio: 4 / 5; margin: 0; overflow: hidden; background: #d8d9d4; }
+    .maker-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center 38%; filter: saturate(.78); }
+    .maker-note h2 { margin: 0 0 23px; font-family: var(--serif); font-size: clamp(45px, 6vw, 74px); font-weight: 400; line-height: .95; }
+    .maker-note blockquote { max-width: 650px; margin: 0; color: #d5dad4; font-family: var(--serif); font-size: clamp(23px, 3vw, 34px); line-height: 1.23; }
+    .maker-signature { margin-top: 28px; color: var(--aqua); font-size: 10px; letter-spacing: .13em; text-transform: uppercase; }
+    .contact-section { padding: 82px 0 92px; border-top: 1px solid var(--line); background: #101311; }
+    .contact-head { display: flex; justify-content: space-between; gap: 30px; align-items: end; margin-bottom: 39px; }
+    .contact-head h2 { margin: 0; font-family: var(--serif); font-size: clamp(48px, 6vw, 76px); font-weight: 400; line-height: .92; }
+    .contact-head p { max-width: 310px; margin: 0 0 4px; color: var(--muted); font-size: 12px; }
+    .contact-list { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .contact-item { min-height: 105px; padding: 17px 18px 16px 0; }
+    .contact-item + .contact-item { padding-left: 18px; border-left: 1px solid var(--line); }
+    .contact-item span { display: block; margin-bottom: 15px; color: var(--muted); font-size: 9px; letter-spacing: .13em; text-transform: uppercase; }
+    .contact-item a, .contact-item b { color: var(--white); font-size: 13px; font-weight: 500; }
+    .contact-item a:hover { color: var(--aqua); }
+    .contact-item .contact-pending { color: #858d86; font-size: 11px; }
+    .contact-item .contact-subaction { display: block; margin-top: 8px; color: var(--muted); font-size: 10px; }
+    .closing { position: relative; display: flex; min-height: 550px; align-items: center; overflow: hidden; isolation: isolate; padding: 90px 0; background: #1e2927; }
+    .closing::before { position: absolute; z-index: -2; inset: 0; background: url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2200&q=82") center 57% / cover; content: ""; filter: saturate(.65); transform: scale(1.02); }
+    .closing::after { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, rgba(10,15,14,.78), rgba(10,15,14,.28)), linear-gradient(0deg, rgba(10,15,14,.56), transparent 75%); content: ""; }
+    .closing h2 { max-width: 800px; margin: 0 0 28px; font-family: var(--serif); font-size: clamp(52px, 8vw, 102px); font-weight: 400; line-height: .9; }
+    .closing-brand { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: .22em; }
+    .closing-tagline { margin: 6px 0 0; color: #d9e0d9; font-family: var(--serif); font-size: 23px; }
+    footer { padding: 23px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; }
+    .footer-inner a { color: var(--white); }
+    .ai-note { margin: 12px 0 0; color: #879187; font-size: 11px; line-height: 1.4; text-align: right; }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    body :is(.section-head p, .small-note, .hero-description, .problem-copy > p, .problem-contrast span, .opening-copy p, .concept-bridge span, .flow-legend span, .story-beat p:not(.beat-number), .panel-info > p, .material-context, .material-target, .material-beat p:not(.beat-number), .pv-copy > p, .system-node p, .system-detail p, .future-strip p, .application-content p, .image-note, .contrast p, .sustainability-item p, .roadmap-step p, .status-band p, .oman-band p, .city-statement p, details p, .about-grid p, .video-copy p, .contact-head p) { font-size: 16px; line-height: 1.55; }
+    body :is(.button, .component-select, .quiet-button, .pv-stat span, .spectrum-marker span, .system-node b, .future-strip b, .roadmap-step h3, summary b, .discipline-list span, .contact-item a, .contact-item b, .contact-item .contact-subaction, footer) { font-size: 14px; }
+    body :is(.eyebrow, .nav-index, .problem-image figcaption, .concept-caption, .story-progress span, .story-beat .beat-number, .panel-label, .material-progress span, .material-beat .beat-number, .phase-warning, .spectrum-title, .spectrum-labels, .spectrum-marker b, .concept-disclaimer, .system-node small, .system-detail span, .system-status, .future-strip span, .application-content span, .contrast small, .sustainability-item span, .sdg, .roadmap-step small, .status-band .status-label, .city-visual figcaption, .about-name, .maker-signature, .contact-item span, .hero-meta, .hero-scroll-cue) { font-size: 12px; }
+    .story-progress span::before, .material-progress span::before { font-size: 10px; }
+
+    @media (max-width: 900px) {
+      .nav-links { gap: 15px; }
+      .nav-links a { font-size: 12px; }
+      .nav-index { display: none; }
+      .panel-layout, .pv-layout { grid-template-columns: 1fr; gap: 48px; }
+      .panel-stage { min-height: 430px; }
+      .panel-info { max-width: 620px; }
+      .system-shell { grid-template-columns: 1fr; }
+      .system-detail { min-height: auto; gap: 20px; border-top: 1px solid var(--line); border-left: 0; }
+      .application { min-height: 330px; }
+      .roadmap { grid-template-columns: repeat(2, 1fr); }
+      .model-shell { grid-template-columns: 1fr; }
+      .model-visual, .model-panels { grid-column: auto; grid-row: auto; }
+      .model-visual { aspect-ratio: 1.8; }
+      .model-panels { display: grid; grid-template-columns: 1fr 1fr; }
+      .model-output { min-height: 0; border-top: 0; border-left: 1px solid var(--line); }
+      .city-statement { grid-template-columns: 1fr; gap: 20px; }
+      .maker-grid { grid-template-columns: .8fr 1.2fr; gap: 6%; }
+      .video-layout { grid-template-columns: 1fr; gap: 30px; }
+      .press-feature { grid-template-columns: 1fr; gap: 35px; }
+    }
+    @media (max-width: 780px) {
+      .menu-toggle { display: inline-flex; }
+      .nav-links { position: fixed; inset: 76px 0 0; display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 18px 22px 40px; background: var(--ink); opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity .2s ease, transform .2s ease; }
+      .menu-open .nav-links { opacity: 1; pointer-events: auto; transform: translateY(0); }
+      .nav-links a { padding: 18px 3px; border-bottom: 1px solid var(--line); font-size: 15px; }
+    }
+    @media (max-width: 680px) {
+      .wrap { width: min(var(--content), calc(100% - 40px)); }
+      .section { padding: 92px 0; }
+      .section-head { grid-template-columns: 1fr; gap: 21px; margin-bottom: 39px; }
+      .section-head h2 { font-size: clamp(47px, 13vw, 70px); }
+      .nav { height: 66px; }
+      .menu-toggle { display: inline-flex; }
+      .nav-links { position: fixed; inset: 66px 0 0; display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 18px 22px 40px; background: rgba(16,19,17,.98); opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity .2s ease, transform .2s ease; }
+      .menu-open .nav-links { opacity: 1; pointer-events: auto; transform: translateY(0); }
+      .nav-links a { padding: 18px 3px; border-bottom: 1px solid var(--line); font-size: 15px; }
+      .nav-index { display: none; }
+      .nav-links { inset: 66px 0 0; }
+      .hero { min-height: 760px; min-height: 92svh; padding: 130px 0 76px; }
+      .hero::before { background-position: 57% center; }
+      .hero::after { background: linear-gradient(90deg, rgba(10,15,14,.73), rgba(10,15,14,.18)), linear-gradient(0deg, rgba(10,15,14,.82), transparent 70%); }
+      .hero h1 { font-size: clamp(68px, 17vw, 96px); }
+      .hero-lockup { gap: 12px; }
+      .hero-logo { width: 56px; height: 56px; }
+      .hero-description { max-width: 330px; font-size: 13px; }
+      .hero-meta { right: 20px; bottom: 43px; font-size: 7px; }
+      .hero-scroll-cue { bottom: 14px; }
+      .problem-section { min-height: 0; grid-template-columns: 1fr; }
+      .problem-image { min-height: 0; height: 42svh; max-height: 380px; background-position: center 48%; }
+      .problem-copy { padding: 48px 24px 55px; }
+      .problem-copy h2 { font-size: clamp(49px, 13vw, 67px); }
+      .opening { padding: 86px 0 93px; }
+      .opening-grid, .material-grid, .status-band, .about-grid, .oman-band { grid-template-columns: 1fr; gap: 32px; }
+      .material-intro-grid { grid-template-columns: 1fr; gap: 7px; margin-bottom: 35px; }
+      .opening h2 { font-size: clamp(48px, 13vw, 69px); }
+      .opening-copy { padding-top: 0; }
+      .opening-question { font-size: 26px; }
+      .concept-visual { min-height: 280px; }
+      .concept-visual svg { width: 150%; max-width: none; left: -25%; }
+      .concept-caption { right: 10px; bottom: 10px; font-size: 8px; }
+      .flow-legend { grid-template-columns: 1fr; gap: 17px; }
+      .flow-legend div, .flow-legend div:first-child { padding: 0 0 0 13px; border-left: 1px solid var(--line); }
+      .flow-legend b { margin-bottom: 3px; }
+      .story-progress { grid-template-columns: repeat(3, 1fr); row-gap: 9px; }
+      .scroll-story { grid-template-columns: 1fr; gap: 0; }
+      .story-sticky { top: 74px; }
+      .optical-scene { min-height: 34vh; height: 290px; }
+      .story-beat { min-height: 43vh; }
+      .story-beat h3 { font-size: 35px; }
+      .material-progress { grid-template-columns: repeat(4, 1fr); row-gap: 7px; }
+      .material-scroll-story { grid-template-columns: 1fr; gap: 0; }
+      .material-art-sticky { top: 74px; }
+      .material-art { min-height: 34vh; height: 290px; }
+      .material-beat { min-height: 43vh; }
+      .city-visual { min-height: 300px; }
+      .maker-section { padding: 82px 0; }
+      .press-section { padding: 82px 0; }
+      .maker-grid { grid-template-columns: 1fr; gap: 32px; }
+      .maker-portrait { width: min(100%, 360px); aspect-ratio: 1 / 1; }
+      .contact-head { display: block; }
+      .contact-head p { margin-top: 18px; }
+      .contact-list { grid-template-columns: 1fr; }
+      .contact-item + .contact-item { padding-left: 0; border-top: 1px solid var(--line); border-left: 0; }
+      .model-visual { aspect-ratio: 1.35; }
+      .model-panels { grid-template-columns: 1fr; }
+      .model-output { border-top: 1px solid var(--line); border-left: 0; }
+      .panel-stage { min-height: 330px; }
+      .panel-object { width: 69%; }
+      .panel-label { top: 13px; left: 13px; }
+      .panel-info h3 { font-size: 38px; }
+      .material-aside { position: static; }
+      .material-aside h2 { font-size: 61px; }
+      .material-evolution { margin-left: 7px; }
+      .pv-stat { margin-top: 25px; }
+      .spectrum { padding: 19px; }
+      .spectrum-markers { grid-template-columns: 1fr; gap: 9px; }
+      .spectrum-marker { padding-top: 8px; }
+      .system-flow { grid-template-columns: repeat(2, 1fr); }
+      .system-node { min-height: 142px; padding: 17px 13px; border-bottom: 1px solid var(--line) !important; }
+      .system-node:nth-child(2n) { border-right: 0; }
+      .system-node:nth-child(n+7) { border-bottom: 0 !important; }
+      .future-strip { grid-template-columns: 1fr; gap: 10px; }
+      .application-grid { grid-template-columns: 1fr; gap: 10px; }
+      .application { min-height: 300px; }
+      .contrast { grid-template-columns: 1fr; }
+      .contrast article { min-height: 215px; padding: 24px; }
+      .contrast article + article { border-top: 1px solid var(--line); border-left: 0; }
+      .sdg-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sdg { gap: 8px; padding: 8px; }
+      .sdg img { width: 46px; height: 46px; }
+      .sdg span { font-size: 9px; }
+      .sdg b { font-size: 10px; }
+      .model-panels { display: flex; flex-direction: column; }
+      .model-output { border-top: 1px solid var(--line); border-left: 0; }
+      .contrast h3 { margin-top: 26px; }
+      .sustainability-grid { grid-template-columns: 1fr; margin-top: 50px; }
+      .sustainability-item { min-height: auto; padding: 20px 0; }
+      .sustainability-item + .sustainability-item { padding-left: 0; border-top: 1px solid var(--line); border-left: 0; }
+      .sustainability-item h3 { margin: 12px 0 5px; }
+      .roadmap-step { min-height: 142px; padding: 18px 13px; }
+      .roadmap-step h3 { margin-top: 19px; }
+      .status-band { margin-top: 60px; padding-top: 26px; }
+      .status-band h3 { font-size: 39px; }
+      .model-controls, .model-output { padding: 22px; }
+      .oman-band { gap: 15px; margin-top: 50px; padding: 22px; }
+      .about-section { padding: 80px 0; }
+      .closing { min-height: 480px; }
+      .closing h2 { font-size: clamp(53px, 14vw, 78px); }
+      .footer-inner { flex-direction: column; gap: 7px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+      .optical-scene .photon { display: none; }
+    }
+    .site-header { inset: 17px 0 auto; border: 0; pointer-events: none; }
+    .site-header.scrolled { border-color: transparent; background: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+    .nav { width: min(1120px, calc(100% - 64px)); height: 68px; padding: 0 20px; border: 1px solid rgba(238,244,235,.17); border-radius: 999px; background: rgba(13,19,17,.64); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); pointer-events: auto; transition: background .35s ease, border-color .35s ease, box-shadow .35s ease; }
+    .site-header.scrolled .nav { border-color: rgba(238,244,235,.11); background: rgba(13,19,17,.9); box-shadow: 0 12px 40px rgba(0,0,0,.2); }
+    .nav-links { gap: clamp(18px, 2.3vw, 34px); }
+    .nav-links a { position: relative; white-space: nowrap; }
+    .nav-links a::after { position: absolute; right: 0; bottom: -7px; left: 0; height: 1px; background: var(--aqua); content: ""; transform: scaleX(0); transform-origin: left; transition: transform .3s ease; }
+    .nav-links a:hover::after, .nav-links a:focus-visible::after { transform: scaleX(1); }
+    .nav-index { display: none; }
+    .section { border-top: 0; scroll-margin-top: 105px; }
+    .section + .section, .contact-section, .maker-section { border-top: 0; }
+    .section.light { color: var(--white); background: transparent; }
+    .section.light::before { display: none; }
+    .press-section, .video-section, .maker-section, .contact-section { border-top: 0; }
+    .light .section-head p, .light .small-note { color: var(--muted); }
+    .light .section-head h2 em { color: var(--aqua); }
+    .problem-section { color: var(--white); background: transparent; }
+    .problem-copy .eyebrow { color: var(--aqua); }
+    .problem-copy h2 em { color: var(--aqua); }
+    .problem-copy > p, .problem-contrast span { color: var(--muted); }
+    .problem-contrast { border-color: var(--line); }
+    .problem-contrast div { border-color: var(--line); }
+    .problem-contrast b { color: var(--white); }
+    .opening::before { display: none; }
+    .panel-section, .system-section, .model-section, .city-section,
+    .press-section, .video-section, .maker-section, .contact-section { background: transparent; }
+    .hero { min-height: min(940px, 100svh); padding-top: 180px; }
+    .hero::before { animation: hero-drift-depth 36s ease-in-out infinite alternate; }
+    .hero::after { background: linear-gradient(180deg, rgba(8,13,11,.54) 0%, rgba(8,13,11,.06) 31%, transparent 58%, var(--ink) 100%), linear-gradient(90deg, rgba(8,13,11,.84), rgba(8,13,11,.52) 42%, rgba(8,13,11,.08) 100%); }
+    .hero-copy { max-width: 650px; }
+    .hero h1 { font-size: clamp(82px, 10vw, 132px); letter-spacing: .015em; }
+    .hero-lockup { gap: 21px; }
+    .hero-logo { filter: drop-shadow(0 0 24px rgba(139,228,208,.2)); }
+    .hero-meta { display: none; }
+    .hero-scroll-cue { right: max(32px, calc((100vw - var(--content)) / 2)); bottom: 41px; }
+    .hero-tagline, .section-head h2, .display, .problem-copy h2, .opening h2, .closing h2 { text-wrap: balance; }
+    .button { position: relative; overflow: hidden; }
+    .button::before { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,.2) 50%, transparent 75%); content: ""; transform: translateX(-120%); transition: transform .65s ease; }
+    .button:hover::before { transform: translateX(120%); }
+    .button > * { position: relative; }
+    .reveal { filter: blur(4px); transition: opacity .85s ease, transform .85s cubic-bezier(.16,1,.3,1), filter .85s ease; }
+    .reveal.visible { filter: blur(0); }
+    .concept-visual, .model-shell { position: relative; transform-style: preserve-3d; transition: transform .45s cubic-bezier(.2,.7,.2,1), border-color .35s ease, box-shadow .35s ease; }
+    .concept-visual:hover, .model-shell:hover { border-color: rgba(139,228,208,.38); box-shadow: 0 24px 70px rgba(0,0,0,.24); }
+    .model-sun-aura { animation: sun-breathe 5s ease-in-out infinite alternate; }
+    .model-light-path { filter: drop-shadow(0 0 6px rgba(139,228,208,.7)); }
+    .path-line { filter: drop-shadow(0 0 5px rgba(139,228,208,.23)); }
+    .optical-scene .photon { stroke: rgba(245,255,248,.82); stroke-width: 1; }
+    .application { transition: border-color .35s ease, transform .55s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease; }
+    .application:hover { transform: translateY(-7px); box-shadow: 0 24px 50px rgba(0,0,0,.24); }
+    .application-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
+    .application-grid .application { min-height: 360px; border: 1px solid rgba(238,244,235,.12); }
+    .application-grid .application::before { background-image: var(--application-image); }
+    .application-grid .application::after { background: linear-gradient(180deg, rgba(8,13,11,.08) 5%, transparent 36%, rgba(8,13,11,.88) 100%); }
+    .application-content { right: 25px; bottom: 25px; left: 25px; }
+    .application-content span { display: inline-block; margin-bottom: 5px; padding: 5px 8px; border: 1px solid rgba(207,244,233,.32); background: rgba(11,17,14,.42); color: #c0eddf; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+    .application-content h3 { font-size: clamp(28px, 2.5vw, 36px); }
+    .application-content p { max-width: 330px; }
+    .applications .image-note { margin-top: 22px; }
+    .closing::after { background: linear-gradient(180deg, var(--ink) 0%, rgba(16,19,17,.7) 17%, transparent 43%, rgba(16,19,17,.4) 78%, var(--ink) 100%), linear-gradient(90deg, rgba(10,15,14,.72), rgba(10,15,14,.2)); }
+    .sdg { min-height: 124px; gap: 13px; padding: 13px; border-radius: 3px; transition: transform .35s ease, border-color .25s ease, background .25s ease; }
+    .sdg:hover { transform: translateY(-4px); border-color: rgba(139,228,208,.43); background: rgba(139,228,208,.055); }
+    .sdg img { width: 62px; height: 62px; flex: 0 0 auto; transition: transform .35s ease; }
+    .sdg:hover img { transform: scale(1.06); }
+    .sdg b { font-size: 15px; line-height: 1.3; }
+    .sdg span { font-size: 13px; line-height: 1.4; }
+    .motion-paused *, .motion-paused *::before, .motion-paused *::after { animation-play-state: paused !important; transition-duration: 0s !important; scroll-behavior: auto !important; }
+    @keyframes hero-drift-depth { from { transform: translate3d(var(--hero-x, 0px), var(--hero-y, 0px), 0) scale(1.025); } to { transform: translate3d(var(--hero-x, 0px), var(--hero-y, 0px), 0) scale(1.075); } }
+    @keyframes sun-breathe { from { filter: drop-shadow(0 0 16px rgba(230,185,116,.19)); } to { filter: drop-shadow(0 0 38px rgba(230,185,116,.55)); } }
+    @media (max-width: 1100px) {
+      .nav { width: calc(100% - 40px); }
+      .nav-links { gap: 17px; }
+    }
+    @media (max-width: 900px) {
+      .application-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 780px) {
+      .site-header { top: 10px; }
+      .nav { width: calc(100% - 28px); height: 60px; padding: 0 14px; }
+      .menu-toggle { display: inline-flex; }
+      .nav-links { position: fixed; inset: 72px 14px auto; display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 10px 20px 18px; border: 1px solid var(--line); border-radius: 18px; background: rgba(16,19,17,.97); opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity .2s ease, transform .2s ease; }
+      .menu-open .nav-links { opacity: 1; pointer-events: auto; transform: translateY(0); }
+      .nav-links a { padding: 14px 3px; border-bottom: 1px solid var(--line); font-size: 14px; }
+      .nav-links a:last-child { border-bottom: 0; }
+      .hero-copy { z-index: 1; }
+      .application-grid { grid-template-columns: 1fr; }
+      .application-grid .application { min-height: 350px; }
+      .sdg { min-height: 90px; }
+      .sdg img { width: 46px; height: 46px; }
+      .sdg b { font-size: 12px; }
+      .sdg span { font-size: 10px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero::before { animation: none !important; transform: none; }
+      .reveal { filter: none; opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" id="top">
+    <nav class="nav wrap" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="AETHER home">
+        <img class="brand-mark" src="assets/aether-logo.png" alt="">
+        AETHER
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a href="#problem">Problem</a><a href="#mechanism">How it works</a><a href="#applications">Applications</a><a href="#model-title">Power model</a><a href="#maker">Contact</a>
+      </div>
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="nav-links">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.5"/></svg>
+      </button>
+    </nav>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero-copy">
+        <p class="eyebrow">A student project exploring a new kind of window</p>
+        <div class="hero-lockup"><img class="hero-logo" src="assets/aether-logo.png" alt=""><h1 id="hero-title">AETHER</h1></div>
+        <p class="hero-tagline">A window that could make electricity.</p>
+        <p class="hero-description">The idea: guide sunlight to small solar cells around the window’s edges.</p>
+        <div class="hero-actions">
+          <a class="button" href="#concept">Explore AETHER <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.4"/></svg></a>
+          <a class="button" href="#mechanism">How it works</a>
+        </div>
+      </div>
+      <p class="hero-meta">Building idea <span>Illustration</span></p>
+      <div class="hero-scroll-cue" aria-hidden="true"><span></span>Scroll to explore</div>
+    </section>
+
+    <section class="problem-section" id="problem" aria-labelledby="problem-title">
+      <figure class="problem-image reveal" role="img" aria-label="Daylit contemporary office interior with large transparent windows; illustrative architectural context, not an AETHER installation.">
+        <figcaption>Windows let daylight in. Today, they do not make power.</figcaption>
+      </figure>
+      <div class="problem-copy reveal">
+        <p class="eyebrow">The problem</p>
+        <h2 id="problem-title">What if a window could <em>generate electricity?</em></h2>
+        <p>Glass lets daylight in and gives us a view. Regular windows do not make electricity. Roof solar panels do, but they are not see-through.</p>
+        <div class="problem-contrast" aria-label="Different architectural surfaces have different roles">
+          <div><b>WINDOWS</b><span>Daylight · views</span></div>
+          <div><b>ROOF SOLAR</b><span>Electricity · solid panels</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="opening" aria-labelledby="opening-title">
+      <div class="wrap opening-grid reveal">
+        <h2 id="opening-title">A window designed to <em>make power.</em></h2>
+        <div class="opening-copy">
+          <p>AETHER is a clear-window idea. A thin layer guides some sunlight to small solar cells around the edge, where it could become electricity.</p>
+          <div class="concept-bridge" aria-label="Clear glass, a light-catching layer, and solar cells around the edge">
+            <span>Clear glass</span><span>Light-catching layer</span><span>Edge solar cells</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section concept" id="concept" aria-labelledby="concept-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><p class="eyebrow">The idea</p><h2 id="concept-title">A window that could <em>make power.</em></h2></div>
+          <p>Most of the glass stays clear. A thin layer guides light to small solar cells around the edge.</p>
+        </div>
+        <div class="concept-visual reveal" role="img" aria-label="Concept drawing: sunlight enters clear glass, a thin layer guides some light to small solar cells around the edge, and wires carry electricity out.">
+          <svg viewBox="0 0 1100 470" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="glassFill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#BCECE1" stop-opacity=".15"/><stop offset=".48" stop-color="#D7F7F0" stop-opacity=".025"/><stop offset="1" stop-color="#83C4B5" stop-opacity=".13"/></linearGradient>
+              <linearGradient id="rayGrad" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#E5BE80"/><stop offset="1" stop-color="#8BE4D0"/></linearGradient>
+              <filter id="softGlow" x="-.5" y="-.5" width="2" height="2"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <marker id="arrowTip" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="m0 0 7 4-7 4" stroke="#8BE4D0" stroke-width="1.3"/></marker>
+            </defs>
+            <path d="M214 102 743 102 867 172 338 172Z" fill="url(#glassFill)" stroke="#BCECE1" stroke-opacity=".56"/>
+            <path d="M338 172v214l529-1V172" fill="#9FD9CC" fill-opacity=".025" stroke="#BCECE1" stroke-opacity=".22"/>
+            <path d="M214 102v212l124 72V172" fill="#A7DDD1" fill-opacity=".06" stroke="#BCECE1" stroke-opacity=".34"/>
+            <path d="M231 113 750 113 847 168" stroke="#F1F6EC" stroke-opacity=".19"/>
+            <path d="M344 376h514M337 173v201M863 174v198" stroke="#D5A66E" stroke-width="7" stroke-opacity=".65"/>
+            <path d="M357 367 843 367M345 182v177M854 183v173" stroke="#8BE4D0" stroke-width="1" stroke-opacity=".65"/>
+            <g fill="#B69B72" stroke="#F1D2A0" stroke-opacity=".42" stroke-width="1" aria-label="Solar cells on the upright right edge">
+              <rect x="851" y="190" width="11" height="16" rx="1"/><rect x="851" y="211" width="11" height="16" rx="1"/>
+              <rect x="851" y="232" width="11" height="16" rx="1"/><rect x="851" y="253" width="11" height="16" rx="1"/>
+              <rect x="851" y="274" width="11" height="16" rx="1"/><rect x="851" y="295" width="11" height="16" rx="1"/>
+              <rect x="851" y="316" width="11" height="16" rx="1"/><rect x="851" y="337" width="11" height="16" rx="1"/>
+            </g>
+            <path d="M356 219 471 287 581 218 694 286 810 216" stroke="#8BE4D0" stroke-width="2" filter="url(#softGlow)" class="path-line"/>
+            <path d="M356 286 471 354 581 285 694 353 810 284" stroke="#8BE4D0" stroke-opacity=".68" stroke-width="1.4" class="path-line"/>
+            <path d="m471 287 110-69m-110 69 110 67m113-68-113-68m113 68 116-70" stroke="#8BE4D0" stroke-opacity=".43" stroke-width="1"/>
+            <path d="M405 35v86m0 0-7-12m7 12 7-12M497 51v63m0 0-7-12m7 12 7-12" stroke="#E5BE80" stroke-width="1.4"/>
+            <path d="M862 345h31" stroke="#8BE4D0" stroke-width="1.5" marker-end="url(#arrowTip)"/>
+            <path d="M893 345h24v54" stroke="#8BE4D0" stroke-width="1.5"/>
+            <circle cx="917" cy="403" r="3" fill="#8BE4D0" filter="url(#softGlow)"/>
+            <g fill="#DCE8E0" font-family="DM Sans, sans-serif" font-size="11" letter-spacing="1.1">
+              <text x="362" y="27">SUNLIGHT</text><text x="518" y="145">LIGHT-CATCHING LAYER</text><text x="875" y="271">EDGE SOLAR</text><text x="875" y="285">CELLS</text><text x="889" y="328">POWER WIRES</text>
+            </g>
+            <g fill="#8BE4D0"><circle cx="487" cy="287" r="3"/><circle cx="704" cy="286" r="3"/></g>
+            <path d="M544 158v37" stroke="#AEB8AE" stroke-opacity=".5" stroke-dasharray="3 5"/>
+            <path d="M865 278h7" stroke="#AEB8AE" stroke-opacity=".7" stroke-dasharray="2 3"/>
+          </svg>
+          <span class="concept-caption">Simple drawing · not to scale</span>
+        </div>
+        <div class="flow-legend reveal">
+          <div><b>01 &nbsp; Catch some light</b><span>A thin layer takes in part of the sunlight.</span></div>
+          <div><b>02 &nbsp; Guide the light</b><span>The light travels through the glass to its edges.</span></div>
+          <div><b>03 &nbsp; Make electricity</b><span>Small solar cells at the edge turn light into power.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="mechanism" aria-labelledby="mechanism-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><p class="eyebrow">How it could work</p><h2 id="mechanism-title">Sunlight in.<br><em>Power out.</em></h2></div>
+          <p>Follow sunlight through the clear glass to the solar cells at its edges.</p>
+        </div>
+        <div class="story-progress" aria-label="Optical pathway progress">
+          <span data-number="01" aria-current="step">Sunlight</span><span data-number="02">Some light</span><span data-number="03">Layer</span><span data-number="04">New light</span><span data-number="05">Bounces</span><span data-number="06">Edge</span><span data-number="07">Solar cells</span><span data-number="08">Power</span><span data-number="09">Wires</span>
+        </div>
+        <div class="scroll-story">
+          <div class="story-sticky">
+            <div class="concept-visual optical-scene" data-stage="0" role="img" aria-label="Concept drawing of sunlight entering clear glass, travelling to small solar cells around the edge, and becoming electricity there.">
+              <svg viewBox="0 0 1000 550" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="mechanismGlass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#C7F2E8" stop-opacity=".13"/><stop offset=".55" stop-color="#D8F3EC" stop-opacity=".018"/><stop offset="1" stop-color="#83C4B5" stop-opacity=".1"/></linearGradient>
+              <filter id="mechanismGlow" x="-.5" y="-.5" width="2" height="2"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <marker id="electricArrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M1 1l6 3.5L1 8" stroke="#8BE4D0" stroke-width="1.3"/></marker>
+            </defs>
+            <path d="M191 129 292 86h550L741 129Z" fill="#C8E8E0" fill-opacity=".055" stroke="#D9F4EC" stroke-opacity=".38"/>
+            <path d="M741 129 842 86v286l-101 45Z" fill="#9BD5C8" fill-opacity=".045" stroke="#BCECE1" stroke-opacity=".34"/>
+            <path d="M191 129h550v288H191z" fill="url(#mechanismGlass)" stroke="#C7F2E8" stroke-opacity=".65"/>
+            <path d="M205 143h522v260H205z" stroke="#F1F6EC" stroke-opacity=".12"/>
+            <path d="M212 151 705 151M212 159 705 159" stroke="#FFFFFF" stroke-opacity=".1"/>
+            <path d="M195 402h546" stroke="#D4A76F" stroke-width="7" stroke-opacity=".65"/>
+            <path d="M741 138v267" stroke="#D4A76F" stroke-width="7" stroke-opacity=".7"/>
+            <g class="scene-element pv-cell" fill="#B69B72"><rect x="754" y="159" width="8" height="16"/><rect x="754" y="183" width="8" height="16"/><rect x="754" y="207" width="8" height="16"/><rect x="754" y="231" width="8" height="16"/><rect x="754" y="255" width="8" height="16"/><rect x="754" y="279" width="8" height="16"/><rect x="754" y="303" width="8" height="16"/><rect x="754" y="327" width="8" height="16"/><rect x="754" y="351" width="8" height="16"/></g>
+            <path class="scene-element sun-ray" d="m285 25 49 105m55-119 12 119m78-104-21 104" stroke="#E5BE80" stroke-width="2"/>
+            <circle class="scene-element sun-ray photon" r="4" fill="#F0C987" filter="url(#mechanismGlow)"><animateMotion dur="1.8s" repeatCount="indefinite" path="M285 25L334 130"/></circle>
+            <circle class="scene-element sun-ray photon" r="3.5" fill="#F0C987" filter="url(#mechanismGlow)"><animateMotion dur="2.1s" begin="-0.7s" repeatCount="indefinite" path="M395 11L407 130"/></circle>
+            <circle class="scene-element sun-ray photon" r="3.5" fill="#F0C987" filter="url(#mechanismGlow)"><animateMotion dur="1.6s" begin="-0.4s" repeatCount="indefinite" path="M468 26L447 130"/></circle>
+            <path class="scene-element selected-ray" d="m334 130 35 69" stroke="#B9D7D0" stroke-width="1.2" stroke-dasharray="4 5"/>
+            <path class="scene-element selected-ray" d="M369 199v188" stroke="#B9D7D0" stroke-width="1.2" stroke-dasharray="4 5"/>
+            <circle class="scene-element selected-ray photon" r="4" fill="#E5BE80" filter="url(#mechanismGlow)"><animateMotion dur="2.2s" repeatCount="indefinite" path="M334 130L369 199L369 387"/></circle>
+            <path class="scene-element interaction-mark" d="M355 382q14-20 28 0t28 0" stroke="#E5BE80" stroke-width="2"/>
+            <circle class="scene-element interaction-mark" cx="369" cy="389" r="9" stroke="#E5BE80" stroke-width="1.4"/>
+            <circle class="scene-element interaction-mark" cx="369" cy="389" r="3" fill="#E5BE80"/>
+            <path class="scene-element reemitted-ray" d="M374 379 437 323l83 57 85-58 85 56 42-39" stroke="#8BE4D0" stroke-width="2" filter="url(#mechanismGlow)"/>
+            <path class="scene-element guided-ray" d="M374 379 437 323l83 57 85-58 85 56 55-47" stroke="#8BE4D0" stroke-width="2.7" filter="url(#mechanismGlow)"/>
+            <path class="scene-element guided-ray" d="M378 340 440 283l80 57 85-57 85 55 51-48" stroke="#8BE4D0" stroke-opacity=".66" stroke-width="1.4"/>
+            <circle class="scene-element guided-ray photon" r="4" fill="#BFFFF0" filter="url(#mechanismGlow)"><animateMotion dur="2.8s" repeatCount="indefinite" path="M374 379L437 323L520 380L605 322L690 378L745 331"/></circle>
+            <path class="scene-element edge-ray" d="m745 331 23-39" stroke="#8BE4D0" stroke-width="2.5" filter="url(#mechanismGlow)"/>
+            <circle class="scene-element pv-response" cx="758" cy="288" r="13" stroke="#8BE4D0" stroke-width="1.4"/>
+            <circle class="scene-element pv-response" cx="758" cy="288" r="4" fill="#8BE4D0" filter="url(#mechanismGlow)"/>
+            <path class="scene-element electric-output" d="M764 288h76l53-43h58" stroke="#8BE4D0" stroke-width="2" marker-end="url(#electricArrow)"/>
+            <path class="scene-element grid-load" d="M875 245h41v-48h28m-28 48v48h28" stroke="#8BE4D0" stroke-opacity=".8" stroke-width="1.4"/>
+            <circle class="scene-element grid-load" cx="944" cy="197" r="4" fill="#8BE4D0"/><circle class="scene-element grid-load" cx="944" cy="293" r="4" fill="#8BE4D0"/>
+            <g fill="#DCE8E0" font-family="DM Sans, sans-serif" font-size="10" letter-spacing="1">
+              <text x="214" y="461">CLEAR WINDOW</text><text x="570" y="461">RIGHT-EDGE SOLAR CELLS</text><text class="scene-element electric-output" x="859" y="226">POWER</text><text class="scene-element electric-output" x="859" y="240">WIRES</text><text x="278" y="22">SUNLIGHT</text>
+            </g>
+            <path d="M206 181 249 155" stroke="#FFFFFF" stroke-opacity=".23"/>
+            <path d="M207 191 239 171" stroke="#FFFFFF" stroke-opacity=".12"/>
+              </svg>
+              <span class="concept-caption">Simple drawing · not to scale</span>
+            </div>
+          </div>
+          <div class="story-copy" aria-label="How AETHER works">
+            <article class="story-beat" data-step="0" aria-current="step"><p class="beat-number">01 / Sunlight enters</p><h3>The window stays clear.</h3><p>Sunlight reaches the glass. Most of the window stays clear, with no solar cells across the middle.</p></article>
+            <article class="story-beat" data-step="1"><p class="beat-number">02 / Catch some light</p><h3>A little invisible light is caught.</h3><p>A thin layer may take in some ultraviolet (UV) light, which our eyes cannot see. Most visible sunlight can still pass through.</p></article>
+            <article class="story-beat" data-step="2"><p class="beat-number">03 / The layer responds</p><h3>The thin layer takes in light.</h3><p>The material is meant to respond to the light it catches. It still needs to be made and tested.</p></article>
+            <article class="story-beat" data-step="3"><p class="beat-number">04 / Give off light</p><h3>The layer gives off new light.</h3><p>The material may give off light inside the glass. It is still light here, not electricity.</p></article>
+            <article class="story-beat" data-step="4"><p class="beat-number">05 / Move through the glass</p><h3>Light bounces toward the edges.</h3><p>Some of the light may bounce inside the glass and travel to an edge. Some light will be lost along the way.</p></article>
+            <article class="story-beat" data-step="5"><p class="beat-number">06 / Reach the edge</p><h3>The light moves to the frame.</h3><p>Small solar cells sit around the window’s edge, ready to receive light that reaches them.</p></article>
+            <article class="story-beat" data-step="6"><p class="beat-number">07 / Solar cells receive light</p><h3>The edge cells take in the light.</h3><p>The clear middle remains free of solar cells. The cells are only around the edge.</p></article>
+            <article class="story-beat" data-step="7"><p class="beat-number">08 / Make electricity</p><h3>Now the light becomes power.</h3><p>The solar cells turn the light into electricity. This is the first point where electricity appears.</p></article>
+            <article class="story-beat" data-step="8"><p class="beat-number">09 / Send power out</p><h3>Wires carry power away.</h3><p>Wires could carry the power to a meter, a small device, a building or a battery.</p><p class="story-footnote">This is a design idea. It has not been tested yet.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section panel-section" id="engineering" aria-labelledby="panel-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><p class="eyebrow">Inside the window</p><h2 id="panel-title">Four parts.<br><em>One clear window.</em></h2></div>
+          <p>As you scroll, the parts move apart so you can see how they fit together. Select a number for more detail.</p>
+        </div>
+        <div class="panel-layout reveal">
+          <div class="panel-stage" aria-label="Interactive conceptual panel assembly">
+            <span class="panel-label">Concept model · sizes are not exact</span>
+            <div class="panel-object" id="panel-object">
+              <div class="panel-layer glass-front" data-layer="glass"></div>
+              <div class="panel-layer functional-layer" data-layer="layer"></div>
+              <div class="panel-layer substrate" data-layer="substrate"></div>
+              <svg class="panel-lightpath" viewBox="0 0 1000 645" fill="none" aria-hidden="true"><path d="M115 515h180l105-124 130 124 120-120 115 120h135"/></svg>
+              <div class="panel-layer frame-layer" data-layer="frame"></div>
+              <div class="pv-edge top" data-layer="pv"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="pv-edge bottom" data-layer="pv"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="pv-edge left" data-layer="pv"><i></i><i></i><i></i><i></i></div>
+              <div class="pv-edge right" data-layer="pv"><i></i><i></i><i></i><i></i></div>
+              <button class="panel-hotspot" type="button" data-component="glass" aria-label="Inspect clear glass" aria-pressed="true">1</button>
+              <button class="panel-hotspot" type="button" data-component="layer" aria-label="Inspect light-catching layer" aria-pressed="false">2</button>
+              <button class="panel-hotspot" type="button" data-component="pv" aria-label="Inspect edge solar cells" aria-pressed="false">3</button>
+              <button class="panel-hotspot" type="button" data-component="frame" aria-label="Inspect frame" aria-pressed="false">4</button>
+            </div>
+          </div>
+          <div class="panel-info">
+            <p class="eyebrow">Part of the window</p>
+            <h3 id="component-title">Clear glass</h3>
+            <p id="component-copy">The clear part of the window that lets you see through.</p>
+            <div class="component-list" role="group" aria-label="Select panel component">
+              <button class="component-select" type="button" data-component="glass" aria-pressed="true"><span>01</span>Clear glass</button>
+              <button class="component-select" type="button" data-component="layer" aria-pressed="false"><span>02</span>Light-catching layer</button>
+              <button class="component-select" type="button" data-component="pv" aria-pressed="false"><span>03</span>Edge solar cells</button>
+              <button class="component-select" type="button" data-component="frame" aria-pressed="false"><span>04</span>Window frame</button>
+            </div>
+            <div class="panel-actions"><button class="quiet-button" id="explode-toggle" type="button" aria-pressed="false">Separate the parts</button><span class="small-note">Choose a number for details</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="materials" aria-labelledby="materials-title">
+      <div class="wrap material-grid">
+        <div class="material-intro-grid reveal">
+          <div class="material-aside">
+            <p class="eyebrow dark">How the material might be made</p>
+            <h2 id="materials-title">From farm waste<br>to a <em>window layer.</em></h2>
+          </div>
+          <div class="material-context">
+            <p>We are exploring whether farm waste could help make tiny carbon-based materials called Carbon Quantum Dots (CQDs). Each step is an idea to test, not a finished process.</p>
+            <p class="material-target"><strong>Long-term goal:</strong> make a layer that could last 20–25 years in a building. This is a target, not a result.</p>
+          </div>
+        </div>
+        <div class="material-progress" aria-label="Material development progress">
+          <span data-number="01" aria-current="step">Farm waste</span><span data-number="02">Prepare</span><span data-number="03">Carbon</span><span data-number="04">Tiny dots</span><span data-number="05">Clean</span><span data-number="06">Clear base</span><span data-number="07">Light layer</span><span data-number="08">Window</span>
+        </div>
+        <div class="material-scroll-story">
+          <div class="material-art-sticky">
+            <div class="material-art" data-stage="0" role="img" aria-label="Concept drawings show how farm waste might be studied to make a light-catching layer for a clear window. The process has not been tested.">
+              <svg viewBox="0 0 800 600" fill="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="glassSample" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFFFFF" stop-opacity=".7"/><stop offset="1" stop-color="#BDD5CC" stop-opacity=".13"/></linearGradient>
+                  <linearGradient id="vessel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#AAB7AC"/><stop offset=".5" stop-color="#68776D"/><stop offset="1" stop-color="#46554D"/></linearGradient>
+                  <filter id="dotGlow" x="-.5" y="-.5" width="2" height="2"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                </defs>
+                <g class="material-illustration active" data-illustration="0" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M140 382q-48-51 5-97 4 49 42 64 13-64 82-74-11 70-54 105" fill="#95A975" stroke="#617658" stroke-width="2"/>
+                  <path d="M222 379q-10-82 45-112 39 43 9 105-27 19-54 7Z" fill="#D89E66" stroke="#AA7044" stroke-width="2"/>
+                  <path d="M231 368q4-49 32-78m-28 56 25-1m-22-14 18-3" stroke="#F3D1A1" stroke-width="4"/>
+                  <path d="M163 396q37 6 77-9l35 24q-40 23-95 9Z" fill="#849064" stroke="#596746" stroke-width="2"/>
+                  <path d="M112 421h244" stroke="#758176" stroke-opacity=".5"/><text x="118" y="456" fill="#59665D" font-size="12" letter-spacing="1.5">FARM LEFTOVERS</text>
+                  <text x="118" y="480" fill="#828B81" font-size="10">One possible start · not chosen yet</text>
+                </g>
+                <g class="material-illustration" data-illustration="1" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M147 231h133l-21 40v129H168V271Z" fill="url(#vessel)" stroke="#59675E" stroke-width="2"/>
+                  <path d="M164 241h100M173 282h79v80h-79z" stroke="#E4E9DF" stroke-opacity=".45"/>
+                  <path d="M280 255h58v114h-58" stroke="#69776D" stroke-width="9"/><path d="M338 369h48v-51" stroke="#69776D" stroke-width="9"/>
+                  <rect x="192" y="199" width="42" height="31" rx="3" fill="#707F73" stroke="#4B5A50" stroke-width="2"/>
+                  <path d="M207 209h12m-6-6v13" stroke="#D9E4D8" stroke-width="2"/>
+                  <path d="M171 344h82" stroke="#DDA969" stroke-width="3" stroke-opacity=".75"/>
+                  <path d="M408 268h92v100h-92z" fill="#A5B2A7" fill-opacity=".35" stroke="#68766B" stroke-width="2"/>
+                  <path d="M398 268h112m-96 23h80m-80 22h80m-80 22h80" stroke="#7B897E" stroke-width="2"/>
+                  <text x="148" y="430" fill="#59665D" font-size="12" letter-spacing="1.5">PREPARE THE MATERIAL</text>
+                  <text x="148" y="454" fill="#828B81" font-size="10">Possible equipment · method not chosen</text>
+                </g>
+                <g class="material-illustration" data-illustration="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M176 245h206l-18 178H194Z" fill="url(#vessel)" stroke="#59675E" stroke-width="2"/>
+                  <path d="M187 264h183M193 394h177" stroke="#DAE1D7" stroke-opacity=".45"/>
+                  <path d="M195 361q43-20 86 0t83 0v31H195Z" fill="#5D6558"/>
+                  <g fill="#424941"><circle cx="219" cy="350" r="6"/><circle cx="245" cy="367" r="8"/><circle cx="275" cy="346" r="5"/><circle cx="303" cy="367" r="7"/><circle cx="333" cy="349" r="6"/><circle cx="351" cy="372" r="4"/></g>
+                  <path d="M226 228v-30m104 30v-30m-109 8h114" stroke="#68766B" stroke-width="5"/>
+                  <text x="168" y="461" fill="#59665D" font-size="12" letter-spacing="1.5">CARBON MATERIAL</text>
+                  <text x="168" y="485" fill="#828B81" font-size="10">Possible step · still needs study</text>
+                </g>
+                <g class="material-illustration" data-illustration="3" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="400" cy="292" r="151" stroke="#718278" stroke-opacity=".5"/><circle cx="400" cy="292" r="134" stroke="#718278" stroke-opacity=".28"/>
+                  <path d="M191 451h418" stroke="#758176" stroke-opacity=".5"/>
+                  <g fill="#557E6B" filter="url(#dotGlow)"><circle cx="318" cy="234" r="11"/><circle cx="388" cy="208" r="8"/><circle cx="449" cy="245" r="13"/><circle cx="348" cy="298" r="9"/><circle cx="422" cy="321" r="11"/><circle cx="483" cy="302" r="7"/><circle cx="297" cy="346" r="6"/><circle cx="378" cy="380" r="8"/><circle cx="477" cy="372" r="10"/></g>
+                  <g fill="#A6D1B6" opacity=".75"><circle cx="318" cy="234" r="3"/><circle cx="449" cy="245" r="4"/><circle cx="422" cy="321" r="3"/><circle cx="477" cy="372" r="3"/></g>
+                  <text x="225" y="473" fill="#59665D" font-size="12" letter-spacing="1.5">TINY CARBON DOTS</text>
+                  <text x="225" y="497" fill="#828B81" font-size="10">Concept drawing · not real particles</text>
+                </g>
+                <g class="material-illustration" data-illustration="4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M207 193h386v219H207z" fill="#CBD5CC" fill-opacity=".44" stroke="#79887D" stroke-width="2"/>
+                  <path d="M224 224h352m-352 43h352m-352 43h352m-352 43h352" stroke="#77867A" stroke-width="2"/>
+                  <path d="M234 245h328m-328 43h328m-328 43h328m-328 43h328" stroke="#FFFFFF" stroke-opacity=".8" stroke-width="4"/>
+                  <g fill="#557E6B"><circle cx="271" cy="237" r="5"/><circle cx="344" cy="284" r="5"/><circle cx="441" cy="332" r="5"/><circle cx="526" cy="373" r="5"/><circle cx="502" cy="241" r="4"/></g>
+                  <path d="M400 176v-41m-10 10 10-10 10 10" stroke="#698478" stroke-width="2"/><path d="M400 413v42m-10-10 10 10 10-10" stroke="#698478" stroke-width="2"/>
+                  <text x="210" y="490" fill="#59665D" font-size="12" letter-spacing="1.5">CLEAN AND PREPARE</text>
+                  <text x="210" y="514" fill="#828B81" font-size="10">Possible step · method not chosen</text>
+                </g>
+                <g class="material-illustration" data-illustration="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M235 187 525 187l57 36-290 0Z" fill="#FFFFFF" fill-opacity=".56" stroke="#819288" stroke-width="2"/>
+                  <path d="M292 223v201l290-1V223" fill="url(#glassSample)" stroke="#819288" stroke-width="2"/>
+                  <path d="M235 187v201l57 36V223" fill="#D8E1D9" fill-opacity=".55" stroke="#819288" stroke-width="2"/>
+                  <g fill="#557E6B" opacity=".65"><circle cx="350" cy="279" r="4"/><circle cx="411" cy="327" r="4"/><circle cx="480" cy="266" r="4"/><circle cx="527" cy="365" r="4"/><circle cx="373" cy="383" r="4"/></g>
+                  <path d="M300 223h282" stroke="#FFFFFF" stroke-width="3" stroke-opacity=".65"/>
+                  <text x="235" y="466" fill="#59665D" font-size="12" letter-spacing="1.5">MIX WITH CLEAR MATERIAL</text>
+                  <text x="235" y="490" fill="#828B81" font-size="10">We need to test if it stays clear</text>
+                </g>
+                <g class="material-illustration" data-illustration="6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M220 218 478 218l74 45H294Z" fill="#FFFFFF" fill-opacity=".47" stroke="#819288" stroke-width="2"/>
+                  <path d="M294 263v175l258-1V263" fill="url(#glassSample)" stroke="#819288" stroke-width="2"/>
+                  <path d="M220 218v175l74 45V263" fill="#D8E1D9" fill-opacity=".45" stroke="#819288" stroke-width="2"/>
+                  <path d="M297 258h253" stroke="#D4A76F" stroke-width="4" stroke-opacity=".78"/>
+                  <path d="M300 267h248" stroke="#FFFFFF" stroke-width="1" stroke-opacity=".8"/>
+                  <g fill="#557E6B" opacity=".55"><circle cx="336" cy="258" r="2"/><circle cx="382" cy="258" r="2"/><circle cx="429" cy="258" r="2"/><circle cx="476" cy="258" r="2"/></g>
+                  <text x="220" y="480" fill="#59665D" font-size="12" letter-spacing="1.5">THIN LIGHT-CATCHING LAYER</text>
+                  <text x="220" y="504" fill="#828B81" font-size="10">An idea to develop · not made yet</text>
+                </g>
+                <g class="material-illustration" data-illustration="7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M181 155h409v308H181z" fill="#BECFC4" fill-opacity=".14" stroke="#64766B" stroke-width="2"/>
+                  <path d="M198 174h375v270H198z" stroke="#FFFFFF" stroke-opacity=".55"/>
+                  <path d="M323 155v308m136-308v308M181 257h409M181 360h409" stroke="#718277" stroke-opacity=".54" stroke-width="2"/>
+                  <path d="M205 187 317 187M330 187h124M466 187h108" stroke="#FFFFFF" stroke-width="3" stroke-opacity=".56"/>
+                  <path d="M183 454h405m-396 8h387" stroke="#D4A76F" stroke-width="4" stroke-opacity=".7"/>
+                  <path d="M300 455v-10m45 10v-10m45 10v-10m45 10v-10m45 10v-10m45 10v-10" stroke="#947A59" stroke-width="3"/>
+                  <text x="181" y="502" fill="#59665D" font-size="12" letter-spacing="1.5">AETHER WINDOW IDEA</text>
+                  <text x="181" y="526" fill="#828B81" font-size="10">A drawing · not a real window yet</text>
+                </g>
+              </svg>
+              <div class="material-art-caption"><span id="material-scene-title">Agricultural feedstock</span><span>Concept visualization · not a validated process</span></div>
+            </div>
+          </div>
+          <div class="material-story-copy" aria-label="Proposed material development journey">
+            <article class="material-beat" data-step="0" aria-current="step"><p class="beat-number">01 / Start with farm waste</p><h3>Some farm leftovers contain carbon.</h3><p>Things like citrus peel could be explored. We have not chosen or tested a source yet.</p></article>
+            <article class="material-beat" data-step="1"><p class="beat-number">02 / Prepare it</p><h3>Clean and prepare the material.</h3><p>The waste may need to be cleaned and prepared first. The exact method has not been chosen.</p></article>
+            <article class="material-beat" data-step="2"><p class="beat-number">03 / Make carbon material</p><h3>A step toward tiny carbon particles.</h3><p>Preparation may make a carbon-rich material. What it contains would need to be tested.</p></article>
+            <article class="material-beat" data-step="3"><p class="beat-number">04 / Make tiny dots</p><h3>Study Carbon Quantum Dots.</h3><p>These tiny carbon-based materials are called Carbon Quantum Dots, or CQDs. We still need to find out how to make them and how they handle light.</p></article>
+            <article class="material-beat" data-step="4"><p class="beat-number">05 / Clean and test</p><h3>Separate the material and study it.</h3><p>The particles would need to be cleaned and tested. No method or result is claimed.</p><span class="phase-warning">An earlier idea raised a key question: can the material last in strong sunlight?</span></article>
+            <article class="material-beat" data-step="5"><p class="beat-number">06 / Mix with clear material</p><h3>Can it stay clear?</h3><p>The tiny particles might be mixed into a clear material. We would need to test whether it stays see-through and does not scatter too much light.</p></article>
+            <article class="material-beat" data-step="6"><p class="beat-number">07 / Make a thin layer</p><h3>A layer that catches and gives off light.</h3><p>The goal is a thin layer that catches some sunlight and gives off light inside the glass. It has not been made yet.</p></article>
+            <article class="material-beat" data-step="7"><p class="beat-number">08 / Fit it into the window</p><h3>Place the layer inside clear glass.</h3><p>The layer would be one part of the window. Small solar cells at the edge could turn its guided light into electricity.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section pv-section" aria-labelledby="pv-title">
+      <div class="wrap pv-layout">
+        <div class="pv-copy reveal">
+          <p class="eyebrow">Choosing the edge solar cells</p>
+          <h2 id="pv-title">Find a good match<br>for the <em>light.</em></h2>
+          <p>Different solar cells work best with different colours of light. We are exploring which kind might work with the light from the proposed window layer. Nothing has been measured yet.</p>
+          <div class="pv-stat">
+            <div><b>Deep red</b><span>A colour to study</span></div>
+            <div><b>Possible match</b><span>A cell that may use this light</span></div>
+          </div>
+          <p class="small-note" style="margin-top:20px">We are still exploring which kind of solar cell might work. None have been chosen or tested.</p>
+        </div>
+        <div class="spectrum reveal">
+          <div class="spectrum-title"><span>Colours of light to compare</span><span>Illustration, not test data</span></div>
+          <div class="spectrum-bar" role="img" aria-label="Simple colour illustration comparing sunlight, possible deep red light from the window layer, and a solar cell that may use it"></div>
+          <div class="spectrum-labels"><span>Blue light</span><span>Colours we can see</span><span>Red light</span></div>
+          <div class="spectrum-markers">
+            <div class="spectrum-marker"><b>Sunlight</b><span>Light entering the window</span></div>
+            <div class="spectrum-marker"><b>Deep red light</b><span>The layer might give off this colour</span></div>
+            <div class="spectrum-marker"><b>Solar cell</b><span>A cell that may use that light</span></div>
+          </div>
+          <p class="concept-disclaimer">This is a colour guide, not test data.</p>
+        </div>
+        <details class="pv-detail"><summary><b>Want the research numbers?</b><span>+</span></summary><p>The project is exploring light near 690 nanometres (deep red) and possible solar cells around 1.8 electron volts (a way to describe how a cell uses light). AlGaAs and adjustable perovskites are possible materials to study. None are chosen or tested yet.</p></details>
+      </div>
+    </section>
+
+    <section class="section system-section" aria-labelledby="system-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><p class="eyebrow">How the parts connect</p><h2 id="system-title">From window<br>to <em>useful power.</em></h2></div>
+          <p>This is the plan for a future small test model. Each part will help us learn if the window can make usable power.</p>
+        </div>
+        <div class="system-shell reveal">
+          <div class="system-flow" role="list" aria-label="Planned electrical architecture sequence">
+            <article class="system-node" role="listitem"><small>01 · SUNLIGHT</small><b>AETHER window</b><p>The clear panel guides some light toward its edges.</p></article>
+            <article class="system-node" role="listitem"><small>02 · MAKE POWER</small><b>Small solar cells</b><p>Cells at the edge turn the light into electricity.</p></article>
+            <article class="system-node" role="listitem"><small>03 · CARRY IT</small><b>Wires</b><p>Wires take electricity away from the window.</p></article>
+            <article class="system-node" role="listitem"><small>04 · CHECK IT</small><b>Power meter</b><p>A meter checks how much power the test window makes.</p></article>
+            <article class="system-node" role="listitem"><small>05 · CONTROL IT</small><b>Charging circuit</b><p>A circuit prepares the power before it goes to a battery.</p></article>
+            <article class="system-node" role="listitem"><small>06 · SAVE IT</small><b>Battery</b><p>A battery could store power for later use.</p></article>
+            <article class="system-node" role="listitem"><small>07 · SET THE LEVEL</small><b>Voltage control</b><p>This part sets the power level for a small device.</p></article>
+            <article class="system-node" role="listitem"><small>08 · USE IT</small><b>Small device</b><p>A small device could show that the system is working.</p></article>
+          </div>
+          <aside class="system-detail"><div><span>Planned small-scale test</span><h3>Follow the power.</h3><p>We plan to check each step, from sunlight reaching the glass to power leaving the solar cells.</p></div><div class="system-status">Not built or tested yet</div></aside>
+        </div>
+        <div class="future-strip reveal"><div><b>One day: smart windows</b><p>In the future, stored power might run small sensors or help control a building. This is only a future idea.</p></div><span>Future idea</span></div>
+      </div>
+    </section>
+
+    <section class="section applications" id="applications" aria-labelledby="applications-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><p class="eyebrow">Where might it be used?</p><h2 id="applications-title">Windows are <em>everywhere.</em></h2></div>
+          <p>From growing spaces to city-scale glass, these are places to explore—not installations or performance claims for AETHER.</p>
+        </div>
+        <div class="application-grid reveal">
+          <article class="application reveal" style="--application-image: url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&amp;fit=crop&amp;w=1100&amp;q=82')"><div class="application-content"><span>01 / Residential</span><h3>Homes & villas</h3><p>Explore window-integrated generation where daylight and views matter.</p></div></article>
+          <article class="application reveal" style="--application-image: url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&amp;fit=crop&amp;w=1000&amp;q=82')"><div class="application-content"><span>02 / Workplace</span><h3>Office façades</h3><p>Study glass elevations as a complement to rooftop solar.</p></div></article>
+          <article class="application reveal" style="--application-image: url('https://images.unsplash.com/photo-1708975477420-907fd5691ce7?auto=format&amp;fit=crop&amp;w=1100&amp;q=82')"><div class="application-content"><span>03 / Food & agriculture</span><h3>Greenhouses</h3><p>Investigate whether UV-selective glazing could harvest light while preserving useful daylight for crops.</p></div></article>
+          <article class="application reveal" style="--application-image: url('https://images.unsplash.com/photo-1642328103813-94afc8502035?auto=format&amp;fit=crop&amp;w=1200&amp;q=82')"><div class="application-content"><span>04 / Shared interiors</span><h3>Atriums & skylights</h3><p>Consider overhead glass in civic, commercial and institutional buildings.</p></div></article>
+          <article class="application reveal" style="--application-image: url('https://images.unsplash.com/photo-1662142063378-29ab0deeb41f?auto=format&amp;fit=crop&amp;w=1200&amp;q=82')"><div class="application-content"><span>05 / Mobility</span><h3>Transit concourses</h3><p>Explore station roofs and waiting halls with broad glazed spans.</p></div></article>
+          <article class="application reveal" style="--application-image: url('https://images.unsplash.com/photo-1780369088780-211f54e16407?auto=format&amp;fit=crop&amp;w=1200&amp;q=82')"><div class="application-content"><span>06 / Public realm</span><h3>Covered walkways</h3><p>Look at glazed canopies and sheltered connectors across campuses and city spaces.</p></div></article>
+        </div>
+        <p class="image-note">Images are illustrative. Application examples are concepts, not AETHER installations.</p>
+      </div>
+    </section>
+
+    <section class="section" id="sustainability" aria-labelledby="difference-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><p class="eyebrow">Where could solar go?</p><h2 id="difference-title">There is more than <em>one place.</em></h2></div>
+          <p>AETHER is not a replacement for roof solar. It explores whether a clear window could also make electricity.</p>
+        </div>
+        <div class="contrast reveal">
+          <article><small>Roof solar</small><h3>Solid panels</h3><p>Make electricity from sunlight on rooftops and other suitable surfaces.</p></article>
+          <article><small>AETHER idea</small><h3>Clear windows</h3><p>Explore whether glass that lets in daylight could also make electricity.</p></article>
+        </div>
+        <p class="contrast-note reveal">Another surface to explore, if the idea works.</p>
+        <div class="sustainability-grid reveal">
+          <article class="sustainability-item"><span>01</span><h3>Clean energy</h3><p>Windows might become another place to collect sunlight.</p></article>
+          <article class="sustainability-item"><span>02</span><h3>Reuse farm waste</h3><p>Farm leftovers could be studied as a starting material.</p></article>
+          <article class="sustainability-item"><span>03</span><h3>Helpful buildings</h3><p>In the future, window power might run small devices.</p></article>
+        </div>
+        <div class="sdg-row reveal" aria-label="Sustainable Development Goals to which AETHER may contribute">
+          <a class="sdg" href="https://sdgs.un.org/goals/goal7" target="_blank" rel="noopener noreferrer" aria-label="United Nations Sustainable Development Goal 7: Affordable and Clean Energy">
+            <img src="assets/sdg/goal-07.jpg" alt=""><span><b>SDG 7</b>Affordable and clean energy</span>
+          </a>
+          <a class="sdg" href="https://sdgs.un.org/goals/goal9" target="_blank" rel="noopener noreferrer" aria-label="United Nations Sustainable Development Goal 9: Industry, Innovation and Infrastructure">
+            <img src="assets/sdg/goal-09.jpg" alt=""><span><b>SDG 9</b>Industry, innovation and infrastructure</span>
+          </a>
+          <a class="sdg" href="https://sdgs.un.org/goals/goal11" target="_blank" rel="noopener noreferrer" aria-label="United Nations Sustainable Development Goal 11: Sustainable Cities and Communities">
+            <img src="assets/sdg/goal-11.jpg" alt=""><span><b>SDG 11</b>Sustainable cities and communities</span>
+          </a>
+          <a class="sdg" href="https://sdgs.un.org/goals/goal12" target="_blank" rel="noopener noreferrer" aria-label="United Nations Sustainable Development Goal 12: Responsible Consumption and Production">
+            <img src="assets/sdg/goal-12.jpg" alt=""><span><b>SDG 12</b>Responsible consumption and production</span>
+          </a>
+          <a class="sdg" href="https://sdgs.un.org/goals/goal13" target="_blank" rel="noopener noreferrer" aria-label="United Nations Sustainable Development Goal 13: Climate Action">
+            <img src="assets/sdg/goal-13.jpg" alt=""><span><b>SDG 13</b>Climate action</span>
+          </a>
+        </div>
+        <p class="small-note reveal" style="margin-top:12px">AETHER may contribute to these goals; it does not solve them. No environmental impact figures are claimed.</p>
+      </div>
+    </section>
+
+    <section class="section" id="development" aria-labelledby="development-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><p class="eyebrow">What happens next</p><h2 id="development-title">Big idea.<br><em>One step at a time.</em></h2></div>
+          <p>AETHER is still being developed. The next step is to build a small test window and see what happens.</p>
+        </div>
+        <div class="roadmap reveal">
+          <article class="roadmap-step current reveal"><small>Now</small><h3>Plan the test</h3><p>Work out how the window might fit together.</p></article>
+          <article class="roadmap-step reveal"><small>Next</small><h3>Explore the material</h3><p>Try ways to make a clear, light-catching layer.</p></article>
+          <article class="roadmap-step reveal"><small>Planned</small><h3>Build a small window</h3><p>Make a first physical model.</p></article>
+          <article class="roadmap-step reveal"><small>Then</small><h3>Test the power</h3><p>Check whether light reaches the solar cells.</p></article>
+          <article class="roadmap-step reveal"><small>Improve</small><h3>Make it work better</h3><p>Learn from tests and improve the design.</p></article>
+          <article class="roadmap-step reveal"><small>Later</small><h3>Test how long it lasts</h3><p>Study how the material holds up over time.</p></article>
+          <article class="roadmap-step reveal"><small>Long term</small><h3>Make a larger version</h3><p>Explore how it might fit into a building.</p></article>
+          <article class="roadmap-step reveal"><small>Future</small><h3>Explore real uses</h3><p>Real-world use is a future goal, not a current result.</p></article>
+        </div>
+        <div class="status-band reveal">
+          <div><span class="status-label">Where we are now</span><h3>Ready to start<br>building a test.</h3></div>
+          <div><p>We have a design idea and a plan for testing it. We are working toward a small physical window model.</p><p>We have not tested it yet. Our goal is to find out what works, what does not, and what needs to change.</p></div>
+        </div>
+        <div class="oman-band reveal"><h3>Made as a student project<br>in Muscat.</h3><p>AETHER brings together ideas about clean energy, building materials and future cities. These ideas connect to Oman Vision 2040, but AETHER is not endorsed by or partnered with the government.</p></div>
+      </div>
+    </section>
+
+    <section class="section city-section" aria-labelledby="city-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><p class="eyebrow">A future idea</p><h2 id="city-title">A city where windows<br>could <em>make power.</em></h2></div>
+          <p>This is a future idea, not something built today: clear windows might one day help make power for the buildings around them.</p>
+        </div>
+        <figure class="city-visual reveal" role="img" aria-label="Drawing of a future city with buildings that might use AETHER windows. These windows are not built or installed.">
+          <svg viewBox="0 0 1200 400" fill="none" aria-hidden="true">
+            <defs><linearGradient id="towerGlass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#B9D2C3" stop-opacity=".13"/><stop offset=".5" stop-color="#6E8A7B" stop-opacity=".045"/><stop offset="1" stop-color="#D5E3D8" stop-opacity=".11"/></linearGradient><linearGradient id="cityHaze" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#A5C7B3" stop-opacity=".02"/><stop offset="1" stop-color="#A5C7B3" stop-opacity=".13"/></linearGradient></defs>
+            <path d="M0 328h1200v72H0z" fill="url(#cityHaze)"/>
+            <path d="M33 176h140v168H33zM173 209h122v135H173zM305 91h201v253H305zM506 156h132v188H506zM651 48h184v296H651zM849 181h133v163H849zM996 119h166v225H996z" fill="url(#towerGlass)" stroke="#C7DDD0" stroke-opacity=".35"/>
+            <path d="M38 192h130m-130 27h130m-130 27h130m-130 27h130m-130 27h130M178 225h112m-112 27h112m-112 27h112m-112 27h112M311 110h189m-189 28h189m-189 28h189m-189 28h189m-189 28h189m-189 28h189m-189 28h189m-189 28h189M512 174h120m-120 28h120m-120 28h120m-120 28h120m-120 28h120M657 68h172m-172 28h172m-172 28h172m-172 28h172m-172 28h172m-172 28h172m-172 28h172m-172 28h172m-172 28h172M855 199h121m-121 28h121m-121 28h121m-121 28h121m-121 28h121M1002 137h154m-154 28h154m-154 28h154m-154 28h154m-154 28h154m-154 28h154m-154 28h154" stroke="#D5E4D8" stroke-opacity=".17"/>
+            <path d="M37 338h132m138 0h204m14 0h124m4 0h186m10 0h128m16 0h166" stroke="#D2A971" stroke-width="3" stroke-opacity=".52"/>
+            <g class="city-light" stroke="#8BE4D0" stroke-width="2"><path d="M316 111v222m10-222v222M662 69v264m11-264v264M1007 139v194"/><path d="M307 337h199m144 0h183m162 0h166"/></g>
+            <g fill="#D9B987" fill-opacity=".62"><circle cx="115" cy="315" r="2"/><circle cx="247" cy="315" r="2"/><circle cx="457" cy="313" r="2"/><circle cx="591" cy="314" r="2"/><circle cx="782" cy="313" r="2"/><circle cx="930" cy="315" r="2"/><circle cx="1117" cy="315" r="2"/></g>
+            <path d="M40 345h1120" stroke="#D8E4DA" stroke-opacity=".26"/>
+          </svg>
+          <figcaption><span>Future city idea</span><span>No AETHER windows shown as installed</span></figcaption>
+        </figure>
+        <div class="city-statement reveal"><h3>Could a building make some of its own power?</h3><p>If the idea works, windows could add another place to collect sunlight. There is still a lot to test.</p></div>
+      </div>
+    </section>
+
+    <section class="section model-section" aria-labelledby="model-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><p class="eyebrow">Try a simple example</p><h2 id="model-title">What changes<br>the <em>power?</em></h2></div>
+          <p>Adjust sunlight intensity and equivalent full-power sun hours to explore a fixed 1.8 m² window. The estimate uses assumed material parameters, not measured AETHER results.</p>
+        </div>
+        <div class="model-shell reveal">
+          <figure class="model-visual" role="img" aria-label="Illustration of sunlight reaching a clear window, light travelling to solar cells at the edge, and electricity flowing out by wire. The sun and light path brighten with solar irradiance.">
+            <svg viewBox="0 0 900 460" fill="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="modelSky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#25332D"/><stop offset="1" stop-color="#111713"/></linearGradient>
+                <linearGradient id="modelPane" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#C5E7DC" stop-opacity=".18"/><stop offset=".55" stop-color="#90C4B1" stop-opacity=".06"/><stop offset="1" stop-color="#E8F4EB" stop-opacity=".13"/></linearGradient>
+                <filter id="modelSunGlow" x="-.8" y="-.8" width="2.6" height="2.6"><feGaussianBlur stdDeviation="12" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <marker id="modelArrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M1 1l6 3-6 3" stroke="#8BE4D0" stroke-width="1.3"/></marker>
+              </defs>
+              <rect width="900" height="460" fill="url(#modelSky)" fill-opacity=".28"/>
+              <path d="M0 322 160 286l124 38 131-68 145 70 138-47 202 47v134H0Z" fill="#1A241F" fill-opacity=".34"/>
+              <path d="M0 355h900" stroke="#88978A" stroke-opacity=".28"/>
+              <g fill="#25322B" fill-opacity=".34" stroke="#E1E9DF" stroke-opacity=".28"><path d="M55 275h87v80H55zM153 244h67v111h-67zM682 270h78v85h-78zM774 231h82v124h-82z"/><path d="M68 290h15v20H68zm27 0h15v20H95zm27 0h8v20h-8zM166 260h13v18h-13zm26 0h13v18h-13zm-26 30h13v18h-13zm26 0h13v18h-13zM697 286h12v17h-12zm23 0h12v17h-12zm69-38h14v19h-14zm27 0h14v19h-14z" fill="#B3B895" fill-opacity=".36"/></g>
+              <circle id="model-sun-aura" class="model-sun-aura" cx="180" cy="118" r="48" fill="#E6B974" opacity=".14" filter="url(#modelSunGlow)"/>
+              <circle id="model-sun-core" class="model-sun-core" cx="180" cy="118" r="23" fill="#F0C987"/>
+              <g id="model-sun-rays" class="model-rays" stroke="#EAC58D" stroke-width="2" opacity=".66"><path d="M180 74V48M180 162v25M136 118h-27m115 0h27M149 87l-19-19m100 100 19 19M211 87l19-19m-100 100-19 19"/></g>
+              <g id="model-incoming-rays" class="model-rays" stroke="#EAC58D" stroke-width="2" opacity=".62"><path d="M203 129 344 220M214 112 350 203M219 142 347 236"/></g>
+              <path d="M330 154h310v212H330z" fill="#141B17" fill-opacity=".24" stroke="#E4EEE4" stroke-opacity=".8" stroke-width="8"/>
+              <path d="M341 164h288v192H341z" fill="url(#modelPane)" stroke="#ECF4EA" stroke-opacity=".32"/>
+              <path d="M355 177h246" stroke="#FFFFFF" stroke-opacity=".24" stroke-width="2"/>
+              <path d="M355 233h260" stroke="#E4BA7B" stroke-opacity=".82" stroke-width="3"/>
+              <path d="M355 236 404 274l48-58 50 58 50-58 60 46" id="model-light-path" class="model-light-path" stroke="#8BE4D0" stroke-width="3" filter="url(#modelSunGlow)"/>
+              <g id="model-edge-cells" fill="#C29B62"><rect x="617" y="176" width="8" height="20"/><rect x="617" y="203" width="8" height="20"/><rect x="617" y="230" width="8" height="20"/><rect x="617" y="257" width="8" height="20"/><rect x="617" y="284" width="8" height="20"/><rect x="617" y="311" width="8" height="20"/></g>
+              <path id="model-electric-line" class="model-electricity" d="M625 244h98l45-42h70" stroke="#8BE4D0" stroke-width="3" marker-end="url(#modelArrow)"/>
+              <circle id="model-power-node" class="model-electricity" cx="743" cy="202" r="7" fill="#8BE4D0" filter="url(#modelSunGlow)"/>
+              <g fill="#D6DFD4" font-family="DM Sans, sans-serif" font-size="12" letter-spacing="1.1"><text x="91" y="212">SUNLIGHT</text><text x="342" y="397">CLEAR WINDOW</text><text x="536" y="397">SMALL CELLS</text><text x="750" y="184">POWER OUT</text></g>
+            </svg>
+            <figcaption>Illustration only · not an experimental output</figcaption>
+          </figure>
+          <div class="model-panels">
+            <div class="model-controls">
+              <h3>Adjust conditions</h3>
+              <label class="range-control" for="irradiance">
+                <span class="range-top"><span>Solar irradiance at the window</span><output id="irradiance-out" for="irradiance">800 W/m²</output></span>
+                <input id="irradiance" type="range" min="100" max="1000" step="10" value="800" aria-describedby="irradiance-scale">
+                <span class="range-scale" id="irradiance-scale" aria-hidden="true"><span>100 W/m²</span><span>1,000 W/m²</span></span>
+              </label>
+              <label class="range-control" for="sun-hours">
+                <span class="range-top"><span>Full-power sunlight per day</span><output id="sun-hours-out" for="sun-hours">5 hours/day</output></span>
+                <input id="sun-hours" type="range" min="1" max="8" step="0.1" value="5" aria-describedby="sun-hours-scale">
+                <span class="range-scale" id="sun-hours-scale" aria-hidden="true"><span>1 hour/day</span><span>8 hours/day</span></span>
+              </label>
+              <p id="model-error" class="model-error" role="alert"></p>
+            </div>
+            <div class="model-output" aria-label="Estimated results">
+              <div class="model-live-readout"><span>Estimated electrical power</span><strong id="model-result">1.07 W</strong></div>
+              <div class="model-daily"><span>Estimated daily energy</span><strong id="daily-energy-result">5.37 Wh/day</strong></div>
+              <p class="model-area">Fixed window area: 1.8 m²</p>
+              <p class="model-disclaimer">Illustrative UV-to-visible solar conversion model using assumed material parameters. Actual AETHER performance requires experimental validation.</p>
+              <a class="model-method-link" href="model-methodology.html">Want to know how we got this estimate?</a>
+            </div>
+          </div>
+          <p class="sr-only" id="model-screenreader-result" aria-live="polite">Estimated electrical power: 1.07 watts. Estimated daily electrical energy: 5.37 watt-hours per day.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="reference-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><p class="eyebrow">More about the idea</p><h2 id="reference-title">Curious how it <em>works?</em></h2></div>
+          <p>Open a topic for a little more detail. The main idea stays simple: catch light, guide it to the edge, and let solar cells make power.</p>
+        </div>
+        <div class="reference-list reveal">
+          <details><summary><b>How does the window catch light?</b><span>+</span></summary><p>A thin layer may catch some sunlight and give off light inside the glass. This is the main idea being explored.</p></details>
+          <details><summary><b>How does light reach the edge?</b><span>+</span></summary><p>Some light may bounce inside the glass until it reaches the edge. Scientists call this “total internal reflection.” The glass and its surfaces affect how well it works.</p></details>
+          <details><summary><b>What are Carbon Quantum Dots?</b><span>+</span></summary><p>They are tiny materials made mostly from carbon. Researchers study them because some kinds can give off light. The type and properties for AETHER have not been chosen or tested.</p></details>
+          <details><summary><b>Why might some light be lost?</b><span>+</span></summary><p>Some light may escape, get scattered or be caught again by the material. Sunlight, water and heat may also change the layer over time.</p></details>
+          <details><summary><b>What would the first test check?</b><span>+</span></summary><p>A small test would check each step: light entering the window, light reaching its edge, and electricity coming from the solar cells.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section about-section" id="about" aria-labelledby="about-title">
+      <div class="wrap about-grid reveal">
+        <div><span class="about-name">The project</span><h2 id="about-title">AETHER</h2><p class="small-note">A student project about windows and clean energy</p></div>
+        <div><p><strong>Gaurish Metha</strong><br>Indian School Muscat</p><p>AETHER asks a simple question: could a clear window also make electricity? The project brings together ideas about materials, light, solar cells, buildings and clean energy.</p><p>It is still an idea being developed. The next step is a small test model.</p><div class="discipline-list"><span>New materials</span><span>Tiny carbon materials</span><span>Light</span><span>Solar cells</span><span>Buildings</span><span>Electric circuits</span><span>Clean energy</span></div></div>
+      </div>
+    </section>
+
+    <section class="press-section" id="press" aria-labelledby="press-title">
+      <div class="wrap press-feature reveal">
+        <figure class="press-image"><img src="assets/muscat-daily.png" alt="Muscat Daily newspaper feature about Gaurish Metha and the AETHER window project" loading="lazy"><figcaption>Muscat Daily · 27 September 2026</figcaption></figure>
+        <div class="press-copy"><p class="eyebrow">In the news</p><h2 id="press-title">AETHER in<br><em>Muscat Daily.</em></h2><p>The project was featured in Muscat Daily online and in the newspaper, sharing the idea of windows that could help make renewable electricity.</p><p class="press-caveat">The article discusses project goals. The window is still being developed, and its performance has not been tested.</p></div>
+      </div>
+    </section>
+
+    <section class="closing" aria-labelledby="closing-title">
+      <div class="wrap reveal"><p class="eyebrow">A new idea for a familiar thing</p><h2 id="closing-title">What if your window<br>could make power?</h2><p class="closing-brand">AETHER</p><p class="closing-tagline">A window that could make electricity.</p></div>
+    </section>
+
+    <section class="video-section" id="video" aria-labelledby="video-title">
+      <div class="wrap video-layout reveal">
+        <div class="video-copy"><p class="eyebrow">Watch the explanation</p><h2 id="video-title">AETHER, in my words.</h2><p>A short video where I explain the project and how the window could work.</p></div>
+        <div class="video-frame"><a class="video-thumb" href="https://youtu.be/m-a7LgJ10QM" target="_blank" rel="noopener noreferrer" aria-label="Watch Gaurish explain the AETHER project on YouTube">
+          <img src="https://img.youtube.com/vi/m-a7LgJ10QM/hqdefault.jpg" alt="Thumbnail for Gaurish's AETHER project explanation video" loading="lazy">
+          <span class="video-play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13L19 12 8 5.5Z"/></svg>Watch on YouTube</span>
+        </a></div>
+      </div>
+    </section>
+
+    <section class="maker-section" id="maker" aria-labelledby="maker-title">
+      <div class="wrap maker-grid reveal">
+        <figure class="maker-portrait"><img src="assets/gaurish-metha.jpg" alt="Gaurish Metha, creator of the AETHER project" loading="lazy"></figure>
+        <div class="maker-note">
+          <p class="eyebrow">A note from the maker</p>
+          <h2 id="maker-title">One question<br>started it all.</h2>
+          <blockquote>I began AETHER with a simple question: could a window let in daylight and help make electricity? The idea is still being tested. I want to build a small model, see what works and learn from what does not.</blockquote>
+          <p class="maker-signature">Gaurish Metha · Indian School Muscat</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <div class="contact-head">
+          <div><p class="eyebrow">Get in touch</p><h2 id="contact-title">Contact me.</h2></div>
+          <p>Have a question or idea about AETHER? I’d be glad to hear from you.</p>
+        </div>
+        <div class="contact-list">
+          <div class="contact-item"><span>LinkedIn</span><a href="https://www.linkedin.com/in/gaurish-metha" target="_blank" rel="noopener noreferrer">Connect with Gaurish ↗</a></div>
+          <div class="contact-item"><span>Phone / WhatsApp</span><a href="tel:+96877501982">+968 77501982</a><a class="contact-subaction" href="https://wa.me/96877501982" target="_blank" rel="noopener noreferrer">Message on WhatsApp ↗</a></div>
+          <div class="contact-item"><span>Gmail</span><a href="mailto:gaurishmetha39@gmail.com">gaurishmetha39@gmail.com</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap footer-inner"><span>© AETHER · Student project · Muscat, Oman</span><a href="#maker">Contact</a><a href="#top">Back to top ↑</a><span>Idea in development · power not tested yet</span></div><div class="wrap"><p class="ai-note">This website was built with the help of AI.</p></div></footer>
+
+  <script>
+    const header = document.querySelector('.site-header');
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    const updateHeader = () => header.classList.toggle('scrolled', window.scrollY > 20);
+    updateHeader();
+    window.addEventListener('scroll', updateHeader, { passive: true });
+
+    menuToggle.addEventListener('click', () => {
+      const open = menuToggle.getAttribute('aria-expanded') !== 'true';
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+      document.body.classList.toggle('menu-open', open);
+    });
+    navLinks.forEach(link => link.addEventListener('click', () => {
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-label', 'Open navigation');
+      document.body.classList.remove('menu-open');
+    }));
+
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(element => revealObserver.observe(element));
+
+    const desktopPointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const hero = document.querySelector('.hero');
+    let heroPointerFrame = 0;
+    if (desktopPointer.matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      hero.addEventListener('pointermove', event => {
+        if (heroPointerFrame) return;
+        heroPointerFrame = window.requestAnimationFrame(() => {
+          heroPointerFrame = 0;
+          const bounds = hero.getBoundingClientRect();
+          const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * -12;
+          const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * -9;
+          hero.style.setProperty('--hero-x', `${x.toFixed(2)}px`);
+          hero.style.setProperty('--hero-y', `${y.toFixed(2)}px`);
+        });
+      }, { passive: true });
+      hero.addEventListener('pointerleave', () => {
+        hero.style.setProperty('--hero-x', '0px');
+        hero.style.setProperty('--hero-y', '0px');
+      }, { passive: true });
+
+      document.querySelectorAll('.concept-visual, .model-shell').forEach(card => {
+        let cardFrame = 0;
+        card.addEventListener('pointermove', event => {
+          if (cardFrame) return;
+          cardFrame = window.requestAnimationFrame(() => {
+            cardFrame = 0;
+            const bounds = card.getBoundingClientRect();
+            const x = event.clientX - bounds.left;
+            const y = event.clientY - bounds.top;
+            const rotateY = ((x / bounds.width) - 0.5) * 3.2;
+            const rotateX = ((y / bounds.height) - 0.5) * -2.6;
+            card.style.setProperty('--pointer-x', `${x}px`);
+            card.style.setProperty('--pointer-y', `${y}px`);
+            card.style.transform = `perspective(1200px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-2px)`;
+          });
+        }, { passive: true });
+        card.addEventListener('pointerleave', () => {
+          card.style.removeProperty('transform');
+          card.style.setProperty('--pointer-x', '50%');
+          card.style.setProperty('--pointer-y', '50%');
+        }, { passive: true });
+      });
+    }
+
+    const opticalScene = document.querySelector('.optical-scene');
+    const storyProgress = document.querySelectorAll('.story-progress span');
+    const opticalStoryObserver = new IntersectionObserver(entries => {
+      const active = entries.filter(entry => entry.isIntersecting).sort((a, b) => {
+        const center = window.innerHeight / 2;
+        return Math.abs(a.boundingClientRect.top + a.boundingClientRect.height / 2 - center) - Math.abs(b.boundingClientRect.top + b.boundingClientRect.height / 2 - center);
+      })[0];
+      if (!active) return;
+      const stage = active.target.dataset.step;
+      document.querySelectorAll('.story-beat[aria-current="step"]').forEach(beat => beat.removeAttribute('aria-current'));
+      opticalScene.dataset.stage = stage;
+      active.target.setAttribute('aria-current', 'step');
+      storyProgress.forEach((mark, index) => {
+        if (String(index) === stage) mark.setAttribute('aria-current', 'step');
+        else mark.removeAttribute('aria-current');
+      });
+    }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
+    document.querySelectorAll('.story-beat').forEach(beat => opticalStoryObserver.observe(beat));
+
+    const materialSceneTitles = ['Farm leftovers', 'Prepare the material', 'Carbon material', 'Tiny carbon dots', 'Clean and prepare', 'Clear material', 'Light-catching layer', 'AETHER window idea'];
+    const materialProgress = document.querySelectorAll('.material-progress span');
+    const materialSceneObserver = new IntersectionObserver(entries => {
+      const active = entries.filter(entry => entry.isIntersecting).sort((a, b) => {
+        const center = window.innerHeight / 2;
+        return Math.abs(a.boundingClientRect.top + a.boundingClientRect.height / 2 - center) - Math.abs(b.boundingClientRect.top + b.boundingClientRect.height / 2 - center);
+      })[0];
+      if (!active) return;
+      const stage = Number(active.target.dataset.step);
+      document.querySelectorAll('.material-beat[aria-current="step"]').forEach(beat => beat.removeAttribute('aria-current'));
+      active.target.setAttribute('aria-current', 'step');
+      document.querySelectorAll('.material-illustration').forEach((illustration, index) => {
+        illustration.classList.toggle('active', index === stage);
+      });
+      document.getElementById('material-scene-title').textContent = materialSceneTitles[stage];
+      materialProgress.forEach((mark, index) => {
+        if (index === stage) mark.setAttribute('aria-current', 'step');
+        else mark.removeAttribute('aria-current');
+      });
+    }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
+    document.querySelectorAll('.material-beat').forEach(beat => materialSceneObserver.observe(beat));
+
+    const componentContent = {
+      glass: ['Clear glass', 'The clear part of the window that lets you see through.'],
+      layer: ['Light-catching layer', 'A thin layer that may catch some sunlight and give off light inside the glass.'],
+      pv: ['Edge solar cells', 'Small solar cells around the edge could turn the guided light into electricity.'],
+      frame: ['Window frame', 'Holds the glass and gives the wires a way out.']
+    };
+    const componentButtons = document.querySelectorAll('[data-component]');
+    componentButtons.forEach(button => button.addEventListener('click', () => {
+      const key = button.dataset.component;
+      document.getElementById('component-title').textContent = componentContent[key][0];
+      document.getElementById('component-copy').textContent = componentContent[key][1];
+      componentButtons.forEach(item => item.setAttribute('aria-pressed', String(item.dataset.component === key)));
+    }));
+    const explodeToggle = document.getElementById('explode-toggle');
+    explodeToggle.addEventListener('click', () => {
+      const exploded = explodeToggle.getAttribute('aria-pressed') !== 'true';
+      explodeToggle.setAttribute('aria-pressed', String(exploded));
+      explodeToggle.textContent = exploded ? 'Put the parts together' : 'Separate the parts';
+      document.getElementById('panel-object').classList.toggle('exploded', exploded);
+    });
+
+    const engineeringSection = document.getElementById('engineering');
+    const panelObject = document.getElementById('panel-object');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let panelFrame = 0;
+    const updatePanelFromScroll = () => {
+      panelFrame = 0;
+      const bounds = engineeringSection.getBoundingClientRect();
+      const travel = Math.max(1, bounds.height + window.innerHeight * 0.56);
+      const progress = reduceMotion.matches ? 0 : Math.max(0, Math.min(1, (window.innerHeight * 0.78 - bounds.top) / travel));
+      const spread = Math.sin(progress * Math.PI);
+      panelObject.style.setProperty('--panel-tilt-x', `${56 - progress * 12}deg`);
+      panelObject.style.setProperty('--panel-tilt-z', `${-26 + progress * 7}deg`);
+      panelObject.style.setProperty('--panel-scale', `${1 + progress * 0.08}`);
+      panelObject.style.setProperty('--front-depth', `${23 + spread * 37}px`);
+      panelObject.style.setProperty('--functional-depth', `${12 + spread * 20}px`);
+      panelObject.style.setProperty('--frame-depth', `${-13 - spread * 18}px`);
+      panelObject.style.setProperty('--pv-depth', `${25 + spread * 27}px`);
+      panelObject.classList.toggle('optics-visible', progress > 0.25);
+    };
+    window.addEventListener('scroll', () => {
+      if (!panelFrame) panelFrame = window.requestAnimationFrame(updatePanelFromScroll);
+    }, { passive: true });
+    window.addEventListener('resize', updatePanelFromScroll, { passive: true });
+    updatePanelFromScroll();
+
+    const MODEL_PARAMETERS = {
+      windowAreaM2: 1.8,
+      emissionWavelengthNm: 690,
+      averageUVWavelengthNm: 350,
+      uvFraction: 0.04,
+      uvAbsorptance: 0.50,
+      photoluminescenceQuantumYield: 0.70,
+      opticalTrappingEfficiency: 0.75,
+      waveguideTransmission: 0.70,
+      edgeCouplingEfficiency: 0.80,
+      pvConversionEfficiency: 0.25,
+      provisionalPVTechnology: 'AlGaAs',
+      pvAlloyComposition: 'To be selected for compatibility with 690 nm photons'
+    };
+    const irradiance = document.getElementById('irradiance');
+    const sunHours = document.getElementById('sun-hours');
+    const modelSunAura = document.getElementById('model-sun-aura');
+    const modelSunCore = document.getElementById('model-sun-core');
+    const modelSunRays = document.getElementById('model-sun-rays');
+    const modelIncomingRays = document.getElementById('model-incoming-rays');
+    const modelLightPath = document.getElementById('model-light-path');
+    const modelElectricity = document.querySelectorAll('.model-electricity');
+    const modelResult = document.getElementById('model-result');
+    const dailyEnergyResult = document.getElementById('daily-energy-result');
+    const modelScreenreaderResult = document.getElementById('model-screenreader-result');
+    const modelError = document.getElementById('model-error');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let displayedPower = 0;
+    let powerAnimationFrame = 0;
+    const animatePower = (target, animate) => {
+      if (powerAnimationFrame) window.cancelAnimationFrame(powerAnimationFrame);
+      if (!animate || reducedMotion.matches) {
+        displayedPower = target;
+        modelResult.textContent = `${target.toFixed(2)} W`;
+        return;
+      }
+
+      const start = displayedPower;
+      const startTime = performance.now();
+      const duration = 360;
+      const tick = now => {
+        const progress = Math.min(1, (now - startTime) / duration);
+        const easedProgress = 1 - Math.pow(1 - progress, 3);
+        displayedPower = start + (target - start) * easedProgress;
+        modelResult.textContent = `${displayedPower.toFixed(2)} W`;
+        if (progress < 1) powerAnimationFrame = window.requestAnimationFrame(tick);
+        else powerAnimationFrame = 0;
+      };
+      powerAnimationFrame = window.requestAnimationFrame(tick);
+    };
+    const updateModel = (animate = true) => {
+      const irradianceValue = Number(irradiance.value);
+      const sunHoursValue = Number(sunHours.value);
+      const validInput = (input, value) => Number.isFinite(value)
+        && value >= Number(input.min)
+        && value <= Number(input.max);
+      if (!validInput(irradiance, irradianceValue) || !validInput(sunHours, sunHoursValue)) {
+        modelError.textContent = 'Unable to calculate: slider values are outside the supported range.';
+        console.error('AETHER model received an invalid slider value.');
+        return;
+      }
+      modelError.textContent = '';
+
+      const averageUVWavelengthM = MODEL_PARAMETERS.averageUVWavelengthNm * 1e-9;
+      const emissionWavelengthM = MODEL_PARAMETERS.emissionWavelengthNm * 1e-9;
+      const overallEfficiency = MODEL_PARAMETERS.uvFraction
+        * MODEL_PARAMETERS.uvAbsorptance
+        * MODEL_PARAMETERS.photoluminescenceQuantumYield
+        * (averageUVWavelengthM / emissionWavelengthM)
+        * MODEL_PARAMETERS.opticalTrappingEfficiency
+        * MODEL_PARAMETERS.waveguideTransmission
+        * MODEL_PARAMETERS.edgeCouplingEfficiency
+        * MODEL_PARAMETERS.pvConversionEfficiency;
+      const incidentSolarPower = MODEL_PARAMETERS.windowAreaM2 * irradianceValue;
+      const estimatedElectricalPower = incidentSolarPower * overallEfficiency;
+      const estimatedDailyEnergyWh = estimatedElectricalPower * sunHoursValue;
+      const irradianceShare = (irradianceValue - Number(irradiance.min))
+        / (Number(irradiance.max) - Number(irradiance.min));
+      const irradiancePercent = `${irradianceShare * 100}%`;
+
+      animatePower(estimatedElectricalPower, animate);
+      dailyEnergyResult.textContent = `${estimatedDailyEnergyWh.toFixed(2)} Wh/day`;
+      modelScreenreaderResult.textContent = `Estimated electrical power: ${estimatedElectricalPower.toFixed(2)} watts. Estimated daily electrical energy: ${estimatedDailyEnergyWh.toFixed(2)} watt-hours per day.`;
+      irradiance.style.setProperty('--range-progress', irradiancePercent);
+      sunHours.style.setProperty('--range-progress', `${((sunHoursValue - Number(sunHours.min)) / (Number(sunHours.max) - Number(sunHours.min))) * 100}%`);
+      document.getElementById('irradiance-out').textContent = `${irradianceValue} W/m²`;
+      document.getElementById('sun-hours-out').textContent = `${sunHoursValue.toFixed(1).replace(/\.0$/, '')} hours/day`;
+
+      modelSunAura.setAttribute('r', 42 + irradianceShare * 28);
+      modelSunAura.setAttribute('opacity', (0.06 + irradianceShare * 0.23).toFixed(2));
+      modelSunCore.setAttribute('r', 19 + irradianceShare * 10);
+      modelSunRays.setAttribute('opacity', (0.2 + irradianceShare * 0.7).toFixed(2));
+      modelIncomingRays.setAttribute('opacity', (0.16 + irradianceShare * 0.8).toFixed(2));
+      const beamOffsets = [-20, 0, 20];
+      modelIncomingRays.querySelectorAll('path').forEach((ray, index) => {
+        const offset = beamOffsets[index];
+        ray.setAttribute('d', `M${180 + offset} ${118 + offset * 0.35} L330 ${205 + offset}`);
+      });
+      modelLightPath.style.opacity = (0.18 + irradianceShare * 0.72).toFixed(2);
+      modelLightPath.style.setProperty('--flow-duration', `${Math.max(1.2, 4 - irradianceShare * 2.2)}s`);
+      modelElectricity.forEach(element => {
+        element.style.opacity = (0.08 + irradianceShare * 0.92).toFixed(2);
+      });
+    };
+    [irradiance, sunHours].forEach(input => input.addEventListener('input', () => updateModel()));
+    updateModel(false);
+  </script>
+</body>
+</html>
