@@ -98,64 +98,55 @@
   <main class="wrap">
     <p class="eyebrow">The illustrative model</p>
     <h1>How we got<br><em>this estimate.</em></h1>
-    <p class="intro">The calculator multiplies a fixed set of illustrative optical and electrical assumptions by the selected sunlight intensity and daily full-power sun hours. These values are editable in the site code, not experimental AETHER material properties.</p>
+    <p class="intro">The simulator compares two overall-efficiency scenarios. They come from different research contexts and are not measured performance of the AETHER window.</p>
 
     <section class="section" aria-labelledby="assumptions-title">
-      <h2 id="assumptions-title">Fixed assumptions</h2>
+      <h2 id="assumptions-title">Window &amp; scenario assumptions</h2>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th scope="col">Model parameter</th><th scope="col">Value</th></tr>
+            <tr><th scope="col">Model parameter</th><th scope="col">Value and context</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Window area</th><td class="parameter-value">1.8 m²</td></tr>
-            <tr><th scope="row">CQD emission wavelength</th><td class="parameter-value">690 nm<span class="note">Proposed design target</span></td></tr>
-            <tr><th scope="row">Average absorbed UV wavelength</th><td class="parameter-value">350 nm<span class="note">Simplified assumption</span></td></tr>
-            <tr><th scope="row">UV fraction of incident solar power</th><td class="parameter-value">0.04 (4%)</td></tr>
-            <tr><th scope="row">Absorbed fraction of relevant UV power</th><td class="parameter-value">0.50 (50%)</td></tr>
-            <tr><th scope="row">CQD photoluminescence quantum yield</th><td class="parameter-value">0.70 (70%)</td></tr>
-            <tr><th scope="row">Optical trapping fraction</th><td class="parameter-value">0.75 (75%)</td></tr>
-            <tr><th scope="row">Waveguide transmission fraction</th><td class="parameter-value">0.70 (70%)</td></tr>
-            <tr><th scope="row">Edge-coupling efficiency</th><td class="parameter-value">0.80 (80%)</td></tr>
-            <tr><th scope="row">Edge photovoltaic conversion efficiency</th><td class="parameter-value">0.25 (25%)<span class="note">Illustrative assumption at the emitted wavelength</span></td></tr>
-            <tr><th scope="row">Provisional PV technology</th><td class="parameter-value">AlGaAs<span class="note">Alloy composition to be selected for compatibility with 690 nm photons</span></td></tr>
+            <tr><th scope="row">Window width</th><td class="parameter-value">1.2 m</td></tr>
+            <tr><th scope="row">Window height</th><td class="parameter-value">1.5 m</td></tr>
+            <tr><th scope="row">Fixed window area</th><td class="parameter-value">1.2 m × 1.5 m = 1.8 m²</td></tr>
+            <tr><th scope="row">Research benchmark</th><td class="parameter-value">1.57% (η = 0.0157)<span class="note">Literature-reported efficiency for a particular quantum-dot glass device; not demonstrated for AETHER.</span></td></tr>
+            <tr><th scope="row">Ambitious design target</th><td class="parameter-value">4.5% (η = 0.045)<span class="note">Projected target for certain commercial-scale semi-transparent luminescent solar concentrator designs; not demonstrated for AETHER.</span></td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
     <section class="section" aria-labelledby="formula-title">
-      <h2 id="formula-title">The formula</h2>
+      <h2 id="formula-title">How the estimate is calculated</h2>
       <p class="equation">
-        η<sub>total</sub> = f<sub>UV</sub> × f<sub>abs</sub> × η<sub>PL</sub> ×
-        (λ<sub>UV</sub> / λ<sub>em</sub>) × η<sub>trap</sub> × η<sub>guide</sub> ×
-        η<sub>edge</sub> × η<sub>PV</sub>
+        area = window width × window height = 1.2 m × 1.5 m = 1.8 m²<br>
+        incident power = area × solar irradiance<br>
+        electrical power = incident power × selected overall efficiency<br>
+        daily energy (Wh/day) = electrical power × equivalent full-power sunlight hours<br>
+        daily energy (kWh/day) = daily energy (Wh/day) / 1,000
       </p>
-      <p>Both wavelengths are converted from nanometres to metres before calculating their ratio: (350 × 10<sup>−9</sup> m) / (690 × 10<sup>−9</sup> m). The wavelength ratio accounts for the energy of a photon changing when UV light is re-emitted as lower-energy visible light.</p>
-      <p class="equation">
-        η<sub>total</sub> = 0.04 × 0.50 × 0.70 × (350 / 690) × 0.75 × 0.70 × 0.80 × 0.25<br>
-        η<sub>total</sub> ≈ 0.0007456522 = 0.07456522%
-      </p>
+      <p>The selected scenario already represents an overall system efficiency. The calculator applies it directly and does not multiply by component efficiencies again, which would count losses twice. Irradiance means solar power per square metre incident on the window surface; no additional angle correction is applied.</p>
     </section>
 
     <section class="section" aria-labelledby="example-title">
-      <h2 id="example-title">Worked example</h2>
-      <div class="input-strip" aria-label="Default calculator inputs">
-        <div><span>Solar irradiance</span><strong>800 W/m²</strong></div>
-        <div><span>Equivalent full-power sun hours</span><strong>5 hours/day</strong></div>
+      <h2 id="example-title">Maximum-input comparison</h2>
+      <div class="input-strip" aria-label="Inputs for both verification examples">
+        <div><span>Solar irradiance</span><strong>1,000 W/m²</strong></div>
+        <div><span>Equivalent full-power sun hours</span><strong>8 hours/day</strong></div>
         <div><span>Fixed window area</span><strong>1.8 m²</strong></div>
       </div>
-      <ol class="steps">
-        <li><code>Incident solar power = 1.8 m² × 800 W/m² = 1,440 W</code></li>
-        <li><code>Estimated electrical power = 1,440 W × 0.0007456522 ≈ 1.07374 W</code></li>
-        <li><code>Estimated daily energy = 1.07374 W × 5 hours/day ≈ 5.36870 Wh/day</code></li>
-      </ol>
-      <div class="result-strip" aria-label="Rounded default model results">
-        <div><span>Overall efficiency</span><strong>0.0746%</strong></div>
-        <div><span>Estimated electrical power</span><strong>1.07 W</strong></div>
-        <div><span>Estimated daily energy</span><strong>5.37 Wh/day</strong></div>
+      <div class="table-wrap" style="margin-top:18px">
+        <table>
+          <thead><tr><th scope="col">Scenario</th><th scope="col">Efficiency</th><th scope="col">Incident power</th><th scope="col">Estimated electrical power</th><th scope="col">Estimated daily energy</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Research benchmark</th><td class="parameter-value">1.57%</td><td class="parameter-value">1,800 W</td><td class="parameter-value">28.26 W</td><td class="parameter-value">226.08 Wh/day<br>0.22608 kWh/day</td></tr>
+            <tr><th scope="row">Ambitious design target</th><td class="parameter-value">4.5%</td><td class="parameter-value">1,800 W</td><td class="parameter-value">81 W</td><td class="parameter-value">648 Wh/day<br>0.648 kWh/day</td></tr>
+          </tbody>
+        </table>
       </div>
-      <p class="caveat">This is a simplified energy-budget illustration, not a measured AETHER efficiency or experimental result. Actual AETHER performance requires experimental validation.</p>
+      <p class="caveat">These are scenario-based estimates using research comparisons, not measured AETHER efficiency or experimental results. Actual output depends on the CQD material, absorption and emission spectra, optical losses, PV technology, temperature and real operating conditions.</p>
     </section>
   </main>
 

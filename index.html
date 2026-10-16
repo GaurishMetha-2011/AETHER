@@ -407,7 +407,7 @@
     .range-control { display: block; margin: 18px 0 22px; }
     .range-top { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 4px; font-size: 12px; }
     .range-top output { color: var(--aqua); font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .range-scale { display: flex; justify-content: space-between; margin-top: -4px; color: #828c84; font-size: 10px; font-variant-numeric: tabular-nums; }
+    .range-scale { display: flex; justify-content: space-between; margin-top: -4px; color: #828c84; font-size: 11px; font-variant-numeric: tabular-nums; }
     input[type="range"] { display: block; width: 100%; height: 44px; margin: 0; padding: 0; appearance: none; background: transparent; cursor: pointer; touch-action: pan-y; }
     input[type="range"]::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(to right, var(--aqua) 0 var(--range-progress, 50%), #3d4941 var(--range-progress, 50%) 100%); }
     input[type="range"]::-moz-range-track { height: 6px; border-radius: 999px; background: #3d4941; }
@@ -417,15 +417,27 @@
     input[type="range"]:active::-webkit-slider-thumb { cursor: grabbing; }
     input[type="range"]:active::-moz-range-thumb { cursor: grabbing; }
     input[type="range"]:focus-visible { outline: 2px solid var(--aqua); outline-offset: 2px; }
+    .scenario-control { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: center; margin: 22px 0 0; }
+    .scenario-control label { color: #dce3dc; font-size: 12px; }
+    .scenario-control select { max-width: 100%; padding: 9px 30px 9px 11px; border: 1px solid rgba(139,228,208,.38); border-radius: 3px; background: #171e19; color: var(--aqua); font: 600 12px/1.35 var(--sans); }
+    .scenario-control select:focus-visible { outline: 2px solid var(--aqua); outline-offset: 3px; }
     .model-live-readout { display: grid; gap: 8px; align-content: center; }
     .model-live-readout span { color: var(--muted); font-size: 12px; }
     .model-live-readout strong { color: var(--aqua); font-family: var(--serif); font-size: clamp(38px, 4vw, 53px); font-weight: 400; line-height: .92; font-variant-numeric: tabular-nums; white-space: nowrap; }
     .model-daily { padding-left: 18px; border-left: 1px solid var(--line); }
-    .model-daily span { display: block; margin-bottom: 6px; color: var(--muted); font-size: 10px; }
+    .model-daily span { display: block; margin-bottom: 6px; color: var(--muted); font-size: 11px; }
     .model-daily strong { color: var(--white); font-size: 17px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .model-area { grid-column: 1 / -1; margin: 0; color: #9da79e; font-size: 10px; }
-    .model-disclaimer { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
+    .model-daily small { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .model-area { grid-column: 1 / -1; margin: 0; color: #9da79e; font-size: 11px; }
+    .model-scenario, .model-incident { grid-column: 1 / -1; margin: 0; color: #c6d0c7; font-size: 12px; }
+    .model-scenario strong, .model-incident strong { color: var(--aqua); font-weight: 600; }
+    .model-disclaimer { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
     .model-method-link { grid-column: 1 / -1; justify-self: start; margin-top: -6px; color: var(--aqua); font-size: 11px; text-decoration: underline; text-decoration-color: rgba(139,228,208,.45); text-underline-offset: 4px; transition: color .2s ease, text-decoration-color .2s ease; }
+    .model-estimates-details { grid-column: 1 / -1; margin-top: -6px; color: var(--muted); font-size: 12px; }
+    .model-estimates-details summary { min-height: 32px; justify-content: flex-start; gap: 8px; color: var(--aqua); }
+    .model-estimates-details summary b { font-size: 12px; font-weight: 500; }
+    .model-estimates-details summary span { font-size: 16px; }
+    .model-estimates-details p { margin: 2px 0 4px; line-height: 1.5; }
     .model-method-link:hover, .model-method-link:focus-visible { color: var(--white); text-decoration-color: currentColor; }
     .model-method-link:focus-visible { outline: 2px solid var(--aqua); outline-offset: 4px; }
     .model-error { margin: 12px 0 0; color: #ffb4a9; font-size: 12px; }
@@ -1245,7 +1257,7 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div><p class="eyebrow">Try a simple example</p><h2 id="model-title">What changes<br>the <em>power?</em></h2></div>
-          <p>Adjust sunlight intensity and equivalent full-power sun hours to explore a fixed 1.8 m² window. The estimate uses assumed material parameters, not measured AETHER results.</p>
+          <p>Explore how sunlight and daily exposure affect a fixed 1.8 m² window under two overall-efficiency research scenarios. Neither scenario is measured AETHER performance.</p>
         </div>
         <div class="model-shell reveal">
           <figure class="model-visual" role="img" aria-label="Illustration of sunlight reaching a clear window, light travelling to solar cells at the edge, and electricity flowing out by wire. The sun and light path brighten with solar irradiance.">
@@ -1289,14 +1301,24 @@
                 <input id="sun-hours" type="range" min="1" max="8" step="0.1" value="5" aria-describedby="sun-hours-scale">
                 <span class="range-scale" id="sun-hours-scale" aria-hidden="true"><span>1 hour/day</span><span>8 hours/day</span></span>
               </label>
+              <div class="scenario-control">
+                <label for="efficiency-scenario">Efficiency scenario</label>
+                <select id="efficiency-scenario">
+                  <option value="research">Research benchmark · 1.57%</option>
+                  <option value="target">Ambitious design target · 4.5%</option>
+                </select>
+              </div>
               <p id="model-error" class="model-error" role="alert"></p>
             </div>
             <div class="model-output" aria-label="Estimated results">
               <div class="model-live-readout"><span>Estimated electrical power</span><strong id="model-result">1.07 W</strong></div>
-              <div class="model-daily"><span>Estimated daily energy</span><strong id="daily-energy-result">5.37 Wh/day</strong></div>
-              <p class="model-area">Fixed window area: 1.8 m²</p>
-              <p class="model-disclaimer">Illustrative UV-to-visible solar conversion model using assumed material parameters. Actual AETHER performance requires experimental validation.</p>
-              <a class="model-method-link" href="model-methodology.html">Want to know how we got this estimate?</a>
+              <div class="model-daily"><span>Estimated daily energy</span><strong id="daily-energy-result">113.04 Wh/day</strong><small id="daily-energy-kwh">0.11304 kWh/day</small></div>
+              <p class="model-area">Fixed window area: <strong id="model-area">1.8 m²</strong></p>
+              <p class="model-scenario">Selected scenario: <strong id="model-scenario-result">Research benchmark · 1.57%</strong></p>
+              <p class="model-incident">Incident solar power: <strong id="incident-power-result">1,440 W</strong></p>
+              <p class="model-disclaimer">Scenario-based estimates using published research benchmarks and projected design targets. These efficiencies are not experimentally validated for AETHER.</p>
+              <details class="model-estimates-details"><summary><b>About these estimates</b><span>+</span></summary><p>These scenario assumptions come from different research contexts, not measured performance of the AETHER window. Actual output depends on the CQD material, absorption and emission spectra, optical losses, PV technology, temperature and real operating conditions. Overall efficiencies are applied directly; component losses are not multiplied again.</p></details>
+              <a class="model-method-link" href="model-methodology.html">Calculation method &amp; scenarios</a>
             </div>
           </div>
           <p class="sr-only" id="model-screenreader-result" aria-live="polite">Estimated electrical power: 1.07 watts. Estimated daily electrical energy: 5.37 watt-hours per day.</p>
@@ -1539,22 +1561,28 @@
     window.addEventListener('resize', updatePanelFromScroll, { passive: true });
     updatePanelFromScroll();
 
-    const MODEL_PARAMETERS = {
-      windowAreaM2: 1.8,
-      emissionWavelengthNm: 690,
-      averageUVWavelengthNm: 350,
-      uvFraction: 0.04,
-      uvAbsorptance: 0.50,
-      photoluminescenceQuantumYield: 0.70,
-      opticalTrappingEfficiency: 0.75,
-      waveguideTransmission: 0.70,
-      edgeCouplingEfficiency: 0.80,
-      pvConversionEfficiency: 0.25,
-      provisionalPVTechnology: 'AlGaAs',
-      pvAlloyComposition: 'To be selected for compatibility with 690 nm photons'
+    const MODEL_CONFIG = {
+      windowWidthM: 1.2,
+      windowHeightM: 1.5,
+      irradianceMinWPerM2: 100,
+      irradianceMaxWPerM2: 1000,
+      sunHoursMinPerDay: 1,
+      sunHoursMaxPerDay: 8,
+      scenarios: {
+        research: {
+          label: 'Research benchmark',
+          efficiency: 0.0157
+        },
+        target: {
+          label: 'Ambitious design target',
+          efficiency: 0.045
+        }
+      }
     };
+    MODEL_CONFIG.windowAreaM2 = MODEL_CONFIG.windowWidthM * MODEL_CONFIG.windowHeightM;
     const irradiance = document.getElementById('irradiance');
     const sunHours = document.getElementById('sun-hours');
+    const efficiencyScenario = document.getElementById('efficiency-scenario');
     const modelSunAura = document.getElementById('model-sun-aura');
     const modelSunCore = document.getElementById('model-sun-core');
     const modelSunRays = document.getElementById('model-sun-rays');
@@ -1563,6 +1591,9 @@
     const modelElectricity = document.querySelectorAll('.model-electricity');
     const modelResult = document.getElementById('model-result');
     const dailyEnergyResult = document.getElementById('daily-energy-result');
+    const dailyEnergyKWhResult = document.getElementById('daily-energy-kwh');
+    const incidentPowerResult = document.getElementById('incident-power-result');
+    const selectedScenarioResult = document.getElementById('model-scenario-result');
     const modelScreenreaderResult = document.getElementById('model-screenreader-result');
     const modelError = document.getElementById('model-error');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -1572,7 +1603,7 @@
       if (powerAnimationFrame) window.cancelAnimationFrame(powerAnimationFrame);
       if (!animate || reducedMotion.matches) {
         displayedPower = target;
-        modelResult.textContent = `${target.toFixed(2)} W`;
+        modelResult.textContent = `${formatModelNumber(target)} W`;
         return;
       }
 
@@ -1583,45 +1614,72 @@
         const progress = Math.min(1, (now - startTime) / duration);
         const easedProgress = 1 - Math.pow(1 - progress, 3);
         displayedPower = start + (target - start) * easedProgress;
-        modelResult.textContent = `${displayedPower.toFixed(2)} W`;
+        modelResult.textContent = `${formatModelNumber(displayedPower)} W`;
         if (progress < 1) powerAnimationFrame = window.requestAnimationFrame(tick);
         else powerAnimationFrame = 0;
       };
       powerAnimationFrame = window.requestAnimationFrame(tick);
     };
+    const formatModelNumber = (value, maximumFractionDigits = 2) => new Intl.NumberFormat('en-US', {
+      maximumFractionDigits,
+      useGrouping: true
+    }).format(value);
+
+    // Applies the selected overall-efficiency scenario once, without reapplying component losses.
+    const calculateSolarWindow = (irradianceValue, sunHoursValue, scenarioKey) => {
+      const scenario = MODEL_CONFIG.scenarios[scenarioKey];
+      const validIrradiance = Number.isFinite(irradianceValue)
+        && irradianceValue >= MODEL_CONFIG.irradianceMinWPerM2
+        && irradianceValue <= MODEL_CONFIG.irradianceMaxWPerM2;
+      const validSunHours = Number.isFinite(sunHoursValue)
+        && sunHoursValue >= MODEL_CONFIG.sunHoursMinPerDay
+        && sunHoursValue <= MODEL_CONFIG.sunHoursMaxPerDay;
+      if (!validIrradiance || !validSunHours || !scenario) return null;
+
+      const incidentSolarPower = MODEL_CONFIG.windowAreaM2 * irradianceValue;
+      const estimatedElectricalPower = incidentSolarPower * scenario.efficiency;
+      const estimatedDailyEnergyWh = estimatedElectricalPower * sunHoursValue;
+      return {
+        scenario,
+        windowAreaM2: MODEL_CONFIG.windowAreaM2,
+        incidentSolarPower,
+        estimatedElectricalPower,
+        estimatedDailyEnergyWh,
+        estimatedDailyEnergyKWh: estimatedDailyEnergyWh / 1000
+      };
+    };
+
     const updateModel = (animate = true) => {
       const irradianceValue = Number(irradiance.value);
       const sunHoursValue = Number(sunHours.value);
-      const validInput = (input, value) => Number.isFinite(value)
-        && value >= Number(input.min)
-        && value <= Number(input.max);
-      if (!validInput(irradiance, irradianceValue) || !validInput(sunHours, sunHoursValue)) {
-        modelError.textContent = 'Unable to calculate: slider values are outside the supported range.';
-        console.error('AETHER model received an invalid slider value.');
+      const results = calculateSolarWindow(irradianceValue, sunHoursValue, efficiencyScenario.value);
+      if (!results) {
+        modelError.textContent = 'Unable to calculate: check the selected scenario and supported input ranges.';
+        console.error('AETHER model received invalid input values or an unknown efficiency scenario.');
+        if (powerAnimationFrame) window.cancelAnimationFrame(powerAnimationFrame);
+        powerAnimationFrame = 0;
+        displayedPower = 0;
+        modelResult.textContent = '—';
+        dailyEnergyResult.textContent = '—';
+        dailyEnergyKWhResult.textContent = '—';
+        incidentPowerResult.textContent = '—';
+        selectedScenarioResult.textContent = '—';
+        modelScreenreaderResult.textContent = modelError.textContent;
         return;
       }
       modelError.textContent = '';
 
-      const averageUVWavelengthM = MODEL_PARAMETERS.averageUVWavelengthNm * 1e-9;
-      const emissionWavelengthM = MODEL_PARAMETERS.emissionWavelengthNm * 1e-9;
-      const overallEfficiency = MODEL_PARAMETERS.uvFraction
-        * MODEL_PARAMETERS.uvAbsorptance
-        * MODEL_PARAMETERS.photoluminescenceQuantumYield
-        * (averageUVWavelengthM / emissionWavelengthM)
-        * MODEL_PARAMETERS.opticalTrappingEfficiency
-        * MODEL_PARAMETERS.waveguideTransmission
-        * MODEL_PARAMETERS.edgeCouplingEfficiency
-        * MODEL_PARAMETERS.pvConversionEfficiency;
-      const incidentSolarPower = MODEL_PARAMETERS.windowAreaM2 * irradianceValue;
-      const estimatedElectricalPower = incidentSolarPower * overallEfficiency;
-      const estimatedDailyEnergyWh = estimatedElectricalPower * sunHoursValue;
       const irradianceShare = (irradianceValue - Number(irradiance.min))
         / (Number(irradiance.max) - Number(irradiance.min));
       const irradiancePercent = `${irradianceShare * 100}%`;
 
-      animatePower(estimatedElectricalPower, animate);
-      dailyEnergyResult.textContent = `${estimatedDailyEnergyWh.toFixed(2)} Wh/day`;
-      modelScreenreaderResult.textContent = `Estimated electrical power: ${estimatedElectricalPower.toFixed(2)} watts. Estimated daily electrical energy: ${estimatedDailyEnergyWh.toFixed(2)} watt-hours per day.`;
+      animatePower(results.estimatedElectricalPower, animate);
+      dailyEnergyResult.textContent = `${formatModelNumber(results.estimatedDailyEnergyWh)} Wh/day`;
+      dailyEnergyKWhResult.textContent = `${formatModelNumber(results.estimatedDailyEnergyKWh, 5)} kWh/day`;
+      incidentPowerResult.textContent = `${formatModelNumber(results.incidentSolarPower)} W`;
+      selectedScenarioResult.textContent = `${results.scenario.label} · ${(results.scenario.efficiency * 100).toFixed(2).replace(/\.?0+$/, '')}%`;
+      document.getElementById('model-area').textContent = `${results.windowAreaM2.toFixed(1)} m² (${MODEL_CONFIG.windowWidthM.toFixed(1)} m × ${MODEL_CONFIG.windowHeightM.toFixed(1)} m)`;
+      modelScreenreaderResult.textContent = `Estimated electrical power: ${formatModelNumber(results.estimatedElectricalPower)} watts. Estimated daily electrical energy: ${formatModelNumber(results.estimatedDailyEnergyWh)} watt-hours per day, or ${formatModelNumber(results.estimatedDailyEnergyKWh, 5)} kilowatt-hours per day. Incident solar power: ${formatModelNumber(results.incidentSolarPower)} watts. ${results.scenario.label}, ${(results.scenario.efficiency * 100).toFixed(2)} percent overall efficiency.`;
       irradiance.style.setProperty('--range-progress', irradiancePercent);
       sunHours.style.setProperty('--range-progress', `${((sunHoursValue - Number(sunHours.min)) / (Number(sunHours.max) - Number(sunHours.min))) * 100}%`);
       document.getElementById('irradiance-out').textContent = `${irradianceValue} W/m²`;
@@ -1644,6 +1702,7 @@
       });
     };
     [irradiance, sunHours].forEach(input => input.addEventListener('input', () => updateModel()));
+    efficiencyScenario.addEventListener('change', () => updateModel());
     updateModel(false);
   </script>
 </body>
