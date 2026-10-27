@@ -15,6 +15,10 @@ Sunlight → light-catching layer → light travels through glass
 
 AETHER is not meant to replace roof solar panels. It asks whether windows could become another place to explore solar power.
 
+## Economics & value
+
+The [Economics & Value page](economics-value.html) presents proposed pricing tiers and an interactive illustrative value scenario. Its prices, energy and cooling benefits, and payback figures are assumptions—not tested AETHER performance or a commercial offer. The page is self-contained and does not depend on the optional source PDF in the project folder.
+
 ## Materials
 
 The project is exploring tiny carbon-based materials called **Carbon Quantum Dots (CQDs)** for the light-catching layer. Farm waste is one possible starting point to study. The material, the way to make it, and whether it works in clear glass all still need to be tested.

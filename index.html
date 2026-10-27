@@ -325,6 +325,39 @@
     .future-strip p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
     .future-strip span { color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 
+    /* Dual objective */
+    .dual-objective { overflow: hidden; background: radial-gradient(ellipse at 50% 45%, rgba(139,228,208,.055), transparent 62%); }
+    .dual-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .dual-card { position: relative; min-height: 390px; overflow: hidden; padding: 30px; border: 1px solid var(--line); background: linear-gradient(145deg, rgba(139,228,208,.055), transparent 52%), rgba(18,23,20,.78); transition: transform .45s cubic-bezier(.2,.8,.2,1), border-color .3s ease, box-shadow .3s ease; }
+    .dual-card:hover { transform: translateY(-5px); border-color: rgba(139,228,208,.35); box-shadow: 0 24px 60px rgba(0,0,0,.2); }
+    .dual-card-label { display: flex; align-items: center; gap: 9px; color: var(--aqua); font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .dual-card-label::before { width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 15px currentColor; content: ""; }
+    .dual-card h3 { margin: 19px 0 10px; font-family: var(--serif); font-size: clamp(35px, 4vw, 48px); font-weight: 400; line-height: .96; }
+    .dual-card > p { max-width: 470px; margin: 0; color: #bdc5bd; font-size: 13px; }
+    .dual-visual { position: relative; display: flex; height: 136px; align-items: center; justify-content: center; gap: 22px; margin: 29px 0 20px; padding-bottom: 15px; overflow: hidden; border: 1px solid rgba(238,244,235,.08); background: rgba(5,9,7,.28); }
+    .dual-visual::before { position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(139,228,208,.035), transparent); content: ""; transform: translateX(-100%); animation: dual-shimmer 5s ease-in-out infinite; }
+    .dual-icon { position: relative; z-index: 1; width: 49px; height: 49px; color: var(--amber); filter: drop-shadow(0 0 14px rgba(229,190,128,.25)); }
+    .dual-window { position: relative; z-index: 1; width: 69px; height: 91px; border: 1px solid rgba(194,242,229,.76); background: linear-gradient(135deg, rgba(171,231,214,.17), rgba(171,231,214,.025)); box-shadow: inset 0 0 25px rgba(139,228,208,.09), 0 0 25px rgba(139,228,208,.08); }
+    .dual-window::before { position: absolute; inset: 0 0 0 auto; width: 8px; border-left: 1px solid rgba(229,190,128,.45); background: repeating-linear-gradient(180deg, rgba(229,190,128,.75) 0 4px, transparent 4px 11px); content: ""; }
+    .dual-window::after { position: absolute; top: 50%; right: 12px; left: 12px; height: 1px; background: rgba(139,228,208,.8); box-shadow: 0 0 10px var(--aqua); content: ""; animation: dual-flow 2.3s ease-in-out infinite; }
+    .dual-visual-labels { position: absolute; right: 12px; bottom: 7px; left: 12px; display: grid; grid-template-columns: 1fr 1fr 1fr; color: var(--muted); font-size: 9px; text-align: center; }
+    .dual-arrow { position: relative; z-index: 1; width: 48px; height: 1px; background: linear-gradient(90deg, var(--amber), var(--aqua)); }
+    .dual-arrow::after { position: absolute; top: -4px; right: 0; width: 8px; height: 8px; border-top: 1px solid var(--aqua); border-right: 1px solid var(--aqua); content: ""; transform: rotate(45deg); }
+    .dual-cooling .dual-icon { color: #9ac9e4; filter: drop-shadow(0 0 13px rgba(154,201,228,.26)); }
+    .dual-cooling .dual-arrow { background: linear-gradient(90deg, #9ac9e4, rgba(154,201,228,.18)); }
+    .dual-cooling .dual-arrow::after { border-color: #9ac9e4; transform: rotate(225deg); }
+    .dual-cooling .dual-arrow:nth-of-type(3) { display: none; }
+    .dual-cooling .dual-window::after { right: 24px; left: 24px; background: #9ac9e4; box-shadow: 0 0 10px #9ac9e4; }
+    .dual-points { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+    .dual-points li { position: relative; padding-left: 18px; color: #c6cec6; font-size: 12px; }
+    .dual-points li::before { position: absolute; top: .65em; left: 0; width: 6px; height: 6px; border-radius: 50%; background: var(--aqua); content: ""; }
+    .dual-cooling .dual-points li::before { background: #9ac9e4; }
+    .dual-estimate { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; padding: 9px 11px; border: 1px solid rgba(139,228,208,.2); color: var(--aqua); font-size: 11px; font-variant-numeric: tabular-nums; }
+    .dual-estimate span { color: var(--muted); font-variant-numeric: normal; }
+    .dual-note { max-width: 820px; margin: 22px 0 0; color: var(--muted); font-size: 11px; }
+    @keyframes dual-shimmer { 0%, 30% { transform: translateX(-100%); } 75%, 100% { transform: translateX(100%); } }
+    @keyframes dual-flow { 0%, 100% { opacity: .38; transform: scaleX(.55); } 50% { opacity: 1; transform: scaleX(1); } }
+
     /* Application settings */
     .applications { padding-bottom: 138px; }
     .application-grid { display: grid; grid-template-columns: 1.35fr 1fr 1fr; gap: 12px; }
@@ -634,6 +667,10 @@
       .system-node:nth-child(2n) { border-right: 0; }
       .system-node:nth-child(n+7) { border-bottom: 0 !important; }
       .future-strip { grid-template-columns: 1fr; gap: 10px; }
+      .dual-grid { grid-template-columns: 1fr; }
+      .dual-card { min-height: auto; padding: 25px; }
+      .dual-visual { height: 118px; margin-block: 22px 18px; }
+      .dual-estimate { display: grid; gap: 4px; }
       .application-grid { grid-template-columns: 1fr; gap: 10px; }
       .application { min-height: 300px; }
       .contrast { grid-template-columns: 1fr; }
@@ -726,6 +763,13 @@
     .application-content h3 { font-size: clamp(28px, 2.5vw, 36px); }
     .application-content p { max-width: 330px; }
     .applications .image-note { margin-top: 22px; }
+    .economics-entry { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: center; overflow: hidden; padding: 39px 42px; border: 1px solid rgba(139,228,208,.22); background: radial-gradient(ellipse at 90% 50%, rgba(139,228,208,.12), transparent 42%), linear-gradient(110deg, rgba(139,228,208,.055), rgba(255,255,255,.015)); transition: border-color .3s ease, transform .3s ease, background .3s ease; }
+    .economics-entry:hover { transform: translateY(-3px); border-color: rgba(139,228,208,.48); background-color: rgba(139,228,208,.035); }
+    .economics-entry .eyebrow { margin-bottom: 12px; }
+    .economics-entry h2 { margin: 0; font-family: var(--serif); font-size: clamp(35px, 5vw, 52px); font-weight: 400; line-height: .98; }
+    .economics-entry h2 em { color: var(--aqua); font-weight: 400; }
+    .economics-entry p:not(.eyebrow) { max-width: 660px; margin: 12px 0 0; color: #b9c1b9; font-size: 13px; }
+    .economics-entry .button { flex: 0 0 auto; }
     .closing::after { background: linear-gradient(180deg, var(--ink) 0%, rgba(16,19,17,.7) 17%, transparent 43%, rgba(16,19,17,.4) 78%, var(--ink) 100%), linear-gradient(90deg, rgba(10,15,14,.72), rgba(10,15,14,.2)); }
     .sdg { min-height: 124px; gap: 13px; padding: 13px; border-radius: 3px; transition: transform .35s ease, border-color .25s ease, background .25s ease; }
     .sdg:hover { transform: translateY(-4px); border-color: rgba(139,228,208,.43); background: rgba(139,228,208,.055); }
@@ -754,6 +798,8 @@
       .hero-copy { z-index: 1; }
       .application-grid { grid-template-columns: 1fr; }
       .application-grid .application { min-height: 350px; }
+      .economics-entry { grid-template-columns: 1fr; gap: 22px; padding: 29px 25px; }
+      .economics-entry .button { justify-self: start; }
       .sdg { min-height: 90px; }
       .sdg img { width: 46px; height: 46px; }
       .sdg b { font-size: 12px; }
@@ -1151,6 +1197,62 @@
       </div>
     </section>
 
+    <section class="section dual-objective" aria-labelledby="dual-objective-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><p class="eyebrow">Two goals · one window</p><h2 id="dual-objective-title">Dual<br><em>Objective.</em></h2></div>
+          <p>AETHER is designed to do two useful things: make electricity from sunlight and help reduce heat entering the building.</p>
+        </div>
+        <div class="dual-grid">
+          <article class="dual-card reveal">
+            <span class="dual-card-label">01 / Generate electricity</span>
+            <h3>Turn sunlight<br>into power.</h3>
+            <p>The light-catching material takes in some ultraviolet light and gives off light that travels through the glass. Solar cells at the edge can turn that light into electricity.</p>
+            <div class="dual-visual" aria-hidden="true">
+              <svg class="dual-icon" viewBox="0 0 48 48" fill="none">
+                <circle cx="24" cy="24" r="7" stroke="currentColor" stroke-width="1.7"/>
+                <path d="M24 3v8m0 26v8M3 24h8m26 0h8M9.15 9.15l5.66 5.66m18.38 18.38 5.66 5.66m0-29.7-5.66 5.66M14.81 33.19l-5.66 5.66" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+              <span class="dual-arrow"></span><span class="dual-window"></span><span class="dual-arrow"></span>
+              <svg class="dual-icon" viewBox="0 0 48 48" fill="none">
+                <path d="M8 24h29m0 0-8-8m8 8-8 8M12 12l5 5m-5 19 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M37 18v12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+              <span class="dual-visual-labels"><span>Sunlight</span><span>Window</span><span>Electricity</span></span>
+            </div>
+            <ul class="dual-points">
+              <li>Light-catching material inside the window</li>
+              <li>Guided light reaches solar cells at the edge</li>
+              <li>Cells send electricity through wires</li>
+            </ul>
+          </article>
+          <article class="dual-card dual-cooling reveal">
+            <span class="dual-card-label">02 / Help keep buildings cool</span>
+            <h3>Keep more heat<br>outside.</h3>
+            <p>In Oman’s hot climate, sunlight can add heat indoors through windows. AETHER’s design aims to take in some UV light and reduce how much near-infrared heat passes through the glass.</p>
+            <div class="dual-visual" aria-hidden="true">
+              <svg class="dual-icon" viewBox="0 0 48 48" fill="none">
+                <circle cx="24" cy="24" r="7" stroke="currentColor" stroke-width="1.7"/>
+                <path d="M24 3v8m0 26v8M3 24h8m26 0h8M9.15 9.15l5.66 5.66m18.38 18.38 5.66 5.66m0-29.7-5.66 5.66M14.81 33.19l-5.66 5.66" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+              <span class="dual-arrow"></span><span class="dual-window"></span><span class="dual-arrow"></span>
+              <svg class="dual-icon" viewBox="0 0 48 48" fill="none">
+                <path d="M24 5v38M7.55 14.5l32.9 19M7.55 33.5l32.9-19M24 5l-4 5m4-5 4 5M24 43l-4-5m4 5 4-5M7.55 14.5l6.5.5m-6.5-.5 2-6m28.9 24.5-2-6m2 6-6.5-.5M7.55 33.5l6.5-.5m-6.5.5 2 6m28.9-24.5-2 6m2-6-6.5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="dual-visual-labels"><span>Sunlight</span><span>Heat sent back</span><span>Cooler indoors</span></span>
+            </div>
+            <ul class="dual-points">
+              <li>Some UV light is caught by the light-catching material</li>
+              <li>Window layers aim to reduce near-infrared heat indoors</li>
+              <li>Less heat indoors could mean less work for air conditioning</li>
+            </ul>
+            <div class="dual-estimate">OMR 2.25 / m² / year <span>cooling-savings estimate used in the economics example</span></div>
+          </article>
+        </div>
+        <p class="dual-note reveal">The cooling figure is an estimate, not a measured result. How much heat a window blocks depends on its complete glass design; the actual power and cooling effects need to be tested.</p>
+      </div>
+    </section>
+
     <section class="section applications" id="applications" aria-labelledby="applications-title">
       <div class="wrap">
         <div class="section-head reveal">
@@ -1166,6 +1268,19 @@
           <article class="application reveal" style="--application-image: url('https://images.unsplash.com/photo-1780369088780-211f54e16407?auto=format&amp;fit=crop&amp;w=1200&amp;q=82')"><div class="application-content"><span>06 / Public realm</span><h3>Covered walkways</h3><p>Look at glazed canopies and sheltered connectors across campuses and city spaces.</p></div></article>
         </div>
         <p class="image-note">Images are illustrative. Application examples are concepts, not AETHER installations.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="economics-entry-title">
+      <div class="wrap">
+        <a class="economics-entry reveal" href="economics-value.html">
+          <div>
+            <p class="eyebrow">AETHER · Economics &amp; value</p>
+            <h2 id="economics-entry-title">What might a window<br><em>be worth?</em></h2>
+            <p>Explore two proposed product tiers, the assumptions behind their pricing, and an interactive building-scale value scenario.</p>
+          </div>
+          <span class="button">Explore the economics <span aria-hidden="true">↗</span></span>
+        </a>
       </div>
     </section>
 

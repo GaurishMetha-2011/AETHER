@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101311">
+  <meta name="description" content="Explore estimated AETHER window prices and a simple interactive savings example.">
+  <title>Economics &amp; Value — AETHER</title>
+  <link rel="icon" type="image/png" href="assets/aether-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #101311;
+      --raised: #171d19;
+      --raised-light: #202923;
+      --white: #f5f6f1;
+      --muted: #a9b0a9;
+      --line: rgba(238,244,235,.14);
+      --aqua: #8be4d0;
+      --green: #b0d28b;
+      --amber: #e5be80;
+      --serif: "Instrument Serif", Georgia, serif;
+      --sans: "Manrope", "DM Sans", "Segoe UI", sans-serif;
+      --content: 1180px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { min-width: 320px; margin: 0; background: var(--ink); color: var(--white); font: 15px/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    button, input { font: inherit; }
+    .wrap { width: min(var(--content), calc(100% - 64px)); margin-inline: auto; }
+    .skip-link { position: absolute; z-index: 20; top: 10px; left: 10px; padding: 10px 14px; background: var(--aqua); color: var(--ink); transform: translateY(-150%); }
+    .skip-link:focus { transform: translateY(0); }
+    .header { position: relative; z-index: 2; border-bottom: 1px solid var(--line); }
+    .nav { display: flex; min-height: 76px; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--white); font-size: 12px; font-weight: 700; letter-spacing: .2em; text-decoration: none; }
+    .brand img { width: 31px; height: 31px; object-fit: contain; }
+    .back-link { color: var(--aqua); font-size: 12px; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+    a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--aqua); outline-offset: 4px; }
+    .hero { position: relative; overflow: hidden; padding: 112px 0 92px; border-bottom: 1px solid var(--line); isolation: isolate; }
+    .hero::before, .hero::after { position: absolute; z-index: -1; border-radius: 50%; content: ""; pointer-events: none; }
+    .hero::before { top: -260px; right: -80px; width: 680px; height: 680px; background: radial-gradient(circle, rgba(91,151,121,.22), rgba(91,151,121,0) 68%); }
+    .hero::after { right: 12%; bottom: -240px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(139,228,208,.09), transparent 68%); }
+    .eyebrow { margin: 0 0 19px; color: var(--aqua); font-size: 11px; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
+    h1, h2, h3 { font-family: var(--serif); font-weight: 400; }
+    h1 { max-width: 900px; margin: 0; font-size: clamp(58px, 8.5vw, 106px); line-height: .91; letter-spacing: -.025em; }
+    h1 em, h2 em { color: var(--aqua); font-weight: 400; }
+    .hero-copy { max-width: 650px; margin: 27px 0 0; color: #c4cbc4; font-size: clamp(15px, 1.5vw, 18px); }
+    .hero-foot { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 37px; color: var(--muted); font-size: 11px; }
+    .hero-foot span { display: inline-flex; align-items: center; gap: 8px; }
+    .hero-foot span::before { width: 6px; height: 6px; border-radius: 50%; background: var(--green); content: ""; }
+    main { overflow: hidden; }
+    .section { padding: 94px 0; border-bottom: 1px solid var(--line); }
+    .section-heading { display: grid; grid-template-columns: minmax(0, 1fr) minmax(270px, 440px); gap: 40px; align-items: end; margin-bottom: 38px; }
+    .section-heading h2 { margin: 0; font-size: clamp(42px, 6vw, 66px); line-height: .98; }
+    .section-heading > p { margin: 0 0 3px; color: var(--muted); font-size: 14px; }
+    .model-intro-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin-top: 30px; border: 1px solid var(--line); background: var(--line); }
+    .model-intro-card { padding: clamp(22px, 4vw, 36px); background: var(--raised); transition: background .25s ease; }
+    .model-intro-card.selected { background: linear-gradient(125deg, rgba(139,228,208,.095), transparent 78%), var(--raised); }
+    .model-intro-card h3 { margin: 15px 0 8px; font-size: clamp(28px, 4vw, 38px); line-height: 1; }
+    .model-intro-card p { margin: 0; color: #b8c0b9; font-size: 13px; }
+    .model-intro-card .model-use { margin-top: 12px; color: var(--muted); font-size: 11px; }
+    .model-intro-card .tier-button { margin-top: 22px; border: 1px solid var(--line); }
+    .model-intro-card .tier-button[aria-pressed="true"] { border-color: var(--aqua); }
+    .model-selected-note { margin: 16px 0 0; color: var(--muted); font-size: 12px; }
+    .tier-bar { display: flex; width: fit-content; gap: 5px; margin-bottom: 17px; padding: 5px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.025); }
+    .tier-button { min-height: 42px; padding: 0 19px; border: 0; border-radius: 999px; background: transparent; color: #c4cbc4; cursor: pointer; font-size: 12px; transition: background .25s ease, color .25s ease, transform .25s ease; }
+    .tier-button:hover { transform: translateY(-1px); color: var(--white); }
+    .tier-button[aria-pressed="true"] { background: var(--aqua); color: var(--ink); font-weight: 700; }
+    .product-card { position: relative; display: grid; grid-template-columns: 1.15fr .85fr; min-height: 380px; overflow: hidden; border: 1px solid var(--line); background: linear-gradient(115deg, rgba(139,228,208,.075), transparent 48%), var(--raised); }
+    .product-card::after { position: absolute; top: -170px; right: -80px; width: 500px; height: 500px; border: 1px solid rgba(139,228,208,.09); border-radius: 50%; content: ""; pointer-events: none; }
+    .product-main, .product-specs { position: relative; z-index: 1; padding: clamp(26px, 5vw, 54px); }
+    .product-main { display: flex; flex-direction: column; justify-content: space-between; }
+    .tier-kicker { color: var(--aqua); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+    .product-main h3 { margin: 13px 0 10px; font-size: clamp(38px, 5vw, 58px); line-height: 1; }
+    .tier-context { max-width: 540px; margin: 0; color: #c4cbc4; }
+    .price-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 13px; margin-top: 38px; }
+    .price { color: var(--white); font-size: clamp(42px, 6vw, 64px); font-weight: 500; letter-spacing: -.045em; line-height: 1; font-variant-numeric: tabular-nums; }
+    .price-unit { color: var(--muted); font-size: 12px; }
+    .price-context { max-width: 440px; margin: 13px 0 0; color: var(--muted); font-size: 12px; }
+    .product-specs { display: flex; flex-direction: column; justify-content: center; border-left: 1px solid var(--line); background: rgba(6,10,8,.28); }
+    .spec-row { padding: 17px 0; border-bottom: 1px solid var(--line); }
+    .spec-row:first-child { border-top: 1px solid var(--line); }
+    .spec-row span { display: block; color: var(--muted); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+    .spec-row strong { display: block; margin-top: 4px; color: var(--white); font-size: 15px; font-weight: 600; }
+    .model-tag { margin-top: 20px; color: var(--green); font-size: 11px; }
+    .micro-note { margin: 16px 0 0; color: #89938b; font-size: 11px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; border: 1px solid var(--line); background: var(--line); }
+    .feature { min-height: 300px; padding: 28px; background: var(--ink); transition: background .3s ease, transform .3s ease; }
+    .feature:hover { position: relative; z-index: 1; background: var(--raised); transform: translateY(-4px); }
+    .feature-number { color: var(--green); font-size: 10px; font-weight: 700; letter-spacing: .13em; }
+    .feature h3 { margin: 36px 0 13px; font-size: clamp(27px, 3vw, 36px); line-height: 1; }
+    .feature p { margin: 0; color: #b8c0b9; font-size: 13px; }
+    .feature .highlight { color: var(--aqua); }
+    .feature-note { display: block; margin-top: 17px; padding-top: 13px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+    .simulator { display: grid; grid-template-columns: minmax(280px, .75fr) minmax(0, 1.25fr); gap: 1px; border: 1px solid var(--line); background: var(--line); }
+    .sim-controls, .sim-results { background: var(--raised); }
+    .sim-controls { padding: clamp(22px, 4vw, 38px); }
+    .control-group + .control-group { margin-top: 31px; }
+    .control-heading { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 12px; color: #dce1dc; font-size: 12px; }
+    .control-heading output { color: var(--aqua); font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+    input[type="range"] { width: 100%; height: 4px; margin: 12px 0; accent-color: var(--aqua); cursor: pointer; }
+    .range-limits { display: flex; justify-content: space-between; color: #8f9991; font-size: 10px; }
+    .selected-tier { margin: 28px 0 0; padding: 17px; border: 1px solid var(--line); background: rgba(139,228,208,.04); }
+    .selected-tier span { display: block; color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .09em; }
+    .selected-tier strong { display: block; margin-top: 5px; color: var(--white); font-size: 14px; }
+    .sim-results { padding: clamp(22px, 4vw, 38px); }
+    .result-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 10px; }
+    .result-head h3 { margin: 0; font-size: 30px; }
+    .result-head span { color: var(--muted); font-size: 11px; }
+    .result-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin-top: 23px; border: 1px solid var(--line); background: var(--line); }
+    .result-cell { min-height: 96px; padding: 17px; background: #131814; }
+    .result-cell span { display: block; color: var(--muted); font-size: 10px; }
+    .result-cell strong { display: block; margin-top: 7px; color: var(--white); font-size: clamp(19px, 2.5vw, 26px); font-weight: 500; font-variant-numeric: tabular-nums; }
+    .result-cell.emphasis strong { color: var(--aqua); }
+    .net-position { margin-top: 19px; padding: 19px; border: 1px solid rgba(139,228,208,.25); background: linear-gradient(100deg, rgba(139,228,208,.08), transparent); }
+    .net-position span { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+    .net-position strong { display: block; margin-top: 4px; color: var(--aqua); font-size: clamp(29px, 4vw, 42px); font-weight: 500; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+    .net-position.negative strong { color: var(--amber); }
+    .net-position p { margin: 3px 0 0; color: #aeb8af; font-size: 11px; }
+    .payback-meter { margin-top: 22px; padding: 19px; border: 1px solid var(--line); background: #131814; }
+    .payback-meter-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; margin-bottom: 12px; }
+    .payback-meter-head strong { font-size: 12px; font-weight: 600; }
+    .payback-meter-head span { color: var(--aqua); font-size: 12px; font-variant-numeric: tabular-nums; }
+    .meter-track { height: 12px; overflow: hidden; border-radius: 999px; background: rgba(245,246,241,.11); }
+    .meter-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #72cdb9, var(--aqua)); transition: width .45s ease; }
+    .meter-ends { display: flex; justify-content: space-between; margin-top: 7px; color: #8e9990; font-size: 10px; }
+    .meter-caption { margin: 14px 0 0; color: #b8c0b9; font-size: 12px; }
+    .sim-caption, .sim-error { margin: 14px 0 0; color: var(--muted); font-size: 11px; }
+    .sim-error { color: #ffc2a8; }
+    .disclosure { margin-top: 20px; padding: 17px 19px; border-left: 2px solid var(--amber); background: rgba(229,190,128,.055); color: #c4cbc4; font-size: 12px; }
+    .disclosure strong { color: var(--white); }
+    .about { margin-top: 17px; border-top: 1px solid var(--line); }
+    .about summary { display: flex; justify-content: space-between; gap: 15px; padding: 18px 0; color: var(--aqua); cursor: pointer; font-size: 12px; list-style: none; }
+    .about summary::-webkit-details-marker { display: none; }
+    .about summary::after { content: "+"; color: var(--white); font-size: 18px; line-height: 1; }
+    .about[open] summary::after { content: "−"; }
+    .about p { max-width: 850px; margin: 0 0 17px; color: var(--muted); font-size: 12px; }
+    .unit-block + .unit-block { margin-top: 46px; }
+    .unit-block h3 { margin: 0 0 12px; font-size: clamp(26px, 4vw, 36px); line-height: 1; }
+    .unit-block > p { max-width: 780px; margin: 0 0 18px; color: var(--muted); font-size: 13px; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); }
+    .unit-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .unit-table th, .unit-table td { min-width: 115px; padding: 14px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .unit-table th:first-child, .unit-table td:first-child { min-width: 210px; }
+    .unit-table thead th { background: rgba(139,228,208,.055); color: var(--aqua); font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+    .unit-table tbody th { color: var(--white); font-size: 12px; font-weight: 600; }
+    .unit-table tbody td { color: #c4cbc4; font-size: 12px; font-variant-numeric: tabular-nums; }
+    .unit-table tbody tr:last-child th, .unit-table tbody tr:last-child td { border-bottom: 0; }
+    .unit-table .total-row { background: rgba(139,228,208,.055); }
+    .unit-table .total-row th, .unit-table .total-row td { color: var(--aqua); font-weight: 700; }
+    .unit-detail { display: block; margin-top: 4px; color: #8f9991; font-size: 11px; font-weight: 400; line-height: 1.45; }
+    .costing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; border: 1px solid var(--line); background: var(--line); }
+    .costing-card { padding: 23px; background: var(--raised); }
+    .costing-card h4 { margin: 0 0 9px; color: var(--aqua); font-size: 12px; font-weight: 700; }
+    .costing-card p { margin: 0; color: #c4cbc4; font-size: 12px; }
+    .estimate-note { margin: 24px 0 0; padding: 15px 18px; border-left: 2px solid var(--aqua); background: rgba(139,228,208,.045); color: #c4cbc4; font-size: 12px; }
+    .footer { padding: 24px 0; color: var(--muted); font-size: 11px; }
+    .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 25px; }
+    .footer a { color: var(--aqua); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
+    @media (max-width: 800px) {
+      .wrap { width: min(var(--content), calc(100% - 44px)); }
+      .hero { padding: 86px 0 72px; }
+      .section { padding: 72px 0; }
+      .section-heading { grid-template-columns: 1fr; gap: 17px; }
+      .model-intro-grid { grid-template-columns: 1fr; }
+      .product-card { grid-template-columns: 1fr; }
+      .product-specs { border-top: 1px solid var(--line); border-left: 0; }
+      .product-main { min-height: 340px; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .feature { min-height: auto; }
+      .feature h3 { margin-top: 21px; }
+      .simulator { grid-template-columns: 1fr; }
+      .costing-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .wrap { width: calc(100% - 36px); }
+      .nav { min-height: 66px; }
+      .brand { font-size: 11px; }
+      .brand img { width: 27px; height: 27px; }
+      .back-link { font-size: 11px; text-align: right; }
+      .hero { padding: 70px 0 58px; }
+      .hero-foot { display: grid; gap: 8px; }
+      .tier-bar { width: 100%; }
+      .tier-button { flex: 1; padding-inline: 8px; }
+      .product-main, .product-specs { padding: 24px; }
+      .product-main { min-height: 330px; }
+      .result-cell { min-height: 88px; padding: 13px; }
+      .payback-meter { padding: 15px; }
+      .unit-table th, .unit-table td { padding: 11px 12px; }
+    }
+    @media (min-width: 801px) and (max-height: 1000px) {
+      #building-example { padding: 24px 0; }
+      #building-example > .wrap > .section-heading { display: block; margin-bottom: 14px; }
+      #building-example .section-heading h2, #building-example .section-heading > p { display: none; }
+      #building-example .section-heading .eyebrow { margin: 0; }
+      #building-example .sim-controls, #building-example .sim-results { padding: 18px; }
+      #building-example .control-group + .control-group { margin-top: 15px; }
+      #building-example .selected-tier { margin-top: 14px; padding: 12px 14px; }
+      #building-example .sim-caption { margin-top: 10px; font-size: 10px; line-height: 1.4; }
+      #building-example .result-head h3 { font-size: 30px; }
+      #building-example .result-grid { margin-top: 14px; }
+      #building-example .result-cell { min-height: 78px; padding: 11px 13px; }
+      #building-example .result-cell span { font-size: 11px; }
+      #building-example .result-cell strong { margin-top: 7px; font-size: clamp(22px, 2vw, 30px); }
+      #building-example .net-position { margin-top: 12px; padding: 12px 14px; }
+      #building-example .net-position strong { font-size: 30px; }
+      #building-example .net-position p { font-size: 10px; }
+      #building-example .payback-meter { margin-top: 14px; padding: 12px 14px; }
+      #building-example .payback-meter-head { margin-bottom: 9px; }
+      #building-example .meter-track { height: 14px; }
+      #building-example .meter-ends { font-size: 9px; }
+      #building-example .meter-caption { margin-top: 8px; font-size: 11px; }
+      #building-example .disclosure { margin-top: 14px; padding: 12px 14px; font-size: 11px; }
+      #building-example .about { margin-top: 12px; }
+      #building-example .about summary { padding: 12px 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="header">
+    <nav class="nav wrap" aria-label="Page navigation">
+      <a class="brand" href="index.html" aria-label="AETHER home"><img src="assets/aether-logo.png" alt="">AETHER</a>
+      <a class="back-link" href="index.html#applications">Back to the AETHER story&nbsp; ↗</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow">AETHER · Oman &amp; GCC</p>
+        <h1>Engineering Value:<br><em>The Economics of AETHER</em></h1>
+        <p class="hero-copy">AETHER is designed to make electricity from a window. Here is what each window could cost, and how the extra cost might compare with estimated savings over time.</p>
+        <div class="hero-foot"><span>Prices in OMR</span><span>Estimated figures</span></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="models-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><p class="eyebrow">Two AETHER models</p><h2 id="models-title">First, choose the<br><em>right kind of window.</em></h2></div>
+          <p>AETHER Home is for homes and mid-rise buildings. AETHER Tower is for tall buildings that need stronger façade glass. Choose one model to see its costs and estimates below.</p>
+        </div>
+        <div class="model-intro-grid">
+          <article class="model-intro-card selected" id="home-model-card">
+            <span class="tier-kicker">Homes &amp; mid-rise buildings</span>
+            <h3>AETHER Home</h3>
+            <p>A complete window for homes and buildings up to about eight floors, with standard double glass and solar cells along the window edge.</p>
+            <p class="model-use">Purpose: a window option for homes and mid-rise projects.</p>
+            <button class="tier-button model-select-button" type="button" data-tier="home" aria-pressed="true">Choose AETHER Home</button>
+          </article>
+          <article class="model-intro-card" id="tower-model-card">
+            <span class="tier-kicker">Skyscrapers &amp; high-rise buildings</span>
+            <h3>AETHER Tower</h3>
+            <p>A complete window for tall buildings, with stronger glass and solar cells along the window edge.</p>
+            <p class="model-use">Purpose: a window option for high-rise buildings with heavier structural needs.</p>
+            <button class="tier-button model-select-button" type="button" data-tier="tower" aria-pressed="false">Choose AETHER Tower</button>
+          </article>
+        </div>
+        <p class="model-selected-note" id="model-selected-note">Selected: AETHER Home. The economics below show this model only.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="tiers-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><p class="eyebrow">The economics</p><h2 id="tiers-title">A closer look at<br><em id="economics-tier-name">AETHER Home.</em></h2></div>
+          <p>All the prices and costs below are for the selected model only. Use the model choices above to switch between Home and Tower.</p>
+        </div>
+        <article class="product-card" aria-live="polite">
+          <div class="product-main">
+            <div>
+              <span class="tier-kicker" id="tier-kicker">Homes &amp; mid-rise buildings</span>
+              <h3 id="tier-name">AETHER Home</h3>
+              <p class="tier-context" id="tier-context">A complete window designed for homes and mid-rise buildings. The price includes the window, its light-catching material and solar cells along the edge.</p>
+            </div>
+            <div>
+              <div class="price-row"><strong class="price" id="tier-price">OMR 78.00</strong><span class="price-unit">per m² · estimated price</span></div>
+              <p class="price-context" id="tier-price-context">A standard window is estimated at OMR 43.00/m², so the AETHER window costs about OMR 35.00/m² more.</p>
+            </div>
+          </div>
+          <div class="product-specs">
+            <div class="spec-row"><span>Window system</span><strong id="tier-window">Glass, light-catching material and edge solar cells</strong></div>
+            <div class="spec-row"><span>Estimated build cost</span><strong id="tier-direct-cost">OMR 45.00/m²</strong></div>
+            <div class="spec-row"><span>Estimated gross profit margin</span><strong id="tier-margin">42.3%</strong></div>
+            <div class="spec-row"><span>Building type</span><strong id="tier-structure">Homes &amp; mid-rise buildings</strong></div>
+            <p class="model-tag">All prices and figures above are estimates.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="value-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><p class="eyebrow">Why the extra cost?</p><h2 id="value-title">A window with<br><em>more to offer.</em></h2></div>
+          <p>The extra cost is meant to pay for a window that could also make electricity and help keep buildings cool.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature">
+            <span class="feature-number">01 / SOLAR CELLS AT THE EDGE</span>
+            <h3>Keep more glass clear.</h3>
+            <p>The idea is to guide sunlight through the window to small solar cells around its edges, instead of covering the whole window with dark panels.</p>
+            <span class="feature-note">The cost estimate allows for more edge-cell area than the early 4% idea. The window’s final look will depend on its design.</span>
+          </article>
+          <article class="feature">
+            <span class="feature-number">02 / MAKING USE OF WASTE</span>
+            <h3>Turn leftovers into useful material.</h3>
+            <p>AETHER explores making its light-catching material from carbon-based ingredients such as citric acid and urea. Some of these ingredients can come from farm or food waste.</p>
+            <span class="feature-note">The aim is to find a simpler, lower-cost way to make the material for a whole window.</span>
+          </article>
+          <article class="feature">
+            <span class="feature-number">03 / WHEN COULD IT PAY BACK?</span>
+            <h3><span id="selected-payback-heading">About 7 years.</span></h3>
+            <p>For each square metre, the estimate counts <span id="electricity-value-copy">—</span> a year from electricity and <span id="cooling-value-copy">—</span> from lower cooling needs. Together, they could cover the selected window’s extra cost in about <span class="highlight" id="selected-payback-copy">—</span>.</p>
+            <span class="feature-note">This is an estimate. Actual savings depend on the building and how the window performs.</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section sim-section" id="building-example" aria-labelledby="sim-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Try an example</p>
+            <h2 id="sim-title">What could it mean<br><em>for a building?</em></h2>
+          </div>
+          <p>Choose the window type, size of the installation and number of years. See the estimated cost and how much the possible savings could cover.</p>
+        </div>
+        <div class="simulator">
+          <div class="sim-controls">
+            <div class="control-group">
+              <label class="control-heading" for="area-input"><span>Window area</span><output id="area-output" for="area-input">1,000 m²</output></label>
+              <input id="area-input" type="range" min="25" max="1000" step="25" value="1000">
+              <div class="range-limits"><span>25 m²</span><span>1,000 m²</span></div>
+            </div>
+            <div class="control-group">
+              <label class="control-heading" for="year-input"><span>Years of use</span><output id="year-output" for="year-input">7 years</output></label>
+              <input id="year-input" type="range" min="0" max="25" step="1" value="7">
+              <div class="range-limits"><span>Year 0</span><span>Year 25</span></div>
+            </div>
+            <div class="selected-tier"><span>Window type</span><strong id="sim-tier-name">AETHER Home · OMR 78.00/m²</strong></div>
+            <p class="sim-caption">The example assumes possible savings of <span id="annual-benefit-copy">—</span> per m² each year: <span id="annual-electricity-input">—</span> from electricity and <span id="annual-cooling-input">—</span> from cooling.</p>
+          </div>
+          <div class="sim-results">
+            <div class="result-head"><h3 id="sim-result-title">1,000 m² · Year 7</h3><span>All amounts are estimates in OMR</span></div>
+            <div class="result-grid">
+              <div class="result-cell"><span>Estimated AETHER window cost</span><strong id="aether-cost">—</strong></div>
+              <div class="result-cell"><span>Estimated standard-window cost</span><strong id="reference-cost">—</strong></div>
+              <div class="result-cell emphasis"><span>Extra cost for AETHER</span><strong id="premium-cost">—</strong></div>
+              <div class="result-cell"><span>Possible savings so far</span><strong id="accumulated-value">—</strong></div>
+            </div>
+            <div class="net-position negative" id="net-position" aria-live="polite">
+              <span>Extra cost compared with possible savings</span>
+              <strong id="net-value">—</strong>
+              <p id="net-description">—</p>
+            </div>
+            <div class="payback-meter" role="group" aria-label="Estimated progress toward covering the extra cost">
+              <div class="payback-meter-head"><strong>How much of the extra cost could be covered?</strong><span id="payback-progress-label">0%</span></div>
+              <div class="meter-track" id="meter-track" role="progressbar" aria-label="Estimated extra cost covered by possible savings" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="meter-fill" id="meter-fill"></div>
+              </div>
+              <div class="meter-ends"><span>Extra cost not yet covered</span><span>Extra cost covered</span></div>
+              <p class="meter-caption" id="meter-caption">—</p>
+            </div>
+            <p class="sim-error" id="sim-error" role="alert" hidden></p>
+          </div>
+        </div>
+        <div class="disclosure"><strong>Note:</strong> all prices and savings on this page are estimates. Actual costs and savings may be different.</div>
+        <details class="about">
+          <summary><span>About these estimates</span></summary>
+          <p>The <span id="formula-tier-name">AETHER Home</span> example compares the AETHER window with a standard window, then divides the extra cost by estimated yearly savings. That gives about <span id="selected-payback-formula">—</span>. This is a simple estimate and does not include installation or upkeep costs.</p>
+          <p>Estimated yearly savings may come from electricity and lower cooling needs. Real savings depend on the building, local electricity prices, weather and how much power the window makes.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section" id="unit-economics" aria-labelledby="unit-economics-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><p class="eyebrow">Detailed cost breakdown</p><h2 id="unit-economics-title">The unit economics,<br><em>in plain numbers.</em></h2></div>
+          <p>This section breaks down the estimated cost of one square metre of each complete window, then shows how the planned prices and savings estimates fit together.</p>
+        </div>
+
+        <div class="unit-block">
+          <h3>What <span id="bom-tier-name">AETHER Home</span> costs to make</h3>
+          <p>Each row is one part of the selected complete window. The percentage shows how much that part adds to its estimated total cost.</p>
+          <div class="table-wrap">
+            <table class="unit-table">
+              <thead><tr><th scope="col">Part of the window</th><th scope="col" id="bom-cost-heading">AETHER Home · cost and share</th></tr></thead>
+              <tbody id="bom-rows"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="unit-block">
+          <h3><span id="price-tier-name">AETHER Home</span>: price and profit</h3>
+          <p id="price-context">Standard-window price comparison and estimated profit for the selected model.</p>
+          <div class="table-wrap">
+            <table class="unit-table">
+              <thead><tr><th scope="col">For each 1 m²</th><th scope="col" id="price-value-heading">AETHER Home · estimate</th></tr></thead>
+              <tbody id="price-rows"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="unit-block">
+          <h3>How the material and savings estimates were worked out</h3>
+          <div class="costing-grid">
+            <article class="costing-card">
+              <h4>Light-catching material</h4>
+              <p id="material-cost-detail">—</p>
+            </article>
+            <article class="costing-card">
+              <h4>Solar cells at the edge</h4>
+              <p id="edge-cell-detail">—</p>
+            </article>
+            <article class="costing-card">
+              <h4>Possible yearly savings</h4>
+              <p>The example estimates 110 units of electricity (kWh) per m² each year. At OMR 0.025 per unit, that is OMR 2.75. It also estimates OMR 2.25 a year from lower cooling needs: OMR 5.00 total per m² each year.</p>
+            </article>
+            <article class="costing-card">
+              <h4>Estimated time to cover the extra cost</h4>
+              <p id="payback-detail">—</p>
+            </article>
+          </div>
+        </div>
+        <p class="estimate-note">All unit costs, prices, profit margins, electricity output and savings on this page are estimates.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="wrap footer-inner"><span>© AETHER · Student project · Muscat, Oman</span><a href="index.html">Return to the main story ↑</a><span>Economics shown are illustrative assumptions.</span></div></footer>
+
+  <script>
+    const ECONOMICS_CONFIG = Object.freeze({
+      annualElectricityValuePerM2: 2.75,
+      annualCoolingValuePerM2: 2.25,
+      minimumAreaM2: 25,
+      maximumAreaM2: 1000,
+      maximumYears: 25,
+      assumedServiceLifeYears: { minimum: 20, maximum: 25 },
+      tiers: {
+        home: {
+          name: 'AETHER Home',
+          context: 'A complete window designed for homes and mid-rise buildings. The price includes the window, its light-catching material and solar cells along the edge.',
+          pricePerM2: 78,
+          modeledCostPerM2: 45,
+          referencePricePerM2: 43,
+          windowSystem: 'Glass, light-catching material and edge solar cells',
+          buildingType: 'Homes & mid-rise buildings',
+          normalWindowRange: 'OMR 35–45/m²',
+          netOperatingProfitPerM2: 18.5,
+          netOperatingMarginPercent: 23.7,
+          materialAmountGrams: 0.8,
+          cellAreaM2: 0.15,
+          components: [
+            { name: 'Glass and insulation', detail: '6 mm clear glass, 6 mm energy-saving glass and insulating gas.', cost: 24, share: 53.3 },
+            { name: 'Light-catching carbon dots', detail: 'Estimated amount: 0.8 g per m².', cost: 3.2, share: 7.1 },
+            { name: 'Solar cells at the window edge', detail: 'Estimated cell area: 15% of each square metre.', cost: 8.2, share: 18.2 },
+            { name: 'Protective layers', detail: 'Films and materials that hold the glass and light-guiding parts together.', cost: 2.8, share: 6.2 },
+            { name: 'Frame and wiring', detail: 'Frame, wires and small electrical parts.', cost: 4.6, share: 10.2 },
+            { name: 'Assembly and checks', detail: 'Putting the window together and checking the finished unit.', cost: 2.2, share: 4.9 }
+          ],
+          edgeCellExplanation: 'The Home estimate allows 0.15 m² of solar cells per 1 m² window. The report estimates the cells at OMR 54.60 per m² of cell area, or about OMR 8.20 for this window.',
+          materialExplanation: 'The estimate uses OMR 4.00 per gram of carbon dots. At 0.8 g per m², Home uses OMR 3.20 of this material. The proposed recipe uses citric acid (estimated at OMR 0.60/kg) and urea (OMR 0.35/kg). The report also lists heating at about 2.4 kWh per 100 g and cleaning and drying at about OMR 1.20 per gram. The listed steps do not fully add up to OMR 4.00/g, so that total should be treated as a broad estimate.'
+        },
+        tower: {
+          name: 'AETHER Tower',
+          context: 'A complete high-rise window designed for tall buildings. Its price includes stronger glass and the same light-catching material and edge solar cells.',
+          pricePerM2: 245,
+          modeledCostPerM2: 142,
+          referencePricePerM2: 195,
+          windowSystem: 'Stronger glass, light-catching material and edge solar cells',
+          buildingType: 'Skyscrapers & high-rise buildings',
+          normalWindowRange: 'About OMR 195/m²',
+          netOperatingProfitPerM2: 56,
+          netOperatingMarginPercent: 22.8,
+          materialAmountGrams: 1.2,
+          cellAreaM2: 0.20,
+          components: [
+            { name: 'Glass and insulation', detail: 'Thicker glass with a strong middle layer. The design estimate uses 5.0–6.0 kPa wind pressure.', cost: 105, share: 73.9 },
+            { name: 'Light-catching carbon dots', detail: 'Estimated amount: 1.2 g per m².', cost: 4.8, share: 3.4 },
+            { name: 'Solar cells at the window edge', detail: 'Estimated cell area: 20% of each square metre.', cost: 12, share: 8.5 },
+            { name: 'Protective layers', detail: 'Strong glass-bonding layers and materials to protect the window.', cost: 5.2, share: 3.7 },
+            { name: 'Frame and wiring', detail: 'Heavy-duty frame, wiring and connection box.', cost: 11, share: 7.7 },
+            { name: 'Assembly and checks', detail: 'Assembly and pressure, alignment and quality checks.', cost: 4, share: 2.8 }
+          ],
+          edgeCellExplanation: 'The Tower estimate allows 0.20 m² of solar cells per 1 m² window. The project cost estimate assigns OMR 12.00 to these cells per square metre of window.',
+          materialExplanation: 'The estimate uses OMR 4.00 per gram of carbon dots. At 1.2 g per m², Tower uses OMR 4.80 of this material. The proposed recipe uses citric acid (estimated at OMR 0.60/kg) and urea (OMR 0.35/kg). The report also lists heating at about 2.4 kWh per 100 g and cleaning and drying at about OMR 1.20 per gram. The listed steps do not fully add up to OMR 4.00/g, so that total should be treated as a broad estimate.'
+        }
+      }
+    });
+
+    const formatOMR = amount => `${amount < 0 ? '−' : ''}OMR ${Math.abs(amount).toLocaleString('en-OM', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const formatNumber = amount => amount.toLocaleString('en-OM', { maximumFractionDigits: 0 });
+    const formatYears = value => `${Number.isInteger(value) ? value : value.toFixed(1)} years`;
+    const calculateEconomics = (tierKey, areaM2, years) => {
+      const tier = ECONOMICS_CONFIG.tiers[tierKey];
+      if (!tier || !Number.isFinite(areaM2) || !Number.isFinite(years)
+        || areaM2 < ECONOMICS_CONFIG.minimumAreaM2 || areaM2 > ECONOMICS_CONFIG.maximumAreaM2
+        || years < 0 || years > ECONOMICS_CONFIG.maximumYears) return null;
+
+      const totalAnnualBenefitPerM2 = ECONOMICS_CONFIG.annualElectricityValuePerM2
+        + ECONOMICS_CONFIG.annualCoolingValuePerM2;
+      const aetherPurchase = areaM2 * tier.pricePerM2;
+      const referencePurchase = areaM2 * tier.referencePricePerM2;
+      const incrementalPremium = aetherPurchase - referencePurchase;
+      const annualBenefit = areaM2 * totalAnnualBenefitPerM2;
+      const accumulatedBenefit = annualBenefit * years;
+      return {
+        tier,
+        areaM2,
+        years,
+        aetherPurchase,
+        referencePurchase,
+        incrementalPremium,
+        annualBenefit,
+        accumulatedBenefit,
+        netPosition: accumulatedBenefit - incrementalPremium,
+        paybackYears: (tier.pricePerM2 - tier.referencePricePerM2) / totalAnnualBenefitPerM2
+      };
+    };
+
+    const modelSelectButtons = document.querySelectorAll('.model-select-button');
+    const areaInput = document.getElementById('area-input');
+    const yearInput = document.getElementById('year-input');
+    const areaOutput = document.getElementById('area-output');
+    const yearOutput = document.getElementById('year-output');
+    const simError = document.getElementById('sim-error');
+    let selectedTier = 'home';
+
+    const updateTierPresentation = () => {
+      const tier = ECONOMICS_CONFIG.tiers[selectedTier];
+      const premiumPerM2 = tier.pricePerM2 - tier.referencePricePerM2;
+      const grossMarginPercent = ((tier.pricePerM2 - tier.modeledCostPerM2) / tier.pricePerM2) * 100;
+      document.getElementById('tier-kicker').textContent = selectedTier === 'home'
+        ? 'Homes & mid-rise buildings'
+        : 'Skyscrapers & high-rise buildings';
+      document.getElementById('tier-name').textContent = tier.name;
+      document.getElementById('tier-context').textContent = tier.context;
+      document.getElementById('tier-price').textContent = formatOMR(tier.pricePerM2);
+      document.getElementById('tier-price-context').textContent =
+        `A standard window is estimated at ${formatOMR(tier.referencePricePerM2)}/m², so the AETHER window costs about ${formatOMR(premiumPerM2)}/m² more.`;
+      document.getElementById('tier-window').textContent = tier.windowSystem;
+      document.getElementById('tier-direct-cost').textContent = `${formatOMR(tier.modeledCostPerM2)}/m²`;
+      document.getElementById('tier-margin').textContent = `${grossMarginPercent.toFixed(1)}%`;
+      document.getElementById('tier-structure').textContent = tier.buildingType;
+      document.getElementById('economics-tier-name').textContent = `${tier.name}.`;
+      document.getElementById('bom-tier-name').textContent = tier.name;
+      document.getElementById('price-tier-name').textContent = tier.name;
+      document.getElementById('bom-cost-heading').textContent = `${tier.name} · cost and share`;
+      document.getElementById('price-value-heading').textContent = `${tier.name} · estimate`;
+      document.getElementById('model-selected-note').textContent = `Selected: ${tier.name}. The economics below show this model only.`;
+      document.getElementById('home-model-card').classList.toggle('selected', selectedTier === 'home');
+      document.getElementById('tower-model-card').classList.toggle('selected', selectedTier === 'tower');
+      modelSelectButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.tier === selectedTier)));
+      document.getElementById('sim-tier-name').textContent = `${tier.name} · ${formatOMR(tier.pricePerM2)}/m²`;
+      renderComponentRows(tier);
+      renderPriceRows(tier, premiumPerM2, grossMarginPercent);
+      document.getElementById('price-context').textContent =
+        `Standard window estimate: ${tier.normalWindowRange}. Imported solar glass in the project estimate: OMR 280–350/m².`;
+      document.getElementById('material-cost-detail').textContent = tier.materialExplanation;
+      document.getElementById('edge-cell-detail').textContent = tier.edgeCellExplanation;
+      const paybackYears = (premiumPerM2 / (ECONOMICS_CONFIG.annualElectricityValuePerM2 + ECONOMICS_CONFIG.annualCoolingValuePerM2));
+      document.getElementById('selected-payback-heading').textContent = `About ${formatYears(paybackYears)}.`;
+      document.getElementById('selected-payback-copy').textContent = formatYears(paybackYears);
+      document.getElementById('payback-detail').textContent =
+        `${tier.name}: ${formatOMR(premiumPerM2)} extra ÷ ${formatOMR(ECONOMICS_CONFIG.annualElectricityValuePerM2 + ECONOMICS_CONFIG.annualCoolingValuePerM2)} estimated yearly savings = about ${formatYears(paybackYears)}. The report assumes a 20–25 year window life.`;
+      document.getElementById('formula-tier-name').textContent = tier.name;
+      document.getElementById('selected-payback-formula').textContent = formatYears(paybackYears);
+    };
+
+    const renderComponentRows = tier => {
+      const rows = tier.components.map(component =>
+        `<tr><th scope="row">${component.name}<span class="unit-detail">${component.detail}</span></th><td>${formatOMR(component.cost)}<br>${component.share.toFixed(1)}%</td></tr>`
+      );
+      rows.push(`<tr class="total-row"><th scope="row">Estimated cost to make 1 m²</th><td>${formatOMR(tier.modeledCostPerM2)}<br>100%</td></tr>`);
+      document.getElementById('bom-rows').innerHTML = rows.join('');
+    };
+
+    const renderPriceRows = (tier, premiumPerM2, grossMarginPercent) => {
+      const grossProfitPerM2 = tier.pricePerM2 - tier.modeledCostPerM2;
+      const rows = [
+        ['Standard window comparison', formatOMR(tier.referencePricePerM2)],
+        ['Estimated AETHER selling price', formatOMR(tier.pricePerM2)],
+        ['Extra cost vs standard window', formatOMR(premiumPerM2)],
+        ['Estimated cost to make', formatOMR(tier.modeledCostPerM2)],
+        ['Estimated gross profit', formatOMR(grossProfitPerM2)],
+        ['Estimated gross profit margin', `${grossMarginPercent.toFixed(1)}%`],
+        ['Estimated operating profit after business costs', formatOMR(tier.netOperatingProfitPerM2)],
+        ['Estimated operating profit margin', `${tier.netOperatingMarginPercent.toFixed(1)}%`]
+      ];
+      document.getElementById('price-rows').innerHTML = rows
+        .map(([label, value]) => `<tr><th scope="row">${label}</th><td>${value}</td></tr>`)
+        .join('');
+    };
+
+    const updateAssumptionCopy = () => {
+      const combinedBenefit = ECONOMICS_CONFIG.annualElectricityValuePerM2 + ECONOMICS_CONFIG.annualCoolingValuePerM2;
+      document.getElementById('electricity-value-copy').textContent = formatOMR(ECONOMICS_CONFIG.annualElectricityValuePerM2);
+      document.getElementById('cooling-value-copy').textContent = formatOMR(ECONOMICS_CONFIG.annualCoolingValuePerM2);
+      document.getElementById('annual-benefit-copy').textContent = `${formatOMR(combinedBenefit)}`;
+      document.getElementById('annual-electricity-input').textContent = formatOMR(ECONOMICS_CONFIG.annualElectricityValuePerM2);
+      document.getElementById('annual-cooling-input').textContent = formatOMR(ECONOMICS_CONFIG.annualCoolingValuePerM2);
+    };
+
+    const updateSimulator = () => {
+      const areaM2 = Number(areaInput.value);
+      const years = Number(yearInput.value);
+      const result = calculateEconomics(selectedTier, areaM2, years);
+      if (!result) {
+        simError.hidden = false;
+        simError.textContent = 'Unable to update this scenario. Choose an area from 25 to 1,000 m² and a year from 0 to 25.';
+        return;
+      }
+      simError.hidden = true;
+      simError.textContent = '';
+      areaOutput.textContent = `${formatNumber(areaM2)} m²`;
+      yearOutput.textContent = `${years} ${years === 1 ? 'year' : 'years'}`;
+      document.getElementById('sim-result-title').textContent = `${formatNumber(areaM2)} m² · Year ${years}`;
+      document.getElementById('aether-cost').textContent = formatOMR(result.aetherPurchase);
+      document.getElementById('reference-cost').textContent = formatOMR(result.referencePurchase);
+      document.getElementById('premium-cost').textContent = formatOMR(result.incrementalPremium);
+      document.getElementById('accumulated-value').textContent = formatOMR(result.accumulatedBenefit);
+      const coveredPercent = Math.min(100, (result.accumulatedBenefit / result.incrementalPremium) * 100);
+      const remainingCost = Math.max(0, result.incrementalPremium - result.accumulatedBenefit);
+      const progressLabel = `${Math.round(coveredPercent)}%`;
+      const isAtBreakEven = Math.abs(result.netPosition) < 0.005;
+      document.getElementById('net-value').textContent = isAtBreakEven
+        ? 'Extra cost is covered'
+        : result.netPosition < 0
+          ? formatOMR(remainingCost)
+          : formatOMR(result.netPosition);
+      document.getElementById('net-description').textContent = isAtBreakEven
+        ? `After about ${formatYears(result.paybackYears)}, estimated savings match the extra cost.`
+        : result.netPosition < 0
+        ? `Still to cover after ${years} ${years === 1 ? 'year' : 'years'}; possible savings cover ${progressLabel} of the extra cost.`
+        : `Possible savings after ${years} years are above the extra cost.`;
+      document.getElementById('net-position').classList.toggle('negative', result.netPosition < 0);
+      document.getElementById('payback-progress-label').textContent = progressLabel;
+      document.getElementById('meter-fill').style.width = `${coveredPercent}%`;
+      document.getElementById('meter-track').setAttribute('aria-valuenow', String(Math.round(coveredPercent)));
+      document.getElementById('meter-caption').textContent = result.netPosition < 0
+        ? `At this rate, the extra cost could be covered in about ${formatYears(result.paybackYears)}.`
+        : `The estimated extra cost could be covered after about ${formatYears(result.paybackYears)}.`;
+    };
+
+    modelSelectButtons.forEach(button => button.addEventListener('click', () => {
+      selectedTier = button.dataset.tier;
+      updateTierPresentation();
+      updateSimulator();
+    }));
+    [areaInput, yearInput].forEach(input => input.addEventListener('input', updateSimulator));
+    updateAssumptionCopy();
+    updateTierPresentation();
+    updateSimulator();
+  </script>
+</body>
+</html>
