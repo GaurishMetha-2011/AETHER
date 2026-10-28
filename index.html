@@ -99,6 +99,9 @@
     .hero-meta span { margin-left: 10px; color: var(--aqua); }
     .hero-scroll-cue { position: absolute; z-index: 1; bottom: 28px; left: 50%; display: flex; align-items: center; gap: 11px; color: rgba(245,246,241,.7); font-size: 8px; letter-spacing: .15em; text-transform: uppercase; transform: translateX(-50%); }
     .hero-scroll-cue span { width: 29px; height: 1px; background: var(--aqua); animation: cue-pulse 2.2s ease-in-out infinite; }
+    .page-counter { position: fixed; z-index: 12; right: max(22px, calc((100vw - var(--content)) / 2)); bottom: 20px; display: grid; justify-items: center; gap: 4px; min-width: 22px; color: rgba(245,246,241,.82); pointer-events: none; text-shadow: 0 1px 8px rgba(0,0,0,.7); }
+    .page-counter::after { width: 13px; height: 1px; background: var(--aqua); opacity: .8; content: ""; }
+    .page-counter-current { font-size: 11px; font-weight: 600; letter-spacing: .04em; font-variant-numeric: tabular-nums; line-height: 1; }
     @keyframes hero-entry { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes cue-pulse { 50% { opacity: .35; transform: scaleX(.72); transform-origin: left; } }
     @keyframes hero-drift { from { transform: scale(1.015) translate3d(0,0,0); } to { transform: scale(1.075) translate3d(-.5%,.6%,0); } }
@@ -790,6 +793,7 @@
     @media (max-width: 780px) {
       .site-header { top: 10px; }
       .nav { width: calc(100% - 28px); height: 60px; padding: 0 14px; }
+      .page-counter { right: 16px; bottom: 14px; }
       .menu-toggle { display: inline-flex; }
       .nav-links { position: fixed; inset: 72px 14px auto; display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 10px 20px 18px; border: 1px solid var(--line); border-radius: 18px; background: rgba(16,19,17,.97); opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity .2s ease, transform .2s ease; }
       .menu-open .nav-links { opacity: 1; pointer-events: auto; transform: translateY(0); }
@@ -826,6 +830,9 @@
       </button>
     </nav>
   </header>
+  <div class="page-counter" id="page-counter" aria-label="Page 1">
+    <strong class="page-counter-current" id="current-page-number">01</strong>
+  </div>
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="wrap hero-copy">
@@ -1521,6 +1528,27 @@
     const updateHeader = () => header.classList.toggle('scrolled', window.scrollY > 20);
     updateHeader();
     window.addEventListener('scroll', updateHeader, { passive: true });
+
+    const pageSections = Array.from(document.querySelectorAll('main > section'));
+    const pageCounter = document.getElementById('page-counter');
+    const currentPageNumber = document.getElementById('current-page-number');
+    let pageCounterFrame = 0;
+    const updatePageCounter = () => {
+      pageCounterFrame = 0;
+      const activationLine = window.innerHeight * 0.45;
+      let currentPage = 1;
+      pageSections.forEach((section, index) => {
+        if (section.getBoundingClientRect().top <= activationLine) currentPage = index + 1;
+      });
+      currentPageNumber.textContent = String(currentPage).padStart(2, '0');
+      pageCounter.setAttribute('aria-label', `Page ${currentPage}`);
+    };
+    const schedulePageCounterUpdate = () => {
+      if (!pageCounterFrame) pageCounterFrame = window.requestAnimationFrame(updatePageCounter);
+    };
+    updatePageCounter();
+    window.addEventListener('scroll', schedulePageCounterUpdate, { passive: true });
+    window.addEventListener('resize', schedulePageCounterUpdate);
 
     menuToggle.addEventListener('click', () => {
       const open = menuToggle.getAttribute('aria-expanded') !== 'true';
